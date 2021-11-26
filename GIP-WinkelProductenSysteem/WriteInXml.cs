@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Xml;
+﻿using System.Xml;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,22 +6,18 @@ namespace GIP_WinkelProductenSysteem
 {
     class WriteInXml
     {
+        private string FilePath;
         public WriteInXml()
         {
         }
-        ChangeProd changeProd;
-
-        string FilePath;
-
-        string zekerMsg = "Ben u zeker?";
-        string abortMsg = "Geen probleem! Er is niets veranderd.";
-        string selectItemMsg = "Gelieve één item te selecteren.";
-        string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
-
         public WriteInXml(string filepath)
         {
             FilePath = filepath;
         }
+
+        ChangeProd changeProd;
+        EditChangeProdForm editChange;
+
         public void MakeXmlProducten()
         {
             XmlWriter xml;
@@ -46,10 +41,10 @@ namespace GIP_WinkelProductenSysteem
             FileStream file = new FileStream(FilePath, FileMode.Open);
             xmlDoc.Load(file);
 
-            string prodNaam = changeProd.GetTxbData(changeProd.txbNaam);
-            string prodCategorie = changeProd.GetTxbData(changeProd.txbCategorie);
-            string prodAantal = changeProd.GetTxbData(changeProd.txbAantalAanwezig);
-            string prodBestAantal = changeProd.GetTxbData(changeProd.txbAantalBestAanwezig);
+            string prodNaam = editChange.GetTxbData(changeProd.txbNaam);
+            string prodCategorie = editChange.GetTxbData(changeProd.txbCategorie);
+            string prodAantal = editChange.GetTxbData(changeProd.txbAantalAanwezig);
+            string prodBestAantal = editChange.GetTxbData(changeProd.txbAantalBestAanwezig);
 
             XmlElement product = xmlDoc.CreateElement("Product");
 
@@ -86,10 +81,10 @@ namespace GIP_WinkelProductenSysteem
             FileStream file = new FileStream(FilePath, FileMode.Open);
             xmlDoc.Load(file);
 
-            string prodNaam = changeProd.GetTxbData(changeProd.txbNaam);
-            string prodCategorie = changeProd.GetTxbData(changeProd.txbCategorie);
-            string prodAantal = changeProd.GetTxbData(changeProd.txbAantalAanwezig);
-            string prodBestAantal = changeProd.GetTxbData(changeProd.txbAantalBestAanwezig);
+            string prodNaam = EditChangeProdForm.GetTxbData(changeProd.txbNaam);
+            string prodCategorie = EditChangeProdForm.GetTxbData(changeProd.txbCategorie);
+            string prodAantal = EditChangeProdForm.GetTxbData(changeProd.txbAantalAanwezig);
+            string prodBestAantal = EditChangeProdForm.GetTxbData(changeProd.txbAantalBestAanwezig);
 
             foreach (XmlNode xmlNode in xmlDoc.SelectNodes("/Producten/Product"))
             {
@@ -111,7 +106,7 @@ namespace GIP_WinkelProductenSysteem
         {
             if (changeProd.lvProducten.SelectedItems.Count == 1)
             {
-                DialogResult result = MessageBox.Show(zekerMsg, "Verwijderen?", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show(changeProd.zekerMsg, "Verwijderen?", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
@@ -126,17 +121,17 @@ namespace GIP_WinkelProductenSysteem
 
                     file.Close();
                     xmlDoc.Save(FilePath);
-                    changeProd.FillListView();
+                    editChange.FillListView();
                 }
                 else
                 {
-                    MessageBox.Show(abortMsg);
+                    MessageBox.Show(changeProd.abortMsg);
                     changeProd.pnlProductEigenschappen.Visible = false;
                 }
             }
             else
             {
-                MessageBox.Show(selectItemMsg);
+                MessageBox.Show(changeProd.selectItemMsg);
                 changeProd.pnlProductEigenschappen.Visible = false;
             }
         }
