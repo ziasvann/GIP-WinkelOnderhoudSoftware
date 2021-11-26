@@ -30,12 +30,7 @@ namespace GIP_WinkelProductenSysteem
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
-            this.lvProducten = new System.Windows.Forms.ListView();
-            this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnCategorie = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnAanwezig = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnAantalBest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnMaakProduct = new System.Windows.Forms.Button();
             this.btnChangeProd = new System.Windows.Forms.Button();
@@ -50,48 +45,14 @@ namespace GIP_WinkelProductenSysteem
             this.label2 = new System.Windows.Forms.Label();
             this.txbNaam = new System.Windows.Forms.TextBox();
             this.txbCategorie = new System.Windows.Forms.TextBox();
+            this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnCategorie = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnAanwezig = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnAantalBest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvProducten = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlProductEigenschappen.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lvProducten
-            // 
-            this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnProducten,
-            this.columnCategorie,
-            this.columnAanwezig,
-            this.columnAantalBest});
-            this.lvProducten.FullRowSelect = true;
-            this.lvProducten.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
-            this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
-            this.lvProducten.Location = new System.Drawing.Point(196, 12);
-            this.lvProducten.Name = "lvProducten";
-            this.lvProducten.Size = new System.Drawing.Size(592, 417);
-            this.lvProducten.TabIndex = 4;
-            this.lvProducten.UseCompatibleStateImageBehavior = false;
-            this.lvProducten.View = System.Windows.Forms.View.Details;
-            // 
-            // columnProducten
-            // 
-            this.columnProducten.Text = "Product";
-            this.columnProducten.Width = 116;
-            // 
-            // columnCategorie
-            // 
-            this.columnCategorie.Text = "Categorie";
-            this.columnCategorie.Width = 89;
-            // 
-            // columnAanwezig
-            // 
-            this.columnAanwezig.Text = "Aantal aanwezig";
-            this.columnAanwezig.Width = 92;
-            // 
-            // columnAantalBest
-            // 
-            this.columnAantalBest.Text = "Aantal best aanwezig";
-            this.columnAantalBest.Width = 119;
             // 
             // errorProv
             // 
@@ -224,6 +185,45 @@ namespace GIP_WinkelProductenSysteem
             this.txbCategorie.Size = new System.Drawing.Size(142, 28);
             this.txbCategorie.TabIndex = 8;
             // 
+            // columnProducten
+            // 
+            this.columnProducten.Text = "Product";
+            this.columnProducten.Width = 116;
+            // 
+            // columnCategorie
+            // 
+            this.columnCategorie.Text = "Categorie";
+            this.columnCategorie.Width = 89;
+            // 
+            // columnAanwezig
+            // 
+            this.columnAanwezig.Text = "Aantal aanwezig";
+            this.columnAanwezig.Width = 92;
+            // 
+            // columnAantalBest
+            // 
+            this.columnAantalBest.Text = "Aantal best aanwezig";
+            this.columnAantalBest.Width = 119;
+            // 
+            // lvProducten
+            // 
+            this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnProducten,
+            this.columnCategorie,
+            this.columnAanwezig,
+            this.columnAantalBest});
+            this.lvProducten.FullRowSelect = true;
+            this.lvProducten.HideSelection = false;
+            listViewItem1.StateImageIndex = 0;
+            this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.lvProducten.Location = new System.Drawing.Point(196, 12);
+            this.lvProducten.Name = "lvProducten";
+            this.lvProducten.Size = new System.Drawing.Size(592, 417);
+            this.lvProducten.TabIndex = 4;
+            this.lvProducten.UseCompatibleStateImageBehavior = false;
+            this.lvProducten.View = System.Windows.Forms.View.Details;
+            // 
             // ChangeProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,25 +245,24 @@ namespace GIP_WinkelProductenSysteem
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView lvProducten;
-        private System.Windows.Forms.ErrorProvider errorProv;
-        private System.Windows.Forms.ColumnHeader columnProducten;
-        private System.Windows.Forms.ColumnHeader columnCategorie;
-        private System.Windows.Forms.ColumnHeader columnAanwezig;
-        private System.Windows.Forms.ColumnHeader columnAantalBest;
-        private System.Windows.Forms.Button btnDelProduct;
-        private System.Windows.Forms.Button btnChangeProd;
-        private System.Windows.Forms.Button btnMaakProduct;
-        private System.Windows.Forms.Panel pnlProductEigenschappen;
-        private System.Windows.Forms.Button btnBevestigProducten;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txbAantalBestAanwezig;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txbAantalAanwezig;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txbNaam;
-        private System.Windows.Forms.TextBox txbCategorie;
+        public System.Windows.Forms.TextBox txbNaam;
+        public System.Windows.Forms.ErrorProvider errorProv;
+        public System.Windows.Forms.Button btnDelProduct;
+        public System.Windows.Forms.Button btnChangeProd;
+        public System.Windows.Forms.Button btnMaakProduct;
+        public System.Windows.Forms.Panel pnlProductEigenschappen;
+        public System.Windows.Forms.Button btnBevestigProducten;
+        public System.Windows.Forms.Label label4;
+        public System.Windows.Forms.TextBox txbAantalBestAanwezig;
+        public System.Windows.Forms.Label label3;
+        public System.Windows.Forms.TextBox txbAantalAanwezig;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.TextBox txbCategorie;
+        public System.Windows.Forms.ListView lvProducten;
+        public System.Windows.Forms.ColumnHeader columnProducten;
+        public System.Windows.Forms.ColumnHeader columnCategorie;
+        public System.Windows.Forms.ColumnHeader columnAanwezig;
+        public System.Windows.Forms.ColumnHeader columnAantalBest;
     }
 }

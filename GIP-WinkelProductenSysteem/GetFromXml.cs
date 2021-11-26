@@ -11,14 +11,14 @@ namespace GIP_WinkelProductenSysteem
 {
     class GetFromXml
     {
-        private string Filepath;
+        private string FilePath;
 
         public GetFromXml()
         {
         }
         public GetFromXml(string filepath)
         {
-            Filepath = filepath;
+            FilePath = filepath;
         }
 
         public int aantalAanwezigXml(string teZoeken)
@@ -26,7 +26,7 @@ namespace GIP_WinkelProductenSysteem
             int aantalAanwezig = 0;
 
             XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(Filepath, FileMode.Open);
+            FileStream file = new FileStream(FilePath, FileMode.Open);
             xmlDoc.Load(file);
 
             XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
@@ -56,7 +56,7 @@ namespace GIP_WinkelProductenSysteem
             int count = 0;
 
             XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(Filepath, FileMode.Open);
+            FileStream file = new FileStream(FilePath, FileMode.Open);
             xmlDoc.Load(file);
 
             XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
