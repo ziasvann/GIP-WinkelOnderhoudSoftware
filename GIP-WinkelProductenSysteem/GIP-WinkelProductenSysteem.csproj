@@ -69,6 +69,7 @@
     <Compile Include="ChangeProd.Designer.cs">
       <DependentUpon>ChangeProd.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetFromXml.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -23,7 +23,7 @@ namespace GIP_WinkelProductenSysteem
 
         private void ChangeProd_Load(object sender, EventArgs e)
         {
-            loadProducten();
+            LoadProducten();
         }
         
         bool newProd = false;
@@ -39,24 +39,24 @@ namespace GIP_WinkelProductenSysteem
         string selectItemMsg = "Gelieve één item te selecteren.";
         string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
         string filePath = @"D:\ZIAS\School\2021-2022\GIP\Projects\GIP\GIP-WinkelProductenSysteem\GIP-WinkelProductenSysteem\Producten.xml";
-        
 
-        private void loadProducten()
+
+        private void LoadProducten()
         {
             if (!File.Exists(filePath))
             {
-                makeXmlProducten();
+                MakeXmlProducten();
                 MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (File.ReadAllText(filePath) == "")
             {
-                makeXmlProducten();
+                MakeXmlProducten();
                 MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else fillListView();
+            else FillListView();
         }
 
-        private void fillListView()
+        private void FillListView()
         {
             lvProducten.Items.Clear();
 
@@ -86,7 +86,7 @@ namespace GIP_WinkelProductenSysteem
             file.Close();
         }
 
-        private void makeXmlProducten()
+        private void MakeXmlProducten()
         {
             XmlWriter xml;
 
@@ -104,16 +104,16 @@ namespace GIP_WinkelProductenSysteem
         }
 
 
-        private void maakNieuwProduct()
+        private void MaakNieuwProduct()
         {
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
-            string prodNaam = getTxbData(txbNaam);
-            string prodCategorie = getTxbData(txbCategorie);
-            string prodAantal = getTxbData(txbAantalAanwezig);
-            string prodBestAantal = getTxbData(txbAantalBestAanwezig);
+            string prodNaam = GetTxbData(txbNaam);
+            string prodCategorie = GetTxbData(txbCategorie);
+            string prodAantal = GetTxbData(txbAantalAanwezig);
+            string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
 
             XmlElement product = xmlDoc.CreateElement("Product");
 
@@ -143,16 +143,16 @@ namespace GIP_WinkelProductenSysteem
             file.Close();
             xmlDoc.Save(filePath);
         }
-        private void wijzigProduct()
+        private void WijzigProduct()
         {
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
-            string prodNaam = getTxbData(txbNaam);
-            string prodCategorie = getTxbData(txbCategorie);
-            string prodAantal = getTxbData(txbAantalAanwezig);
-            string prodBestAantal = getTxbData(txbAantalBestAanwezig);
+            string prodNaam = GetTxbData(txbNaam);
+            string prodCategorie = GetTxbData(txbCategorie);
+            string prodAantal = GetTxbData(txbAantalAanwezig);
+            string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
 
             foreach(XmlNode xmlNode in xmlDoc.SelectNodes("/Producten/Product"))
             {
@@ -170,7 +170,7 @@ namespace GIP_WinkelProductenSysteem
             xmlDoc.Save(filePath);
         }
         
-        private void delProduct()
+        private void DelProduct()
         {
             if (lvProducten.SelectedItems.Count == 1)
             {
@@ -189,7 +189,7 @@ namespace GIP_WinkelProductenSysteem
 
                     file.Close();
                     xmlDoc.Save(filePath);
-                    fillListView();
+                    FillListView();
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace GIP_WinkelProductenSysteem
         }
         
         
-        private void fillTxb()
+        private void FillTxb()
         {
             if (lvProducten.SelectedItems.Count == 1)
             {
@@ -239,7 +239,7 @@ namespace GIP_WinkelProductenSysteem
                 pnlProductEigenschappen.Visible = false;
             }
         }
-        private void clearTxb()
+        private void ClearTxb()
         {
             txbNaam.Text = "";
             txbNaam.Enabled = true;
@@ -247,7 +247,7 @@ namespace GIP_WinkelProductenSysteem
             txbAantalAanwezig.Text = "";
             txbAantalBestAanwezig.Text = "";
         }
-        private string getTxbData(TextBox txb)
+        private string GetTxbData(TextBox txb)
         {
             string inhoud = "";
             try
@@ -261,9 +261,9 @@ namespace GIP_WinkelProductenSysteem
             return inhoud;
         }
 
-        private void controleerTxb(TextBox txb)
+        private void ControleerTxb(TextBox txb)
         {
-            string txbText = getTxbData(txb);
+            string txbText = GetTxbData(txb);
 
             if(txb.Name == "txbNaam")
             {
@@ -300,113 +300,7 @@ namespace GIP_WinkelProductenSysteem
 
         }
 
-        private int aantalAanwezigXml(string teZoeken)
-        {
-            int aantalAanwezig = 0;
-
-            XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(filePath, FileMode.Open);
-            xmlDoc.Load(file);
-
-            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
-
-            foreach (XmlNode xmlNode in xmlNodeList)
-            {
-                string prodNaam = xmlNode["Naam"].InnerText;
-                string prodCategorie = xmlNode["Categorie"].InnerText;
-                string prodAantal = xmlNode["Aantal"].InnerText;
-                string prodBestAantal = xmlNode["Bestaantal"].InnerText;
-
-                if (prodNaam == teZoeken) aantalAanwezig++;
-                if (prodCategorie == teZoeken) aantalAanwezig++;
-                //prodAantal en prodBestAantal kunnen dezelfde zijn!!
-                if (prodAantal == teZoeken) aantalAanwezig++;
-                if (prodBestAantal == teZoeken) aantalAanwezig++;
-            }
-
-            file.Close();
-
-            return aantalAanwezig;
-        }
-
-        private string[,] zoekenInXml(string soortTeZoeken, string teZoeken)
-        {
-            string[,] gevonden = new string[1,4];
-            int count = 0;
-
-            XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(filePath, FileMode.Open);
-            xmlDoc.Load(file);
-
-            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
-
-            if (soortTeZoeken == "Naam")
-            {
-                xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Naam");
-            }
-            else if (soortTeZoeken == "Categorie")
-            {
-                xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Categorie");
-            }
-            else if (soortTeZoeken == "Aantal")
-            {
-                xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Aantal");
-            }
-            else if (soortTeZoeken == "Bestaantal")
-            {
-                xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Bestaantal");
-            }
-
-            foreach (XmlNode xmlNode in xmlNodeList)
-            {
-                string prodNaam = xmlNode.ParentNode["Naam"].InnerText;
-                string prodCategorie = xmlNode.ParentNode["Categorie"].InnerText;
-                string prodAantal = xmlNode.ParentNode["Aantal"].InnerText;
-                string prodBestAantal = xmlNode.ParentNode["Bestaantal"].InnerText;
-
-                if (prodNaam == teZoeken && soortTeZoeken == "Naam")
-                {
-                    gevonden[count, 0] = prodNaam;
-                    gevonden[count, 1] = prodCategorie;
-                    gevonden[count, 2] = prodAantal;
-                    gevonden[count, 3] = prodBestAantal;
-
-                }
-                else if (prodCategorie == teZoeken && soortTeZoeken == "Categorie")
-                {
-                    gevonden[count, 0] = prodNaam;
-                    gevonden[count, 1] = prodCategorie;
-                    gevonden[count, 2] = prodAantal;
-                    gevonden[count, 3] = prodBestAantal;
-                }
-                else if (prodAantal == teZoeken && soortTeZoeken == "Aantal")
-                {
-                    gevonden[count, 0] = prodNaam;
-                    gevonden[count, 1] = prodCategorie;
-                    gevonden[count, 2] = prodAantal;
-                    gevonden[count, 3] = prodBestAantal;
-                }
-                else if (prodBestAantal == teZoeken && soortTeZoeken == "Bestaantal")
-                {
-                    gevonden[count, 0] = prodNaam;
-                    gevonden[count, 1] = prodCategorie;
-                    gevonden[count, 2] = prodAantal;
-                    gevonden[count, 3] = prodBestAantal;
-                }
-
-                count++;
-                //Lengte van array "gevonden" aanpassen.
-                string[,] temparr = new string[count + 1, 4];
-                Array.Copy(gevonden, temparr, gevonden.Length);
-                gevonden = temparr;
-            }
-
-            file.Close();
-
-            return gevonden;
-        }
-
-        private bool geenErrors()
+        private bool GeenErrors()
         {
             bool geenErrors = true;
 
@@ -418,39 +312,41 @@ namespace GIP_WinkelProductenSysteem
         private void btnMaakProduct_Click(object sender, EventArgs e)
         {
             newProd = true;
-            clearTxb();
+            ClearTxb();
             pnlProductEigenschappen.Visible = true;
         }
 
         private void btnBevestigProducten_Click(object sender, EventArgs e)
         {
-            controleerTxb(txbNaam);
-            controleerTxb(txbCategorie);
-            controleerTxb(txbAantalAanwezig);
-            controleerTxb(txbAantalBestAanwezig);
+            ControleerTxb(txbNaam);
+            ControleerTxb(txbCategorie);
+            ControleerTxb(txbAantalAanwezig);
+            ControleerTxb(txbAantalBestAanwezig);
 
-            if (geenErrors())
+            if (GeenErrors())
             {
                 pnlProductEigenschappen.Visible = false;
 
-                if (newProd) maakNieuwProduct();
-                else if (!newProd) wijzigProduct();
+                if (newProd) MaakNieuwProduct();
+                else if (!newProd) WijzigProduct();
 
-                fillListView();
+                FillListView();
                 newProd = false;
             }
             else
             {
-                MessageBox.Show(aantalAanwezigXml(getTxbData(txbCategorie)).ToString());
+                GetFromXml getFromXml = new GetFromXml(filePath);
+                MessageBox.Show(getFromXml.aantalAanwezigXml(GetTxbData(txbCategorie)).ToString());
 
                 MessageBox.Show(foutenMsg);
             }
             
         }
 
-        private void tempactions()
+        private void Tempactions()
         {
-            string[,] temp = zoekenInXml("Categorie", "Fruit");
+            GetFromXml getFromXml = new GetFromXml(filePath);
+            string[,] temp = getFromXml.zoekenInXml("Categorie", "Fruit");
             string weergeven = "";
 
             for(int i = 0; i < temp.GetLength(0); i++)
@@ -465,14 +361,14 @@ namespace GIP_WinkelProductenSysteem
         }
         private void btnChangeProd_Click(object sender, EventArgs e)
         {
-            fillTxb();
+            FillTxb();
             newProd = false;
         }
 
         private void btnDelProduct_Click(object sender, EventArgs e)
         {
-            tempactions();
-            delProduct();
+            Tempactions();
+            DelProduct();
         }
     }
 }
