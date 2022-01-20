@@ -360,7 +360,7 @@ namespace GIP_WinkelProductenSysteem
             {
                 if(n==naam) aanwezig = true;
             }
-            if (aanwezig) naamFout = true;
+            if (aanwezig&&newProd) naamFout = true;
 
             return aanwezig;
         }
