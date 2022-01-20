@@ -1,0 +1,20 @@
+<Producten>
+  <Product>
+    <Naam>Banaan</Naam>
+    <Categorie>Fruit</Categorie>
+    <Aantal>20</Aantal>
+    <Bestaantal>22</Bestaantal>
+  </Product>
+  <Product>
+    <Naam>Appel</Naam>
+    <Categorie>Fruit</Categorie>
+    <Aantal>20</Aantal>
+    <Bestaantal>22</Bestaantal>
+  </Product>
+  <Product>
+    <Naam>Peer</Naam>
+    <Categorie>Fruit</Categorie>
+    <Aantal>20</Aantal>
+    <Bestaantal>22</Bestaantal>
+  </Product>
+</Producten>
