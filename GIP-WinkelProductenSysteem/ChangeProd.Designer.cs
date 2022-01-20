@@ -30,7 +30,7 @@ namespace GIP_WinkelProductenSysteem
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("");
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnMaakProduct = new System.Windows.Forms.Button();
             this.btnChangeProd = new System.Windows.Forms.Button();
@@ -128,10 +128,10 @@ namespace GIP_WinkelProductenSysteem
             // 
             // txbAantalBestAanwezig
             // 
+            this.txbAantalBestAanwezig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbAantalBestAanwezig.Location = new System.Drawing.Point(33, 202);
-            this.txbAantalBestAanwezig.Multiline = true;
             this.txbAantalBestAanwezig.Name = "txbAantalBestAanwezig";
-            this.txbAantalBestAanwezig.Size = new System.Drawing.Size(142, 28);
+            this.txbAantalBestAanwezig.Size = new System.Drawing.Size(142, 20);
             this.txbAantalBestAanwezig.TabIndex = 12;
             // 
             // label3
@@ -145,10 +145,10 @@ namespace GIP_WinkelProductenSysteem
             // 
             // txbAantalAanwezig
             // 
+            this.txbAantalAanwezig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbAantalAanwezig.Location = new System.Drawing.Point(33, 142);
-            this.txbAantalAanwezig.Multiline = true;
             this.txbAantalAanwezig.Name = "txbAantalAanwezig";
-            this.txbAantalAanwezig.Size = new System.Drawing.Size(142, 28);
+            this.txbAantalAanwezig.Size = new System.Drawing.Size(142, 20);
             this.txbAantalAanwezig.TabIndex = 10;
             // 
             // label1
@@ -171,19 +171,25 @@ namespace GIP_WinkelProductenSysteem
             // 
             // txbNaam
             // 
+            this.txbNaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbNaam.Location = new System.Drawing.Point(30, 22);
-            this.txbNaam.Multiline = true;
             this.txbNaam.Name = "txbNaam";
-            this.txbNaam.Size = new System.Drawing.Size(142, 28);
+            this.txbNaam.Size = new System.Drawing.Size(142, 20);
             this.txbNaam.TabIndex = 6;
             // 
             // txbCategorie
             // 
+            this.txbCategorie.AutoCompleteCustomSource.AddRange(new string[] {
+            "Fruit",
+            "Hallo"});
+            this.txbCategorie.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txbCategorie.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.txbCategorie.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbCategorie.Location = new System.Drawing.Point(33, 80);
-            this.txbCategorie.Multiline = true;
             this.txbCategorie.Name = "txbCategorie";
-            this.txbCategorie.Size = new System.Drawing.Size(142, 28);
+            this.txbCategorie.Size = new System.Drawing.Size(142, 20);
             this.txbCategorie.TabIndex = 8;
+            this.txbCategorie.TextChanged += new System.EventHandler(this.txbCategorie_TextChanged);
             // 
             // columnProducten
             // 
@@ -214,9 +220,9 @@ namespace GIP_WinkelProductenSysteem
             this.columnAantalBest});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem15.StateImageIndex = 0;
             this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem15});
             this.lvProducten.Location = new System.Drawing.Point(196, 12);
             this.lvProducten.Name = "lvProducten";
             this.lvProducten.Size = new System.Drawing.Size(592, 417);
@@ -237,6 +243,7 @@ namespace GIP_WinkelProductenSysteem
             this.Name = "ChangeProd";
             this.Text = "Verander product";
             this.Load += new System.EventHandler(this.ChangeProd_Load);
+            this.DoubleClick += new System.EventHandler(this.ChangeProd_DoubleClick);
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
             this.pnlProductEigenschappen.ResumeLayout(false);
             this.pnlProductEigenschappen.PerformLayout();
