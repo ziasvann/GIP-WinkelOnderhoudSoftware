@@ -27,6 +27,8 @@ namespace GIP_WinkelProductenSysteem
         public bool categorieFout = false;
         public bool aantalAanwezigFout = false;
         public bool aantalBestAanwezigFout = false;
+        public bool prijsFout = false;
+        public bool kortingFout = false;
 
 
         public string welkomMsg = "Welkom!\nIn dit venster kunt u producten aanmaken en wijzigen. Momenteel zijn er nog geen producten opgeslagen.\nBegin dus met een product aan te maken.";
@@ -71,6 +73,8 @@ namespace GIP_WinkelProductenSysteem
             ControleerTxb(txbCategorie);
             ControleerTxb(txbAantalAanwezig);
             ControleerTxb(txbAantalBestAanwezig);
+            ControleerTxb(txbPrijs);
+            ControleerTxb(txbKorting);
 
             if (GeenErrors())
             {
@@ -131,6 +135,8 @@ namespace GIP_WinkelProductenSysteem
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
             string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
+            string prodPrijs = GetTxbData(txbPrijs);
+            string prodKorting = GetTxbData(txbKorting);
 
             XmlElement product = xmlDoc.CreateElement("Product");
 
@@ -146,15 +152,25 @@ namespace GIP_WinkelProductenSysteem
             XmlElement aantalBest = xmlDoc.CreateElement("Bestaantal");
             XmlText aantalBestText = xmlDoc.CreateTextNode(prodBestAantal);
 
+            XmlElement prijs = xmlDoc.CreateElement("Prijs");
+            XmlText prijsText = xmlDoc.CreateTextNode(prodPrijs);
+
+            XmlElement korting = xmlDoc.CreateElement("Korting");
+            XmlText kortingText = xmlDoc.CreateTextNode(prodKorting);
+
             naam.AppendChild(naamText);
             categorie.AppendChild(categorieText);
             aantal.AppendChild(aantalText);
             aantalBest.AppendChild(aantalBestText);
+            prijs.AppendChild(prijsText);
+            korting.AppendChild(kortingText);
 
             product.AppendChild(naam);
             product.AppendChild(categorie);
             product.AppendChild(aantal);
             product.AppendChild(aantalBest);
+            product.AppendChild(prijs);
+            product.AppendChild(korting);
 
             xmlDoc.DocumentElement.AppendChild(product);
             file.Close();
@@ -173,6 +189,8 @@ namespace GIP_WinkelProductenSysteem
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
             string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
+            string prodPrijs = GetTxbData(txbPrijs);
+            string prodKorting = GetTxbData(txbKorting);
 
             foreach (XmlNode xmlNode in xmlDoc.SelectNodes("/Producten/Product"))
             {
@@ -181,6 +199,8 @@ namespace GIP_WinkelProductenSysteem
                     xmlNode["Categorie"].InnerText = prodCategorie;
                     xmlNode["Aantal"].InnerText = prodAantal;
                     xmlNode["Bestaantal"].InnerText = prodBestAantal;
+                    xmlNode["Prijs"].InnerText = prodPrijs;
+                    xmlNode["Korting"].InnerText = prodKorting;
                 }
             }
 
@@ -241,12 +261,16 @@ namespace GIP_WinkelProductenSysteem
                 string prodCategorie = xmlNode["Categorie"].InnerText;
                 string prodAantal = xmlNode["Aantal"].InnerText;
                 string prodBestAantal = xmlNode["Bestaantal"].InnerText;
+                string prodPrijs = xmlNode["Prijs"].InnerText;
+                string prodKorting = xmlNode["Korting"].InnerText;
 
                 ListViewItem lvi = new ListViewItem(prodNaam);
 
                 lvi.SubItems.Add(prodCategorie);
                 lvi.SubItems.Add(prodAantal);
                 lvi.SubItems.Add(prodBestAantal);
+                lvi.SubItems.Add(prodPrijs);
+                lvi.SubItems.Add(prodKorting);
 
                 lvProducten.Items.Add(lvi);
             }
@@ -270,6 +294,8 @@ namespace GIP_WinkelProductenSysteem
                 string prodCategorie = xmlNode["Categorie"].InnerText;
                 string prodAantal = xmlNode["Aantal"].InnerText;
                 string prodBestAantal = xmlNode["Bestaantal"].InnerText;
+                string prodPrijs = xmlNode["Prijs"].InnerText;
+                string prodKorting = xmlNode["Korting"].InnerText;
 
                 txbNaam.Text = prodNaam;
                 txbNaam.Enabled = false;
@@ -277,11 +303,12 @@ namespace GIP_WinkelProductenSysteem
                 txbCategorie.Enabled = false;    
                 txbAantalAanwezig.Text = prodAantal;
                 txbAantalBestAanwezig.Text = prodBestAantal;
+                txbPrijs.Text = prodPrijs;
+                txbKorting.Text = prodKorting;
 
                 file.Close();
 
                 pnlProductEigenschappen.Visible = true;
-
             }
             else
             {
@@ -321,7 +348,7 @@ namespace GIP_WinkelProductenSysteem
                 naamFout = true;
                 if (txbText.All(char.IsLetter) && !string.IsNullOrEmpty(txbText)) naamFout = false;
 
-                if (naamAlAanwezig(txbNaam.Text)) errorProv.SetError(txb, naamAanwezigMsg);
+                if (naamAlAanwezig(txbText)) errorProv.SetError(txb, naamAanwezigMsg);
                 else if (naamFout) errorProv.SetError(txb, foutenMsg);
                 else errorProv.SetError(txb, "");
             }
@@ -349,6 +376,22 @@ namespace GIP_WinkelProductenSysteem
                 if (aantalBestAanwezigFout) errorProv.SetError(txb, foutenMsg);
                 else errorProv.SetError(txb, "");
             }
+            else if(txb.Name == "txbPrijs")
+            {
+                prijsFout = true;
+                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0 && Int32.Parse(txbText) <= 100 && Int32.Parse(txbText) >= 0) prijsFout = false;
+
+                if (prijsFout) errorProv.SetError(txb, foutenMsg);
+                else errorProv.SetError(txb, "");
+            }
+            else if (txb.Name == "txbKorting")
+            {
+                kortingFout = true;
+                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0 && Int32.Parse(txbText) <= 100 && Int32.Parse(txbText) >= 0) kortingFout = false;
+
+                if (kortingFout) errorProv.SetError(txb, foutenMsg);
+                else errorProv.SetError(txb, "");
+            }
 
         }
 
@@ -369,7 +412,7 @@ namespace GIP_WinkelProductenSysteem
         {
             bool geenErrors = true;
 
-            if (naamFout || categorieFout || aantalAanwezigFout || aantalBestAanwezigFout) geenErrors = false;
+            if (naamFout || categorieFout || aantalAanwezigFout || aantalBestAanwezigFout || prijsFout || kortingFout) geenErrors = false;
 
             return geenErrors;
         }

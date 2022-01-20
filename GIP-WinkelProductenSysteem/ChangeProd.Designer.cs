@@ -30,12 +30,16 @@ namespace GIP_WinkelProductenSysteem
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnMaakProduct = new System.Windows.Forms.Button();
             this.btnChangeProd = new System.Windows.Forms.Button();
             this.btnDelProduct = new System.Windows.Forms.Button();
             this.pnlProductEigenschappen = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txbKorting = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txbPrijs = new System.Windows.Forms.TextBox();
             this.btnBevestigProducten = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txbAantalBestAanwezig = new System.Windows.Forms.TextBox();
@@ -50,6 +54,8 @@ namespace GIP_WinkelProductenSysteem
             this.columnAanwezig = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAantalBest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvProducten = new System.Windows.Forms.ListView();
+            this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnKorting = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlProductEigenschappen.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +98,10 @@ namespace GIP_WinkelProductenSysteem
             // pnlProductEigenschappen
             // 
             this.pnlProductEigenschappen.BackColor = System.Drawing.Color.Transparent;
+            this.pnlProductEigenschappen.Controls.Add(this.label6);
+            this.pnlProductEigenschappen.Controls.Add(this.txbKorting);
+            this.pnlProductEigenschappen.Controls.Add(this.label5);
+            this.pnlProductEigenschappen.Controls.Add(this.txbPrijs);
             this.pnlProductEigenschappen.Controls.Add(this.btnBevestigProducten);
             this.pnlProductEigenschappen.Controls.Add(this.label4);
             this.pnlProductEigenschappen.Controls.Add(this.txbAantalBestAanwezig);
@@ -103,13 +113,50 @@ namespace GIP_WinkelProductenSysteem
             this.pnlProductEigenschappen.Controls.Add(this.txbCategorie);
             this.pnlProductEigenschappen.Location = new System.Drawing.Point(12, 153);
             this.pnlProductEigenschappen.Name = "pnlProductEigenschappen";
-            this.pnlProductEigenschappen.Size = new System.Drawing.Size(178, 280);
+            this.pnlProductEigenschappen.Size = new System.Drawing.Size(178, 376);
             this.pnlProductEigenschappen.TabIndex = 16;
             this.pnlProductEigenschappen.Visible = false;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(93, 289);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 13);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Geef korting in:";
+            // 
+            // txbKorting
+            // 
+            this.txbKorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txbKorting.Location = new System.Drawing.Point(33, 305);
+            this.txbKorting.Name = "txbKorting";
+            this.txbKorting.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txbKorting.Size = new System.Drawing.Size(139, 20);
+            this.txbKorting.TabIndex = 17;
+            this.txbKorting.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(107, 239);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Geef prijs in:";
+            // 
+            // txbPrijs
+            // 
+            this.txbPrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txbPrijs.Location = new System.Drawing.Point(33, 255);
+            this.txbPrijs.Name = "txbPrijs";
+            this.txbPrijs.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txbPrijs.Size = new System.Drawing.Size(139, 20);
+            this.txbPrijs.TabIndex = 15;
+            // 
             // btnBevestigProducten
             // 
-            this.btnBevestigProducten.Location = new System.Drawing.Point(32, 233);
+            this.btnBevestigProducten.Location = new System.Drawing.Point(33, 331);
             this.btnBevestigProducten.Name = "btnBevestigProducten";
             this.btnBevestigProducten.Size = new System.Drawing.Size(142, 41);
             this.btnBevestigProducten.TabIndex = 14;
@@ -199,7 +246,7 @@ namespace GIP_WinkelProductenSysteem
             // columnCategorie
             // 
             this.columnCategorie.Text = "Categorie";
-            this.columnCategorie.Width = 89;
+            this.columnCategorie.Width = 135;
             // 
             // columnAanwezig
             // 
@@ -217,24 +264,35 @@ namespace GIP_WinkelProductenSysteem
             this.columnProducten,
             this.columnCategorie,
             this.columnAanwezig,
-            this.columnAantalBest});
+            this.columnAantalBest,
+            this.columnPrijs,
+            this.columnKorting});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
-            listViewItem15.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem15});
+            listViewItem1});
             this.lvProducten.Location = new System.Drawing.Point(196, 12);
             this.lvProducten.Name = "lvProducten";
-            this.lvProducten.Size = new System.Drawing.Size(592, 417);
+            this.lvProducten.Size = new System.Drawing.Size(592, 517);
             this.lvProducten.TabIndex = 4;
             this.lvProducten.UseCompatibleStateImageBehavior = false;
             this.lvProducten.View = System.Windows.Forms.View.Details;
+            // 
+            // columnPrijs
+            // 
+            this.columnPrijs.Text = "Prijs";
+            this.columnPrijs.Width = 66;
+            // 
+            // columnKorting
+            // 
+            this.columnKorting.Text = "Korting";
             // 
             // ChangeProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 441);
+            this.ClientSize = new System.Drawing.Size(800, 541);
             this.Controls.Add(this.pnlProductEigenschappen);
             this.Controls.Add(this.btnDelProduct);
             this.Controls.Add(this.btnChangeProd);
@@ -271,5 +329,11 @@ namespace GIP_WinkelProductenSysteem
         public System.Windows.Forms.ColumnHeader columnCategorie;
         public System.Windows.Forms.ColumnHeader columnAanwezig;
         public System.Windows.Forms.ColumnHeader columnAantalBest;
+        public System.Windows.Forms.Label label5;
+        public System.Windows.Forms.TextBox txbPrijs;
+        public System.Windows.Forms.Label label6;
+        public System.Windows.Forms.TextBox txbKorting;
+        public System.Windows.Forms.ColumnHeader columnPrijs;
+        private System.Windows.Forms.ColumnHeader columnKorting;
     }
 }
