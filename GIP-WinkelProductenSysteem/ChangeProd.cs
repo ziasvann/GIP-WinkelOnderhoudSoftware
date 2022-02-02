@@ -44,6 +44,10 @@ namespace GIP_WinkelProductenSysteem
         string[] categorieën = new string[0];
         string[] namen = new string[0];
 
+
+        //'huidigeNaam' wordt gebruikt om te controleren of de naam is gewijzigd na het aanpassen van een product.
+        string huidigeNaam = "";
+
         private void LoadProducten()
         {
             if (!File.Exists(filePath))
@@ -101,11 +105,13 @@ namespace GIP_WinkelProductenSysteem
         {
             FillTxb();
             newProd = false;
+            huidigeNaam = GetTxbData(txbNaam);
         }
 
         private void btnDelProduct_Click(object sender, EventArgs e)
         {
             DelProduct();
+            werkCategorieënBij();
         }
 
         public void MakeXmlProducten()
@@ -138,6 +144,10 @@ namespace GIP_WinkelProductenSysteem
             string prodPrijs = GetTxbData(txbPrijs);
             string prodKorting = GetTxbData(txbKorting);
 
+            double prijsProd = double.Parse(prodPrijs);
+            int kortingProd = Int32.Parse(prodKorting);
+            string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
+
             XmlElement product = xmlDoc.CreateElement("Product");
 
             XmlElement naam = xmlDoc.CreateElement("Naam");
@@ -158,12 +168,16 @@ namespace GIP_WinkelProductenSysteem
             XmlElement korting = xmlDoc.CreateElement("Korting");
             XmlText kortingText = xmlDoc.CreateTextNode(prodKorting);
 
+            XmlElement nieuwePrijs = xmlDoc.CreateElement("NieuwePrijs");
+            XmlText nieuwePrijsText = xmlDoc.CreateTextNode(nieuwePrijsProd);
+
             naam.AppendChild(naamText);
             categorie.AppendChild(categorieText);
             aantal.AppendChild(aantalText);
             aantalBest.AppendChild(aantalBestText);
             prijs.AppendChild(prijsText);
             korting.AppendChild(kortingText);
+            nieuwePrijs.AppendChild(nieuwePrijsText);
 
             product.AppendChild(naam);
             product.AppendChild(categorie);
@@ -171,12 +185,18 @@ namespace GIP_WinkelProductenSysteem
             product.AppendChild(aantalBest);
             product.AppendChild(prijs);
             product.AppendChild(korting);
+            product.AppendChild(nieuwePrijs);
 
             xmlDoc.DocumentElement.AppendChild(product);
             file.Close();
             xmlDoc.Save(filePath);
 
             werkCategorieënBij();
+
+            if (test)
+            {
+                MessageBox.Show($"Prijs: {prodPrijs}\nKorting: {prodKorting}\nNieuwe prijs: {nieuwePrijsProd}");
+            }
         }
 
         public void WijzigProduct()
@@ -346,51 +366,77 @@ namespace GIP_WinkelProductenSysteem
             if (txb.Name == "txbNaam")
             {
                 naamFout = true;
-                if (txbText.All(char.IsLetter) && !string.IsNullOrEmpty(txbText)) naamFout = false;
 
-                if (naamAlAanwezig(txbText)) errorProv.SetError(txb, naamAanwezigMsg);
-                else if (naamFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
+
+                else if (naamAlAanwezig(txbText) && newProd) errorProv.SetError(txb, naamAanwezigMsg);
+                else if (naamAlAanwezig(txbText) && !newProd && txbText != huidigeNaam) errorProv.SetError(txb, naamAanwezigMsg);
+                
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    naamFout = false;
+                }
             }
             else if (txb.Name == "txbCategorie")
             {
                 categorieFout = true;
-                if (txbText.All(char.IsLetter) && !string.IsNullOrEmpty(txbText)) categorieFout = false;
-
-                if (categorieFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                
+                if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
+                
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    categorieFout = false;
+                }
             }
             else if (txb.Name == "txbAantalAanwezig")
             {
                 aantalAanwezigFout = true;
-                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0) aantalAanwezigFout = false;
+                
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
 
-                if (aantalAanwezigFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    aantalAanwezigFout = false;
+                }
             }
             else if (txb.Name == "txbAantalBestAanwezig")
             {
                 aantalBestAanwezigFout = true;
-                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0) aantalBestAanwezigFout = false;
 
-                if (aantalBestAanwezigFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
+
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    aantalBestAanwezigFout = false;
+                }
             }
             else if(txb.Name == "txbPrijs")
             {
                 prijsFout = true;
-                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0 && Int32.Parse(txbText) <= 100 && Int32.Parse(txbText) >= 0) prijsFout = false;
 
-                if (prijsFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
+
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    prijsFout = false;
+                }
             }
             else if (txb.Name == "txbKorting")
             {
                 kortingFout = true;
-                if (txbText.All(char.IsNumber) && !string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) > 0 && Int32.Parse(txbText) % 1 == 0 && Int32.Parse(txbText) <= 100 && Int32.Parse(txbText) >= 0) kortingFout = false;
 
-                if (kortingFout) errorProv.SetError(txb, foutenMsg);
-                else errorProv.SetError(txb, "");
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0 || Int32.Parse(txbText) > 100) errorProv.SetError(txb, foutenMsg);
+
+                else
+                {
+                    errorProv.SetError(txb, "");
+                    kortingFout = false;
+                }
             }
 
         }
@@ -593,6 +639,9 @@ namespace GIP_WinkelProductenSysteem
 
         public string[] wijzigNamen()
         {
+            //Deze array geeft als resultaat alle product namen uit de XML-database.
+
+
             string[] namen = new string[0];
 
             int count = 0;
@@ -624,8 +673,44 @@ namespace GIP_WinkelProductenSysteem
 
         public void werkNamenBij()
         {
+            //Dit werkt de array met namen bij zodat deze up-to-date is.
+
+            //Lengte van de array +1.
             Array.Resize(ref namen, wijzigNamen().Length);
+            //Werk namen bij met juiste array.
             namen = wijzigNamen();
+        }
+
+        public double kortingPrijs(double prijs, int korting)
+        {
+
+            //Korting op duidelijk manier schrijven:
+            //Bv.: Korting 20% --> korting = 0,8
+            double rekenbareKorting = 1 - (korting / 100);
+
+
+            //Prijs berekenen
+            double berekendePrijs = prijs * rekenbareKorting;
+
+
+            //Prijs terugsturen in normaal scenario
+            if (berekendePrijs >= 0)
+            {
+                return berekendePrijs;
+            }
+            
+            //Foutafhandeling:
+            //Als fout && testfase --> Zeg dat er een fout is en stuur '0' terug.
+            else if (test)
+            {
+                MessageBox.Show("berekenPrijs: fout!!!!");
+                return 0;
+            }
+            //Als fout --> Stuur '0' terug, zodat duidelijk is dat er een fout is!
+            else
+            {
+                return 0;
+            }
         }
     } 
 }
