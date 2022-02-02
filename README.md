@@ -1,13 +1,12 @@
 # GIP-WinkelOnderhoudSysteem
 ToDo:
 
-- Controleren van prijzen en korting.
-- Korting berekenen
+- Korting (juist) berekenen
+- Duidelijker documenteren
+- Betere foutafhandeling
 
 Done:
 
-- autocomplete van categorieën wanneer er een product wordt aangemaakt.
-- txbNaam locken, unlocken bij wijzigen
-- controleren of al aanwezig
-- Prijzen toevoegen
-- Korting toevoegen
+- Categorieën bijwerken wanneer er een product wordt gemaakt of wordt verwijderd
+- Controleren beter gemaakt
+- Deel al gedocumenteerd
