@@ -6,5 +6,5 @@ ToDo:
 
 Done:
 
-- Korting (juist) berekenen
-- Korting berekenen na een wijziging van producteigenschappen
+- btnBevestigen in juiste volgorde voor tab
+- icoon en naam aangepast voor installatie bestanden
