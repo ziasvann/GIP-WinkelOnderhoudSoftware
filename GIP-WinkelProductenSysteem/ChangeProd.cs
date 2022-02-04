@@ -145,7 +145,7 @@ namespace GIP_WinkelProductenSysteem
             string prodKorting = GetTxbData(txbKorting);
 
             double prijsProd = double.Parse(prodPrijs);
-            int kortingProd = Int32.Parse(prodKorting);
+            double kortingProd = double.Parse(prodKorting);
             string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
 
             XmlElement product = xmlDoc.CreateElement("Product");
@@ -212,6 +212,10 @@ namespace GIP_WinkelProductenSysteem
             string prodPrijs = GetTxbData(txbPrijs);
             string prodKorting = GetTxbData(txbKorting);
 
+            double prijsProd = double.Parse(prodPrijs);
+            double kortingProd = double.Parse(prodKorting);
+            string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
+
             foreach (XmlNode xmlNode in xmlDoc.SelectNodes("/Producten/Product"))
             {
                 if (xmlNode.SelectSingleNode("Naam").InnerText == prodNaam)
@@ -221,6 +225,7 @@ namespace GIP_WinkelProductenSysteem
                     xmlNode["Bestaantal"].InnerText = prodBestAantal;
                     xmlNode["Prijs"].InnerText = prodPrijs;
                     xmlNode["Korting"].InnerText = prodKorting;
+                    xmlNode["NieuwePrijs"].InnerText = nieuwePrijsProd;
                 }
             }
 
@@ -283,6 +288,7 @@ namespace GIP_WinkelProductenSysteem
                 string prodBestAantal = xmlNode["Bestaantal"].InnerText;
                 string prodPrijs = xmlNode["Prijs"].InnerText;
                 string prodKorting = xmlNode["Korting"].InnerText;
+                string prodNieuwePrijs = xmlNode["NieuwePrijs"].InnerText;
 
                 ListViewItem lvi = new ListViewItem(prodNaam);
 
@@ -291,6 +297,7 @@ namespace GIP_WinkelProductenSysteem
                 lvi.SubItems.Add(prodBestAantal);
                 lvi.SubItems.Add(prodPrijs);
                 lvi.SubItems.Add(prodKorting);
+                lvi.SubItems.Add(prodNieuwePrijs);
 
                 lvProducten.Items.Add(lvi);
             }
@@ -681,7 +688,7 @@ namespace GIP_WinkelProductenSysteem
             namen = wijzigNamen();
         }
 
-        public double kortingPrijs(double prijs, int korting)
+        public double kortingPrijs(double prijs, double korting)
         {
 
             //Korting op duidelijk manier schrijven:
