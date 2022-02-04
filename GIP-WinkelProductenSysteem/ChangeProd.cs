@@ -20,7 +20,7 @@ namespace GIP_WinkelProductenSysteem
             werkNamenBij();
         }
 
-        bool test = false;
+        bool test = true;
 
         public bool newProd = false;
         public bool naamFout = false;

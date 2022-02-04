@@ -29,7 +29,6 @@ namespace GIP_WinkelProductenSysteem
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnChangeProdFrm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -43,14 +42,13 @@ namespace GIP_WinkelProductenSysteem
             this.btnChangeProdFrm.UseVisualStyleBackColor = true;
             this.btnChangeProdFrm.Click += new System.EventHandler(this.btnChangeProd_Click);
             // 
-            // MainForm
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnChangeProdFrm);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "MainForm";
+            this.Name = "Form1";
             this.Text = "MainPage";
             this.ResumeLayout(false);
 
