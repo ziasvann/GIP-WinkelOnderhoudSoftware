@@ -36,6 +36,8 @@ namespace GIP_WinkelProductenSysteem
             this.btnChangeProd = new System.Windows.Forms.Button();
             this.btnDelProduct = new System.Windows.Forms.Button();
             this.pnlProductEigenschappen = new System.Windows.Forms.Panel();
+            this.lblKorting = new System.Windows.Forms.Label();
+            this.lblPrijs = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.txbKorting = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -56,8 +58,7 @@ namespace GIP_WinkelProductenSysteem
             this.lvProducten = new System.Windows.Forms.ListView();
             this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnKorting = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lblPrijs = new System.Windows.Forms.Label();
-            this.lblKorting = new System.Windows.Forms.Label();
+            this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlProductEigenschappen.SuspendLayout();
             this.SuspendLayout();
@@ -120,6 +121,24 @@ namespace GIP_WinkelProductenSysteem
             this.pnlProductEigenschappen.Size = new System.Drawing.Size(178, 376);
             this.pnlProductEigenschappen.TabIndex = 16;
             this.pnlProductEigenschappen.Visible = false;
+            // 
+            // lblKorting
+            // 
+            this.lblKorting.AutoSize = true;
+            this.lblKorting.Location = new System.Drawing.Point(77, 308);
+            this.lblKorting.Name = "lblKorting";
+            this.lblKorting.Size = new System.Drawing.Size(15, 13);
+            this.lblKorting.TabIndex = 20;
+            this.lblKorting.Text = "%";
+            // 
+            // lblPrijs
+            // 
+            this.lblPrijs.AutoSize = true;
+            this.lblPrijs.Location = new System.Drawing.Point(77, 258);
+            this.lblPrijs.Name = "lblPrijs";
+            this.lblPrijs.Size = new System.Drawing.Size(13, 13);
+            this.lblPrijs.TabIndex = 19;
+            this.lblPrijs.Text = "€";
             // 
             // label6
             // 
@@ -270,7 +289,8 @@ namespace GIP_WinkelProductenSysteem
             this.columnAanwezig,
             this.columnAantalBest,
             this.columnPrijs,
-            this.columnKorting});
+            this.columnKorting,
+            this.columnHuidigePrijs});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
             listViewItem1.StateImageIndex = 0;
@@ -278,7 +298,7 @@ namespace GIP_WinkelProductenSysteem
             listViewItem1});
             this.lvProducten.Location = new System.Drawing.Point(196, 12);
             this.lvProducten.Name = "lvProducten";
-            this.lvProducten.Size = new System.Drawing.Size(592, 517);
+            this.lvProducten.Size = new System.Drawing.Size(681, 517);
             this.lvProducten.TabIndex = 4;
             this.lvProducten.UseCompatibleStateImageBehavior = false;
             this.lvProducten.View = System.Windows.Forms.View.Details;
@@ -292,29 +312,16 @@ namespace GIP_WinkelProductenSysteem
             // 
             this.columnKorting.Text = "Korting";
             // 
-            // lblPrijs
+            // columnHuidigePrijs
             // 
-            this.lblPrijs.AutoSize = true;
-            this.lblPrijs.Location = new System.Drawing.Point(77, 258);
-            this.lblPrijs.Name = "lblPrijs";
-            this.lblPrijs.Size = new System.Drawing.Size(13, 13);
-            this.lblPrijs.TabIndex = 19;
-            this.lblPrijs.Text = "€";
-            // 
-            // lblKorting
-            // 
-            this.lblKorting.AutoSize = true;
-            this.lblKorting.Location = new System.Drawing.Point(77, 308);
-            this.lblKorting.Name = "lblKorting";
-            this.lblKorting.Size = new System.Drawing.Size(15, 13);
-            this.lblKorting.TabIndex = 20;
-            this.lblKorting.Text = "%";
+            this.columnHuidigePrijs.Text = "Huidige prijs";
+            this.columnHuidigePrijs.Width = 75;
             // 
             // ChangeProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 541);
+            this.ClientSize = new System.Drawing.Size(889, 541);
             this.Controls.Add(this.pnlProductEigenschappen);
             this.Controls.Add(this.btnDelProduct);
             this.Controls.Add(this.btnChangeProd);
@@ -359,5 +366,6 @@ namespace GIP_WinkelProductenSysteem
         private System.Windows.Forms.ColumnHeader columnKorting;
         private System.Windows.Forms.Label lblPrijs;
         private System.Windows.Forms.Label lblKorting;
+        private System.Windows.Forms.ColumnHeader columnHuidigePrijs;
     }
 }
