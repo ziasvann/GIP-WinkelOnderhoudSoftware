@@ -6,5 +6,12 @@ ToDo:
 
 Done:
 
-- Korting (juist) berekenen
-- Korting berekenen na een wijziging van producteigenschappen
+- btnBevestigen juiste tab richting
+- Duidelijker documenteren van:
+    - Wijzigen
+    - Maken
+    - btnDel
+    - btnChange
+    - btnBevestig
+    - btnMaak
+    - Load

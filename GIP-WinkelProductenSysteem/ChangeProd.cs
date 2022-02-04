@@ -20,7 +20,7 @@ namespace GIP_WinkelProductenSysteem
             werkNamenBij();
         }
 
-        bool test = true;
+        bool test = false;
 
         public bool newProd = false;
         public bool naamFout = false;
@@ -50,6 +50,9 @@ namespace GIP_WinkelProductenSysteem
 
         private void LoadProducten()
         {
+            //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
+            
+            //Maakt de XML-database aan als deze nog niet is gemaakt.
             if (!File.Exists(filePath))
             {
                 MakeXmlProducten();
@@ -61,18 +64,27 @@ namespace GIP_WinkelProductenSysteem
                 MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+            //Als de XML-database volledig in orde is kunnen de producten geladen worden in de listview.
             else FillListView();
         }
 
         private void btnMaakProduct_Click(object sender, EventArgs e)
         {
+            //Deze method wordt geactiveerd bij het klikken op btnMaakproduct.
+
+            //Er moet een nieuw product worden gemaakt dus wordt newProd op 'true' gezet.
             newProd = true;
+            //Alle textboxen worden leeggemaakt.
             ClearTxb();
+            //De panel om een product aan te maken wordt zichtbaar gemaakt.
             pnlProductEigenschappen.Visible = true;
         }
 
         private void btnBevestigProducten_Click(object sender, EventArgs e)
         {
+            //Deze method wordt geactiveerd bij het klikken op btnBevestigen.
+
+            //Vooraleer alle textboxen worden ingelezen moeten ze worden gecontroleerd op fouten.
             ControleerTxb(txbNaam);
             ControleerTxb(txbCategorie);
             ControleerTxb(txbAantalAanwezig);
@@ -80,14 +92,20 @@ namespace GIP_WinkelProductenSysteem
             ControleerTxb(txbPrijs);
             ControleerTxb(txbKorting);
 
+            //Pas wanneer er geen fouten zijn in de textboxen kan er worden verdergegaan.
             if (GeenErrors())
             {
+                //De panel kan weer onzichtbaar worden, zodat er niet meteen een nieuw product kan worden gemaakt.
                 pnlProductEigenschappen.Visible = false;
 
+                //Als het een nieuw prduct is, wordt er een nieuw product aangemaakt. Als het dat niet is, wordt het huidige product gewijzigd.
                 if (newProd) MaakNieuwProduct();
                 else if (!newProd) WijzigProduct();
 
+                //Om de wijzigeingen zichtbaar te maken wordt de listview opnieuw ingeladen.
                 FillListView();
+
+                //Er is nu sowieso geen nieuw product meer.
                 newProd = false;
             }
             else
@@ -96,26 +114,37 @@ namespace GIP_WinkelProductenSysteem
                 {
                     MessageBox.Show(aantalAanwezigXml(GetTxbData(txbCategorie)).ToString());
                 }
-
+                //Als er toch een fout zit in een van textboxen wordt dit weergegeven door een textbox.
                 MessageBox.Show(foutenMsg);
             }
         }
 
         private void btnChangeProd_Click(object sender, EventArgs e)
         {
+            //Deze method wordt geactiveerd bij het klikken op btnChangeProd.
+
+            //Om een product te wijzigen worden eerst de oorspronkelijke waarden ingevoerd, zodat er makkelijk veranderingen kunnen plaatsvinden.
             FillTxb();
+            //Er is geen nieuw product.
             newProd = false;
+            //De naam van het product dat wordt gewijzigd wordt extra ingegeven. 
             huidigeNaam = GetTxbData(txbNaam);
         }
 
         private void btnDelProduct_Click(object sender, EventArgs e)
         {
+            //Deze method wordt geactiveerd bij het klikken op btnDelProduct.
+
+            //Het product moet worden verwijderd, daarna moeten de categorieën worden bijgewerkt.
             DelProduct();
             werkCategorieënBij();
         }
 
         public void MakeXmlProducten()
         {
+            //Deze method maakt een XML bestand met de standaard waarden. Op die manier kunnen er later producten in worden toegevoegd.
+
+            //De XMLWriter wordt klaargezet en zijn settings worden ingegeven.
             XmlWriter xml;
 
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -125,6 +154,7 @@ namespace GIP_WinkelProductenSysteem
 
             xml = XmlWriter.Create(filePath, settings);
 
+            //Het bestand wordt aangemaakt en de standaardwaarden worden ingevoerd.
             xml.WriteStartDocument();
             xml.WriteStartElement("Producten");
             xml.WriteEndElement();
@@ -133,10 +163,18 @@ namespace GIP_WinkelProductenSysteem
 
         public void MaakNieuwProduct()
         {
+            //Deze method maakt een nieuw product en zet deze in de XML-database.
+
+            //Er moet niet meer gecontroleerd worden of de waarden juist zijn, want dat werd al gedaan vooraleer deze method werd opgeroepen.
+
+
+            //De XML writer wordt klaargezet met het XML doucment.
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
+
+            //De eigenschappen van het product worden opgevraagd en opgeslagen.
             string prodNaam = GetTxbData(txbNaam);
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
@@ -144,10 +182,12 @@ namespace GIP_WinkelProductenSysteem
             string prodPrijs = GetTxbData(txbPrijs);
             string prodKorting = GetTxbData(txbKorting);
 
+            //De nieuwePrijs wordt berekent, op basis van de prijs en de korting.
             double prijsProd = double.Parse(prodPrijs);
             double kortingProd = double.Parse(prodKorting);
             string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
 
+            //De elementen worden gemaakt.
             XmlElement product = xmlDoc.CreateElement("Product");
 
             XmlElement naam = xmlDoc.CreateElement("Naam");
@@ -171,6 +211,7 @@ namespace GIP_WinkelProductenSysteem
             XmlElement nieuwePrijs = xmlDoc.CreateElement("NieuwePrijs");
             XmlText nieuwePrijsText = xmlDoc.CreateTextNode(nieuwePrijsProd);
 
+            //De elementen worden toegewezen met hun overeenkomstige waarde.
             naam.AppendChild(naamText);
             categorie.AppendChild(categorieText);
             aantal.AppendChild(aantalText);
@@ -179,6 +220,7 @@ namespace GIP_WinkelProductenSysteem
             korting.AppendChild(kortingText);
             nieuwePrijs.AppendChild(nieuwePrijsText);
 
+            //De elementen worden toegevoegd aan een hoofdelement (product).
             product.AppendChild(naam);
             product.AppendChild(categorie);
             product.AppendChild(aantal);
@@ -187,10 +229,12 @@ namespace GIP_WinkelProductenSysteem
             product.AppendChild(korting);
             product.AppendChild(nieuwePrijs);
 
+            //Het hoofdelement wordt toegevoegd aan het XML document en het bestand wordt opgeslagen en gesloten.
             xmlDoc.DocumentElement.AppendChild(product);
             file.Close();
             xmlDoc.Save(filePath);
 
+            //De categorieën worden bijgewerkt.
             werkCategorieënBij();
 
             if (test)
@@ -201,10 +245,17 @@ namespace GIP_WinkelProductenSysteem
 
         public void WijzigProduct()
         {
+            //Deze method wijzigt een bepaald product en geeft zijn nieuwe waarden.
+
+            //Er moet niet meer gecontroleerd worden of de waarden juist zijn, want dat werd al gedaan vooraleer deze method werd opgeroepen.
+
+
+            //De XML writer wordt klaargezet met het XML document.
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
+            //De eigenschappen van het product worden opgevraagd en opgeslagen.
             string prodNaam = GetTxbData(txbNaam);
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
@@ -212,14 +263,17 @@ namespace GIP_WinkelProductenSysteem
             string prodPrijs = GetTxbData(txbPrijs);
             string prodKorting = GetTxbData(txbKorting);
 
+            //De nieuwePrijs wordt berekent, op basis van de prijs en de korting.
             double prijsProd = double.Parse(prodPrijs);
             double kortingProd = double.Parse(prodKorting);
             string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
 
+            //Er wordt door het XML bestand gezocht naar het juiste product.
             foreach (XmlNode xmlNode in xmlDoc.SelectNodes("/Producten/Product"))
             {
                 if (xmlNode.SelectSingleNode("Naam").InnerText == prodNaam)
                 {
+                    //Wanneer het juist product is gevonden worden de nieuwe waarden toegewezen.
                     xmlNode["Categorie"].InnerText = prodCategorie;
                     xmlNode["Aantal"].InnerText = prodAantal;
                     xmlNode["Bestaantal"].InnerText = prodBestAantal;
@@ -229,9 +283,8 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
 
-            //Afsluiten van bestand
+            //Het XML document en het bestand wordt opgeslagen en gesloten.
             file.Close();
-            //Rechtstreeks schrijven naar bestandsLocatie!! Anders wordt alles opnieuw toegevoegd!
             xmlDoc.Save(filePath);
         }
 
@@ -498,83 +551,6 @@ namespace GIP_WinkelProductenSysteem
 
             return aantalAanwezig;
         }
-
-        //public string[,] zoekenInXml(string soortTeZoeken, string teZoeken)
-        //{
-        //    string[,] gevonden = new string[1, 4];
-        //    int count = 0;
-
-        //    XmlDocument xmlDoc = new XmlDocument();
-        //    FileStream file = new FileStream(filePath, FileMode.Open);
-        //    xmlDoc.Load(file);
-
-        //    XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
-
-        //    if (soortTeZoeken == "Naam")
-        //    {
-        //        xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Naam");
-        //    }
-        //    else if (soortTeZoeken == "Categorie")
-        //    {
-        //        xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Categorie");
-        //    }
-        //    else if (soortTeZoeken == "Aantal")
-        //    {
-        //        xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Aantal");
-        //    }
-        //    else if (soortTeZoeken == "Bestaantal")
-        //    {
-        //        xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Bestaantal");
-        //    }
-
-        //    foreach (XmlNode xmlNode in xmlNodeList)
-        //    {
-        //        string prodNaam = xmlNode.ParentNode["Naam"].InnerText;
-        //        string prodCategorie = xmlNode.ParentNode["Categorie"].InnerText;
-        //        string prodAantal = xmlNode.ParentNode["Aantal"].InnerText;
-        //        string prodBestAantal = xmlNode.ParentNode["Bestaantal"].InnerText;
-
-        //        if (prodNaam == teZoeken && soortTeZoeken == "Naam")
-        //        {
-        //            gevonden[count, 0] = prodNaam;
-        //            gevonden[count, 1] = prodCategorie;
-        //            gevonden[count, 2] = prodAantal;
-        //            gevonden[count, 3] = prodBestAantal;
-
-        //        }
-        //        else if (prodCategorie == teZoeken && soortTeZoeken == "Categorie")
-        //        {
-        //            gevonden[count, 0] = prodNaam;
-        //            gevonden[count, 1] = prodCategorie;
-        //            gevonden[count, 2] = prodAantal;
-        //            gevonden[count, 3] = prodBestAantal;
-        //        }
-        //        else if (prodAantal == teZoeken && soortTeZoeken == "Aantal")
-        //        {
-        //            gevonden[count, 0] = prodNaam;
-        //            gevonden[count, 1] = prodCategorie;
-        //            gevonden[count, 2] = prodAantal;
-        //            gevonden[count, 3] = prodBestAantal;
-        //        }
-        //        else if (prodBestAantal == teZoeken && soortTeZoeken == "Bestaantal")
-        //        {
-        //            gevonden[count, 0] = prodNaam;
-        //            gevonden[count, 1] = prodCategorie;
-        //            gevonden[count, 2] = prodAantal;
-        //            gevonden[count, 3] = prodBestAantal;
-        //        }
-
-        //        count++;
-        //        //Lengte van array "gevonden" aanpassen.
-        //        string[,] temparr = new string[count + 1, 4];
-        //        Array.Copy(gevonden, temparr, gevonden.Length);
-        //        gevonden = temparr;
-        //    }
-
-        //    file.Close();
-
-        //    return gevonden;
-        //}
 
         public string[] wijzigCategorieën()
         {

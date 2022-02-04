@@ -42,7 +42,6 @@ namespace GIP_WinkelProductenSysteem
             this.txbKorting = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txbPrijs = new System.Windows.Forms.TextBox();
-            this.btnBevestigProducten = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txbAantalBestAanwezig = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -59,6 +58,7 @@ namespace GIP_WinkelProductenSysteem
             this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnKorting = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnBevestigProducten = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlProductEigenschappen.SuspendLayout();
             this.SuspendLayout();
@@ -101,13 +101,13 @@ namespace GIP_WinkelProductenSysteem
             // pnlProductEigenschappen
             // 
             this.pnlProductEigenschappen.BackColor = System.Drawing.Color.Transparent;
+            this.pnlProductEigenschappen.Controls.Add(this.btnBevestigProducten);
             this.pnlProductEigenschappen.Controls.Add(this.lblKorting);
             this.pnlProductEigenschappen.Controls.Add(this.lblPrijs);
             this.pnlProductEigenschappen.Controls.Add(this.label6);
             this.pnlProductEigenschappen.Controls.Add(this.txbKorting);
             this.pnlProductEigenschappen.Controls.Add(this.label5);
             this.pnlProductEigenschappen.Controls.Add(this.txbPrijs);
-            this.pnlProductEigenschappen.Controls.Add(this.btnBevestigProducten);
             this.pnlProductEigenschappen.Controls.Add(this.label4);
             this.pnlProductEigenschappen.Controls.Add(this.txbAantalBestAanwezig);
             this.pnlProductEigenschappen.Controls.Add(this.label3);
@@ -176,16 +176,6 @@ namespace GIP_WinkelProductenSysteem
             this.txbPrijs.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txbPrijs.Size = new System.Drawing.Size(76, 20);
             this.txbPrijs.TabIndex = 15;
-            // 
-            // btnBevestigProducten
-            // 
-            this.btnBevestigProducten.Location = new System.Drawing.Point(33, 331);
-            this.btnBevestigProducten.Name = "btnBevestigProducten";
-            this.btnBevestigProducten.Size = new System.Drawing.Size(142, 41);
-            this.btnBevestigProducten.TabIndex = 14;
-            this.btnBevestigProducten.Text = "Bevestigen";
-            this.btnBevestigProducten.UseVisualStyleBackColor = true;
-            this.btnBevestigProducten.Click += new System.EventHandler(this.btnBevestigProducten_Click);
             // 
             // label4
             // 
@@ -317,6 +307,15 @@ namespace GIP_WinkelProductenSysteem
             this.columnHuidigePrijs.Text = "Huidige prijs";
             this.columnHuidigePrijs.Width = 75;
             // 
+            // btnBevestigProducten
+            // 
+            this.btnBevestigProducten.Location = new System.Drawing.Point(33, 332);
+            this.btnBevestigProducten.Name = "btnBevestigProducten";
+            this.btnBevestigProducten.Size = new System.Drawing.Size(142, 41);
+            this.btnBevestigProducten.TabIndex = 21;
+            this.btnBevestigProducten.Text = "Bevestigen";
+            this.btnBevestigProducten.UseVisualStyleBackColor = true;
+            // 
             // ChangeProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,7 +344,6 @@ namespace GIP_WinkelProductenSysteem
         public System.Windows.Forms.Button btnChangeProd;
         public System.Windows.Forms.Button btnMaakProduct;
         public System.Windows.Forms.Panel pnlProductEigenschappen;
-        public System.Windows.Forms.Button btnBevestigProducten;
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox txbAantalBestAanwezig;
         public System.Windows.Forms.Label label3;
@@ -367,5 +365,6 @@ namespace GIP_WinkelProductenSysteem
         private System.Windows.Forms.Label lblPrijs;
         private System.Windows.Forms.Label lblKorting;
         private System.Windows.Forms.ColumnHeader columnHuidigePrijs;
+        public System.Windows.Forms.Button btnBevestigProducten;
     }
 }
