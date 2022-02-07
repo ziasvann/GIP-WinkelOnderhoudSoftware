@@ -6,12 +6,12 @@ ToDo:
 
 Done:
 
-- btnBevestigen juiste tab richting
 - Duidelijker documenteren van:
-    - Wijzigen
-    - Maken
-    - btnDel
-    - btnChange
-    - btnBevestig
-    - btnMaak
-    - Load
+    - Verwijderen
+    - FillListView
+    - FillTxb
+    - ClearTxb
+    - GetTxbData
+    - ControleerTxb
+
+- In ClearTxb de txbPrijs en txbKorting toegevoegd.

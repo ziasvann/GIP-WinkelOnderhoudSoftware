@@ -290,33 +290,45 @@ namespace GIP_WinkelProductenSysteem
 
         public void DelProduct()
         {
+            //Deze method verwijderd een bepaald product.
+
+
+            //Er kan slechts één product tegelijkertijd worden verwijderd.
             if (lvProducten.SelectedItems.Count == 1)
             {
+                //Er wordt gevraagd of men zeker is of u het product wilt verwijderen.
+
                 DialogResult result = MessageBox.Show(zekerMsg, "Verwijderen?", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
+                    //De rijindex van een XML document begint bij 1. Bij de listview is dat bij 0.
                     int rowIndex = lvProducten.FocusedItem.Index + 1;
 
+                    //Het XML document wordt geopend.
                     XmlDocument xmlDoc = new XmlDocument();
                     FileStream file = new FileStream(filePath, FileMode.Open);
                     xmlDoc.Load(file);
 
+                    //De XML node waarin het product zich bevindt wordt geselecteerd en vervolgens verwijderd.
                     XmlNode xmlNode = xmlDoc.SelectSingleNode($"/Producten/Product[{rowIndex}]");
                     xmlNode.ParentNode.RemoveChild(xmlNode);
 
+                    //Het XML document en het bestand wordt opgeslagen en gesloten.
                     file.Close();
                     xmlDoc.Save(filePath);
                     FillListView();
                 }
                 else
                 {
+                    //Als men het product toch niet wilt verwijderen, wordt dit ook duidelijk gemaakt en wordt alles terug gezet.
                     MessageBox.Show(abortMsg);
                     pnlProductEigenschappen.Visible = false;
                 }
             }
             else
             {
+                //Als er niet één maar meerdere of nul producten werden geselecteerd wordt er een foutmelding gegeven en wordt alles terug gezet.
                 MessageBox.Show(selectItemMsg);
                 pnlProductEigenschappen.Visible = false;
             }
@@ -324,17 +336,23 @@ namespace GIP_WinkelProductenSysteem
 
         public void FillListView()
         {
+            //Deze method laad alle producten met hun eigenschappen in de ListView.
+
+            //Vooraleer de producten worden geladen wordt de ListView leeg gemaakt.
             lvProducten.Items.Clear();
 
+            //Het XML document wordt geopend.
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
-
+            //De lijst XML node's met daarin de producten wordt geselecteerd.
             XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
 
+            //De lijst met XML node's wordt doorlopen per node --> ieder product komt op die manier dus aan bod.
             foreach (XmlNode xmlNode in xmlNodeList)
             {
+                //De gegevens van het product worden opgevraagd.
                 string prodNaam = xmlNode["Naam"].InnerText;
                 string prodCategorie = xmlNode["Categorie"].InnerText;
                 string prodAantal = xmlNode["Aantal"].InnerText;
@@ -343,6 +361,8 @@ namespace GIP_WinkelProductenSysteem
                 string prodKorting = xmlNode["Korting"].InnerText;
                 string prodNieuwePrijs = xmlNode["NieuwePrijs"].InnerText;
 
+
+                //Het product wordt in een ListViewItem gezet, waarin er SubItems zjn voor de eigenschappen van het product.
                 ListViewItem lvi = new ListViewItem(prodNaam);
 
                 lvi.SubItems.Add(prodCategorie);
@@ -352,24 +372,32 @@ namespace GIP_WinkelProductenSysteem
                 lvi.SubItems.Add(prodKorting);
                 lvi.SubItems.Add(prodNieuwePrijs);
 
+                //Het product wordt in het programma zichtbaar gemaakt door het in de ListView te zetten.
                 lvProducten.Items.Add(lvi);
             }
-
+            //Het XML document wordt gesloten.
             file.Close();
         }
 
         public void FillTxb()
         {
+            //Deze method zorgt ervoor dat alle eigenschappen van het geselecteerd product in zijn bijbehorende textbox komt.
+
+            //Er mag slechts één product tegelijkertijd geselecteerd zijn.
             if (lvProducten.SelectedItems.Count == 1)
             {
+                //De rijindex van een XML document begint bij 1. Bij de listview is dat bij 0.
                 int rowIndex = lvProducten.FocusedItem.Index + 1;
 
+                //Het XML document wordt geopend.
                 XmlDocument xmlDoc = new XmlDocument();
                 FileStream file = new FileStream(filePath, FileMode.Open);
                 xmlDoc.Load(file);
 
+                //De XML node waarin het product zich bevindt wordt geselecteerd.
                 XmlNode xmlNode = xmlDoc.SelectSingleNode($"/Producten/Product[{rowIndex}]");
 
+                //De eigenschappen van de XML node (het product dus) worden opgevraagd.
                 string prodNaam = xmlNode["Naam"].InnerText;
                 string prodCategorie = xmlNode["Categorie"].InnerText;
                 string prodAantal = xmlNode["Aantal"].InnerText;
@@ -377,6 +405,8 @@ namespace GIP_WinkelProductenSysteem
                 string prodPrijs = xmlNode["Prijs"].InnerText;
                 string prodKorting = xmlNode["Korting"].InnerText;
 
+                //De opgevraagde eigenschappen worden in zijn bijbehorende textbox gesplaatst.
+                //De wijzigbaar textboxen worden indien nodig onwijzigbaar gemaakt.
                 txbNaam.Text = prodNaam;
                 txbNaam.Enabled = false;
                 txbCategorie.Text = prodCategorie;
@@ -385,115 +415,159 @@ namespace GIP_WinkelProductenSysteem
                 txbAantalBestAanwezig.Text = prodBestAantal;
                 txbPrijs.Text = prodPrijs;
                 txbKorting.Text = prodKorting;
-
+                
+                //Het XML document wordt gesloten.
                 file.Close();
 
+                //De panel met daarin de net aangepaste textboxen wordt zichtbaar gemaakt.
                 pnlProductEigenschappen.Visible = true;
             }
             else
             {
+                //Als er niet één maar meerdere of nul producten werden geselecteerd wordt er een foutmelding gegeven en wordt alles terug gezet.
                 MessageBox.Show(selectItemMsg);
                 pnlProductEigenschappen.Visible = false;
             }
         }
         public void ClearTxb()
         {
+            //Deze method maakt alle textboxen leeg.
+
+            //Iedere tekst van de textboxen wordt op "" (leeg) gezet.
             txbNaam.Text = "";
             txbNaam.Enabled = true;
             txbCategorie.Text = "";
             txbCategorie.Enabled = true;
             txbAantalAanwezig.Text = "";
             txbAantalBestAanwezig.Text = "";
+            txbPrijs.Text = "" ;
+            txbKorting.Text = "";
         }
         public string GetTxbData(TextBox txb)
         {
+            //De string geeft de tekst van een opgevraagde textbox terug.
+
+            //De string wordt aangemaakt.
             string inhoud = "";
             try
             {
+                //Er wordt gezocht naar de textbox. Als die is gevonden wordt zijn tekstwaarde in de string inhoud geplaatst.
                 inhoud = txb.Text;
             }
             catch (Exception ex)
             {
+                //Als de textbox niet werd gevonden wordt er een fout gestuurd.
                 errorProv.SetError(txb, ex.Message);
             }
+            //De inhoud van de textbox wordt doorgestuurd.
             return inhoud;
         }
 
         public void ControleerTxb(TextBox txb)
         {
+            //Deze method dient om te controleren of de ingegeven tekst van de textbox een reële waarde is.
+
+            //Eerst wordt de tekst van de textbox opgevraagd.
             string txbText = GetTxbData(txb);
 
+            //Als de textbox txbNaam is wordt dit uitgevoerd.
             if (txb.Name == "txbNaam")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 naamFout = true;
 
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
 
+                //Als er nog geen fout was én de naam al eens gebruikt werd en het een nieuw product is, wordt er een fout gegeven (Het gaat dus over een nieuw product).
                 else if (naamAlAanwezig(txbText) && newProd) errorProv.SetError(txb, naamAanwezigMsg);
+                //Als er nog geen fout was én de naam al eens gebruikt werd maar al een oud product is, wordt er geen fout gegeven (Het product werd dus gewijzigd).
                 else if (naamAlAanwezig(txbText) && !newProd && txbText != huidigeNaam) errorProv.SetError(txb, naamAanwezigMsg);
                 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     naamFout = false;
                 }
             }
+
+            //Als de textbox txbCategorie is wordt dit uitgevoerd.
             else if (txb.Name == "txbCategorie")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 categorieFout = true;
                 
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
                 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     categorieFout = false;
                 }
             }
+            //Als de textbox txbAantalAanwezig is wordt dit uitgevoerd.
             else if (txb.Name == "txbAantalAanwezig")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 aantalAanwezigFout = true;
                 
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     aantalAanwezigFout = false;
                 }
             }
+            //Als de textbox txbAantalBestAanwezig is wordt dit uitgevoerd.
             else if (txb.Name == "txbAantalBestAanwezig")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 aantalBestAanwezigFout = true;
 
+                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     aantalBestAanwezigFout = false;
                 }
             }
+            //Als de textbox txbPrijs is wordt dit uitgevoerd.
             else if(txb.Name == "txbPrijs")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
 
+                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     prijsFout = false;
                 }
             }
+            //Als de textbox txbKorting is wordt dit uitgevoerd.
             else if (txb.Name == "txbKorting")
             {
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 kortingFout = true;
 
+                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0 || Int32.Parse(txbText) > 100) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
                     kortingFout = false;
                 }
