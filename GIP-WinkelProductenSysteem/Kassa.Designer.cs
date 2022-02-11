@@ -148,6 +148,7 @@
             this.Controls.Add(this.lvProducten);
             this.Name = "Kassa";
             this.Text = "Kassa";
+            this.Load += new System.EventHandler(this.Kassa_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

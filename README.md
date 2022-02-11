@@ -3,10 +3,8 @@ ToDo:
 
 - Duidelijker documenteren
 - Betere foutafhandeling
+- Kassa
 
 Done:
 
-- Kassa form maken:
-    - Basis layout
-
-- btnKassaFrm op MainFrm toevoegen
+- productenArray[] toegevoegd aan Kassa.
