@@ -6,12 +6,7 @@ ToDo:
 
 Done:
 
-- Duidelijker documenteren van:
-    - Verwijderen
-    - FillListView
-    - FillTxb
-    - ClearTxb
-    - GetTxbData
-    - ControleerTxb
+- Kassa form maken:
+    - Basis layout
 
-- In ClearTxb de txbPrijs en txbKorting toegevoegd.
+- btnKassaFrm op MainFrm toevoegen

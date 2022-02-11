@@ -23,8 +23,12 @@ namespace GIP_WinkelProductenSysteem
         {
             ChangeProd form = new ChangeProd();
             form.Show();
-            
+        }
 
+        private void btnKassaFrm_Click(object sender, EventArgs e)
+        {
+            Kassa form = new Kassa();
+            form.Show();
         }
     }
 }

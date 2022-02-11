@@ -69,6 +69,12 @@
     <Compile Include="ChangeProd.Designer.cs">
       <DependentUpon>ChangeProd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Kassa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Kassa.Designer.cs">
+      <DependentUpon>Kassa.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ChangeProd.resx">
       <DependentUpon>ChangeProd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kassa.resx">
+      <DependentUpon>Kassa.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
