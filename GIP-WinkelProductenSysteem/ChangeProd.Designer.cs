@@ -36,6 +36,7 @@ namespace GIP_WinkelProductenSysteem
             this.btnChangeProd = new System.Windows.Forms.Button();
             this.btnDelProduct = new System.Windows.Forms.Button();
             this.pnlProductEigenschappen = new System.Windows.Forms.Panel();
+            this.btnBevestigProducten = new System.Windows.Forms.Button();
             this.lblKorting = new System.Windows.Forms.Label();
             this.lblPrijs = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@ namespace GIP_WinkelProductenSysteem
             this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnKorting = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnBevestigProducten = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlProductEigenschappen.SuspendLayout();
             this.SuspendLayout();
@@ -121,6 +121,16 @@ namespace GIP_WinkelProductenSysteem
             this.pnlProductEigenschappen.Size = new System.Drawing.Size(178, 376);
             this.pnlProductEigenschappen.TabIndex = 16;
             this.pnlProductEigenschappen.Visible = false;
+            // 
+            // btnBevestigProducten
+            // 
+            this.btnBevestigProducten.Location = new System.Drawing.Point(33, 332);
+            this.btnBevestigProducten.Name = "btnBevestigProducten";
+            this.btnBevestigProducten.Size = new System.Drawing.Size(142, 41);
+            this.btnBevestigProducten.TabIndex = 21;
+            this.btnBevestigProducten.Text = "Bevestigen";
+            this.btnBevestigProducten.UseVisualStyleBackColor = true;
+            this.btnBevestigProducten.Click += new System.EventHandler(this.btnBevestigProducten_Click);
             // 
             // lblKorting
             // 
@@ -306,15 +316,6 @@ namespace GIP_WinkelProductenSysteem
             // 
             this.columnHuidigePrijs.Text = "Huidige prijs";
             this.columnHuidigePrijs.Width = 75;
-            // 
-            // btnBevestigProducten
-            // 
-            this.btnBevestigProducten.Location = new System.Drawing.Point(33, 332);
-            this.btnBevestigProducten.Name = "btnBevestigProducten";
-            this.btnBevestigProducten.Size = new System.Drawing.Size(142, 41);
-            this.btnBevestigProducten.TabIndex = 21;
-            this.btnBevestigProducten.Text = "Bevestigen";
-            this.btnBevestigProducten.UseVisualStyleBackColor = true;
             // 
             // ChangeProd
             // 

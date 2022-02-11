@@ -7,4 +7,4 @@ ToDo:
 
 Done:
 
-- productenArray[] toegevoegd aan Kassa.
+- btnBevestigen_Click terug juist gezet in ChangeProdForm
