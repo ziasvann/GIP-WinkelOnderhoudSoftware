@@ -7,4 +7,4 @@ ToDo:
 
 Done:
 
-- btnBevestigen_Click terug juist gezet in ChangeProdForm
+- voegProductToe + appendarray start

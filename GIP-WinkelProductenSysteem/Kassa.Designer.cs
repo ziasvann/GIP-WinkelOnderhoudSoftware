@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.lvProducten = new System.Windows.Forms.ListView();
+            this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnNaam = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
             this.lblPrijs = new System.Windows.Forms.Label();
             this.txbHuidigProdPrijs = new System.Windows.Forms.TextBox();
-            this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnNaam = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblProdNaam = new System.Windows.Forms.Label();
             this.btnVoegToe = new System.Windows.Forms.Button();
             this.btnKorting = new System.Windows.Forms.Button();
@@ -100,6 +100,7 @@
             this.btnVoegToe.TabIndex = 23;
             this.btnVoegToe.Text = "In winkelmand";
             this.btnVoegToe.UseVisualStyleBackColor = true;
+            this.btnVoegToe.Click += new System.EventHandler(this.btnVoegToe_Click);
             // 
             // btnKorting
             // 
@@ -129,7 +130,7 @@
             this.txbKorting.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txbKorting.Size = new System.Drawing.Size(117, 30);
             this.txbKorting.TabIndex = 25;
-            this.txbKorting.Text = "100";
+            this.txbKorting.Text = "0";
             this.txbKorting.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // Kassa
