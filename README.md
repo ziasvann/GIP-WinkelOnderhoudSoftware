@@ -1,4 +1,4 @@
-# GIP-WinkelOnderhoudSysteem
+# GIP-WinkelOnderhoudSoftware
 ToDo:
 
 - Duidelijker documenteren
@@ -7,4 +7,4 @@ ToDo:
 
 Done:
 
-- voegProductToe + appendarray start
+- Naam veranderen: GIP-WinkelOnderhoudSysteem --> GIP-WinkelOnderhoudSoftware
