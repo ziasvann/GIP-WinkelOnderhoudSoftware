@@ -302,6 +302,7 @@ namespace GIP_WinkelProductenSysteem
             this.lvProducten.TabIndex = 4;
             this.lvProducten.UseCompatibleStateImageBehavior = false;
             this.lvProducten.View = System.Windows.Forms.View.Details;
+            this.lvProducten.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvProducten_MouseClick);
             // 
             // columnPrijs
             // 

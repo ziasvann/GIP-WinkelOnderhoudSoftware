@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,9 @@ namespace GIP_WinkelProductenSysteem
 
         string[] categorieën = new string[0];
         string[] namen = new string[0];
+
+        int selectedIndex = -1;
+        int nieuweSelectedIndex = -1;
 
 
         //'huidigeNaam' wordt gebruikt om te controleren of de naam is gewijzigd na het aanpassen van een product.
@@ -108,6 +112,9 @@ namespace GIP_WinkelProductenSysteem
 
                 //Er is nu sowieso geen nieuw product meer.
                 newProd = false;
+
+                //Er is geen product meer geselecteerd.
+                selectedIndex = -1;
             }
             else
             {
@@ -130,6 +137,12 @@ namespace GIP_WinkelProductenSysteem
             newProd = false;
             //De naam van het product dat wordt gewijzigd wordt extra ingegeven. 
             huidigeNaam = GetTxbData(txbNaam);
+
+            
+            if (lvProducten.SelectedItems.Count == 1)
+            {
+                selectedIndex = lvProducten.FocusedItem.Index;
+            }
         }
 
         private void btnDelProduct_Click(object sender, EventArgs e)
@@ -766,7 +779,7 @@ namespace GIP_WinkelProductenSysteem
             //Als fout && testfase --> Zeg dat er een fout is en stuur '0' terug.
             else if (test)
             {
-                MessageBox.Show("berekenPrijs: fout!!!!");
+                MessageBox.Show("berekenPrijs: fout!");
                 return 0;
             }
             //Als fout --> Stuur '0' terug, zodat duidelijk is dat er een fout is!
@@ -775,6 +788,41 @@ namespace GIP_WinkelProductenSysteem
                 return 0;
             }
         }
+        
+        private void lvProducten_MouseClick(object sender, MouseEventArgs e)
+        {
+            foreach (ListViewItem lvItem in lvProducten.Items)
+            {
+                Rectangle itemRect = lvItem.GetBounds(ItemBoundsPortion.Label);
+                if (itemRect.Contains(e.Location))
+                {
+                    nieuweSelectedIndex = lvItem.Index;
+                }
+            }
 
+            if (pnlProductEigenschappen.Visible == true)
+            {
+                DialogResult result = MessageBox.Show("Wilt u het product verder bewerken?", "Verder gaan?", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.No)
+                {
+                    //Zet pnl onzichtbaar
+                    pnlProductEigenschappen.Visible = false;
+                    //Selecteer nieuw item
+                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
+                    //Deselecteer oorspronkelijk item
+                    lvProducten.Items[selectedIndex].Selected = false;
+                }
+                else
+                {
+                    //Zet pnl onzichtbaar
+                    pnlProductEigenschappen.Visible = true;
+                    //Deselecteer nieuw item
+                    lvProducten.Items[nieuweSelectedIndex].Selected = false;
+                    //Selecteer oorspronkelijk item
+                    lvProducten.Items[selectedIndex].Selected = true;
+                }
+            }
+        }
     } 
 }
