@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lvProducten = new System.Windows.Forms.ListView();
-            this.columnPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnNaam = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
             this.lblPrijs = new System.Windows.Forms.Label();
             this.txbHuidigProdPrijs = new System.Windows.Forms.TextBox();
@@ -39,19 +38,14 @@
             this.btnKorting = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txbKorting = new System.Windows.Forms.TextBox();
+            this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lvProducten = new System.Windows.Forms.ListView();
+            this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblTotPrijs = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lvProducten
-            // 
-            this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnPrijs,
-            this.columnNaam});
-            this.lvProducten.HideSelection = false;
-            this.lvProducten.Location = new System.Drawing.Point(12, 12);
-            this.lvProducten.Name = "lvProducten";
-            this.lvProducten.Size = new System.Drawing.Size(307, 517);
-            this.lvProducten.TabIndex = 0;
-            this.lvProducten.UseCompatibleStateImageBehavior = false;
             // 
             // txbHuidigProdNaam
             // 
@@ -133,11 +127,65 @@
             this.txbKorting.Text = "0";
             this.txbKorting.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // errorProv
+            // 
+            this.errorProv.ContainerControl = this;
+            // 
+            // lvProducten
+            // 
+            this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnProducten,
+            this.columnHuidigePrijs});
+            this.lvProducten.FullRowSelect = true;
+            this.lvProducten.HideSelection = false;
+            listViewItem1.StateImageIndex = 0;
+            this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.lvProducten.Location = new System.Drawing.Point(12, 12);
+            this.lvProducten.Name = "lvProducten";
+            this.lvProducten.Size = new System.Drawing.Size(307, 479);
+            this.lvProducten.TabIndex = 27;
+            this.lvProducten.UseCompatibleStateImageBehavior = false;
+            this.lvProducten.View = System.Windows.Forms.View.Details;
+            // 
+            // columnProducten
+            // 
+            this.columnProducten.Text = "Product";
+            this.columnProducten.Width = 150;
+            // 
+            // columnHuidigePrijs
+            // 
+            this.columnHuidigePrijs.Text = "Huidige prijs";
+            this.columnHuidigePrijs.Width = 75;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(7, 507);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(129, 25);
+            this.label2.TabIndex = 28;
+            this.label2.Text = "Totaal prijs: €";
+            // 
+            // lblTotPrijs
+            // 
+            this.lblTotPrijs.AutoSize = true;
+            this.lblTotPrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotPrijs.Location = new System.Drawing.Point(142, 507);
+            this.lblTotPrijs.Name = "lblTotPrijs";
+            this.lblTotPrijs.Size = new System.Drawing.Size(50, 25);
+            this.lblTotPrijs.TabIndex = 29;
+            this.lblTotPrijs.Text = "0.00";
+            // 
             // Kassa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(889, 541);
+            this.Controls.Add(this.lblTotPrijs);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lvProducten);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txbKorting);
             this.Controls.Add(this.btnKorting);
@@ -146,27 +194,29 @@
             this.Controls.Add(this.lblPrijs);
             this.Controls.Add(this.txbHuidigProdPrijs);
             this.Controls.Add(this.txbHuidigProdNaam);
-            this.Controls.Add(this.lvProducten);
             this.Name = "Kassa";
             this.Text = "Kassa";
             this.Load += new System.EventHandler(this.Kassa_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView lvProducten;
         private System.Windows.Forms.TextBox txbHuidigProdNaam;
         private System.Windows.Forms.Label lblPrijs;
         public System.Windows.Forms.TextBox txbHuidigProdPrijs;
-        private System.Windows.Forms.ColumnHeader columnPrijs;
-        private System.Windows.Forms.ColumnHeader columnNaam;
         private System.Windows.Forms.Label lblProdNaam;
         private System.Windows.Forms.Button btnVoegToe;
         private System.Windows.Forms.Button btnKorting;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox txbKorting;
+        private System.Windows.Forms.ErrorProvider errorProv;
+        public System.Windows.Forms.ListView lvProducten;
+        public System.Windows.Forms.ColumnHeader columnProducten;
+        private System.Windows.Forms.ColumnHeader columnHuidigePrijs;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblTotPrijs;
     }
 }
