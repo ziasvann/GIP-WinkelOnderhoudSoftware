@@ -547,8 +547,8 @@ namespace GIP_WinkelProductenSysteem
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
 
-                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
+                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 dan wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
@@ -775,5 +775,6 @@ namespace GIP_WinkelProductenSysteem
                 return 0;
             }
         }
+
     } 
 }
