@@ -83,6 +83,11 @@ namespace GIP_WinkelProductenSysteem
             ClearTxb();
             //De panel om een product aan te maken wordt zichtbaar gemaakt.
             pnlProductEigenschappen.Visible = true;
+
+            if (lvProducten.SelectedItems.Count <= 1)
+            {
+                selectedIndex = lvProducten.FocusedItem.Index;
+            }
         }
 
         private void btnBevestigProducten_Click(object sender, EventArgs e)
@@ -187,18 +192,19 @@ namespace GIP_WinkelProductenSysteem
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
 
-
             //De eigenschappen van het product worden opgevraagd en opgeslagen.
             string prodNaam = GetTxbData(txbNaam);
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
             string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
-            string prodPrijs = GetTxbData(txbPrijs);
+            //Verander '.' door ',' zodat er geen verwarring is bij kommagetallen.
+            string prodPrijs = verander(GetTxbData(txbPrijs), '.', ",");
             string prodKorting = GetTxbData(txbKorting);
 
             //De nieuwePrijs wordt berekent, op basis van de prijs en de korting.
-            double prijsProd = double.Parse(prodPrijs);
-            double kortingProd = double.Parse(prodKorting);
+            string prijsVerander = verander(prodPrijs, '.', ",");
+            decimal prijsProd = Convert.ToDecimal(prijsVerander);
+            decimal kortingProd = Convert.ToDecimal(prodKorting);
             string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
 
             //De elementen worden gemaakt.
@@ -248,8 +254,9 @@ namespace GIP_WinkelProductenSysteem
             file.Close();
             xmlDoc.Save(filePath);
 
-            //De categorieën worden bijgewerkt.
+            //De categorieën en namen worden bijgewerkt.
             werkCategorieënBij();
+            werkNamenBij();
 
             if (test)
             {
@@ -274,12 +281,13 @@ namespace GIP_WinkelProductenSysteem
             string prodCategorie = GetTxbData(txbCategorie);
             string prodAantal = GetTxbData(txbAantalAanwezig);
             string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
-            string prodPrijs = GetTxbData(txbPrijs);
+            //Verander '.' door ',' zodat er geen verwarring is bij kommagetallen.
+            string prodPrijs = verander(GetTxbData(txbPrijs),'.',",");
             string prodKorting = GetTxbData(txbKorting);
 
             //De nieuwePrijs wordt berekent, op basis van de prijs en de korting.
-            double prijsProd = double.Parse(prodPrijs);
-            double kortingProd = double.Parse(prodKorting);
+            decimal prijsProd = Convert.ToDecimal(prodPrijs);
+            decimal kortingProd = Convert.ToDecimal(prodKorting);
             string nieuwePrijsProd = kortingPrijs(prijsProd, kortingProd).ToString();
 
             //Er wordt door het XML bestand gezocht naar het juiste product.
@@ -332,6 +340,10 @@ namespace GIP_WinkelProductenSysteem
                     file.Close();
                     xmlDoc.Save(filePath);
                     FillListView();
+                    
+                    //De categorieën en namen worden bijgewerkt.
+                    werkCategorieënBij();
+                    werkNamenBij();
                 }
                 else
                 {
@@ -560,8 +572,8 @@ namespace GIP_WinkelProductenSysteem
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
 
-                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0) errorProv.SetError(txb, foutenMsg);
+                //Als de textbox niet enkel cijfers of , of . bevat of leeg is of het getal kleiner is dan 0 dan wordt er een fout aangegeven.
+                if (txbText.Contains("1234567890.,") || string.IsNullOrEmpty(txbText) || double.Parse(txbText) <= 0) errorProv.SetError(txb, foutenMsg);
 
                 else
                 {
@@ -757,16 +769,16 @@ namespace GIP_WinkelProductenSysteem
             namen = wijzigNamen();
         }
 
-        double kortingPrijs(double prijs, double korting)
+        decimal kortingPrijs(decimal prijs, decimal korting)
         {
 
             //Korting op duidelijk manier schrijven:
             //Bv.: Korting 20% --> korting = 0,8
-            double rekenbareKorting = 1 - (korting / 100);
+            decimal rekenbareKorting = 1 - (korting / 100);
 
 
             //Prijs berekenen
-            double berekendePrijs = prijs * rekenbareKorting;
+            decimal berekendePrijs = prijs * rekenbareKorting;
 
 
             //Prijs terugsturen in normaal scenario
@@ -823,6 +835,22 @@ namespace GIP_WinkelProductenSysteem
                     lvProducten.Items[selectedIndex].Selected = true;
                 }
             }
+        }
+
+        string verander(string getal, char oorspronkelijk, string nieuw)
+        {
+            string output = "";
+
+            foreach (char n in getal)
+            {
+                if (n == oorspronkelijk)
+                {
+                    output += nieuw;
+                }
+                else output += n;
+            }
+
+            return output;
         }
     } 
 }

@@ -164,7 +164,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbKorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbKorting.Location = new System.Drawing.Point(96, 305);
             this.txbKorting.Name = "txbKorting";
-            this.txbKorting.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txbKorting.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbKorting.Size = new System.Drawing.Size(76, 20);
             this.txbKorting.TabIndex = 17;
             this.txbKorting.Text = "0";
@@ -183,7 +183,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbPrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbPrijs.Location = new System.Drawing.Point(96, 255);
             this.txbPrijs.Name = "txbPrijs";
-            this.txbPrijs.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txbPrijs.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbPrijs.Size = new System.Drawing.Size(76, 20);
             this.txbPrijs.TabIndex = 15;
             // 
@@ -201,6 +201,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbAantalBestAanwezig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbAantalBestAanwezig.Location = new System.Drawing.Point(96, 202);
             this.txbAantalBestAanwezig.Name = "txbAantalBestAanwezig";
+            this.txbAantalBestAanwezig.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbAantalBestAanwezig.Size = new System.Drawing.Size(79, 20);
             this.txbAantalBestAanwezig.TabIndex = 12;
             // 
@@ -218,6 +219,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbAantalAanwezig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbAantalAanwezig.Location = new System.Drawing.Point(96, 142);
             this.txbAantalAanwezig.Name = "txbAantalAanwezig";
+            this.txbAantalAanwezig.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbAantalAanwezig.Size = new System.Drawing.Size(79, 20);
             this.txbAantalAanwezig.TabIndex = 10;
             // 
@@ -244,6 +246,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbNaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbNaam.Location = new System.Drawing.Point(30, 22);
             this.txbNaam.Name = "txbNaam";
+            this.txbNaam.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbNaam.Size = new System.Drawing.Size(142, 20);
             this.txbNaam.TabIndex = 6;
             // 
@@ -257,6 +260,7 @@ namespace GIP_WinkelProductenSysteem
             this.txbCategorie.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbCategorie.Location = new System.Drawing.Point(33, 80);
             this.txbCategorie.Name = "txbCategorie";
+            this.txbCategorie.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txbCategorie.Size = new System.Drawing.Size(142, 20);
             this.txbCategorie.TabIndex = 8;
             this.txbCategorie.TextChanged += new System.EventHandler(this.txbCategorie_TextChanged);
