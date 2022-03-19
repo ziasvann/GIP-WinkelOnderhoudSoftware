@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 
 namespace GIP_WinkelProductenSysteem
@@ -680,7 +681,12 @@ namespace GIP_WinkelProductenSysteem
 
         private void txbCategorie_TextChanged(object sender, EventArgs e)
         {
-            autocompleteTxbCat();
+            //Open op nieuwe thread voor betere prestataties
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                autocompleteTxbCat();
+            });
         }
 
         void autocompleteTxbCat()

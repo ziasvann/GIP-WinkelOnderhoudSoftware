@@ -1,16 +1,16 @@
 # GIP-WinkelOnderhoudSoftware
-ToDo:
+### ToDo:
 
 - Duidelijker documenteren
 - Betere foutafhandeling
 - Kassa
 
-Done:
+### Bugs: 
 
-- Product toevoegen aan afrekenlijst in Kassa
-- Foutcontrole op textboxen in Kassa via ControleerTxb van ChangeProd
-- GetTxbdata toevoegen aan Kassa van ChangeProd
-- GetTxbdata enkel veilig uitvoeren --> voor antwoord verzenden eerst ControleerTxb(txb) uitvoeren
-- Publieke voids die dat niet moeten zijn niet publiek gemaakt
-- Verander komma in punt en omgekeerd door method verander()
-- Zet de totaalprijs onderaan 
+- Bij het invullen van de prijs kun je geen kommagetal invullen
+- Als je tijdens het wijzigen een product selecteerd blijf je het vorige product wijzigen
+
+
+### Done:
+
+- In ChangeProd kon je de categorie nog niet goed wijzigen. Nu heb ik deze op een background thread gezet, waardoor dit vlotter gaat en er geen memory error komt
