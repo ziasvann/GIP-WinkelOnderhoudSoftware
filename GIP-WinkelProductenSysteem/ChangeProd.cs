@@ -328,7 +328,7 @@ namespace GIP_WinkelProductenSysteem
 
                 if (result == DialogResult.Yes)
                 {
-                    lvProducten.Visible = false;
+                    pnlProductEigenschappen.Visible = false;
 
                     //De rijindex van een XML document begint bij 1. Bij de listview is dat bij 0.
                     int rowIndex = lvProducten.FocusedItem.Index + 1;
