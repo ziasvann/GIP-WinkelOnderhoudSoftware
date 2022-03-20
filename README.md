@@ -12,4 +12,4 @@
 
 ### Done:
 
-- Method Verander() toegevoegd zodat een '.' kan worden veranderd in een ','.
+- Bij het selecteren van een nieuw item tijdens het bewerken van een huidig item wordt het nieuwe item geselecteerd en gevraagd of men eerst nog het huidige item wilt afwerken.
