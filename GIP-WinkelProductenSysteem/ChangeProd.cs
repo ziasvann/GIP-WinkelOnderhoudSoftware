@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace GIP_WinkelProductenSysteem
@@ -56,7 +56,7 @@ namespace GIP_WinkelProductenSysteem
         private void LoadProducten()
         {
             //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
-            
+
             //Maakt de XML-database aan als deze nog niet is gemaakt.
             if (!File.Exists(filePath))
             {
@@ -143,7 +143,7 @@ namespace GIP_WinkelProductenSysteem
             //De naam van het product dat wordt gewijzigd wordt extra ingegeven. 
             huidigeNaam = GetTxbData(txbNaam);
 
-            
+
             if (lvProducten.SelectedItems.Count == 1)
             {
                 selectedIndex = lvProducten.FocusedItem.Index;
@@ -282,7 +282,7 @@ namespace GIP_WinkelProductenSysteem
             string prodAantal = GetTxbData(txbAantalAanwezig);
             string prodBestAantal = GetTxbData(txbAantalBestAanwezig);
             //Verander '.' door ',' zodat er geen verwarring is bij kommagetallen.
-            string prodPrijs = verander(GetTxbData(txbPrijs),'.',",");
+            string prodPrijs = verander(GetTxbData(txbPrijs), '.', ",");
             string prodKorting = GetTxbData(txbKorting);
 
             //De nieuwePrijs wordt berekent, op basis van de prijs en de korting.
@@ -340,7 +340,7 @@ namespace GIP_WinkelProductenSysteem
                     file.Close();
                     xmlDoc.Save(filePath);
                     FillListView();
-                    
+
                     //De categorieën en namen worden bijgewerkt.
                     werkCategorieënBij();
                     werkNamenBij();
@@ -413,7 +413,7 @@ namespace GIP_WinkelProductenSysteem
             if (lvProducten.SelectedItems.Count == 1)
             {
                 //De rijindex van een XML document begint bij 1. Bij de listview is dat bij 0.
-                int rowIndex = lvProducten.FocusedItem.Index + 1;
+                int rowIndex = nieuweSelectedIndex + 1;
 
                 //Het XML document wordt geopend.
                 XmlDocument xmlDoc = new XmlDocument();
@@ -436,12 +436,12 @@ namespace GIP_WinkelProductenSysteem
                 txbNaam.Text = prodNaam;
                 txbNaam.Enabled = false;
                 txbCategorie.Text = prodCategorie;
-                txbCategorie.Enabled = false;    
+                txbCategorie.Enabled = false;
                 txbAantalAanwezig.Text = prodAantal;
                 txbAantalBestAanwezig.Text = prodBestAantal;
                 txbPrijs.Text = prodPrijs;
                 txbKorting.Text = prodKorting;
-                
+
                 //Het XML document wordt gesloten.
                 file.Close();
 
@@ -466,7 +466,7 @@ namespace GIP_WinkelProductenSysteem
             txbCategorie.Enabled = true;
             txbAantalAanwezig.Text = "";
             txbAantalBestAanwezig.Text = "";
-            txbPrijs.Text = "" ;
+            txbPrijs.Text = "";
             txbKorting.Text = "";
         }
         string GetTxbData(TextBox txb)
@@ -509,7 +509,7 @@ namespace GIP_WinkelProductenSysteem
                 else if (naamAlAanwezig(txbText) && newProd) errorProv.SetError(txb, naamAanwezigMsg);
                 //Als er nog geen fout was én de naam al eens gebruikt werd maar al een oud product is, wordt er geen fout gegeven (Het product werd dus gewijzigd).
                 else if (naamAlAanwezig(txbText) && !newProd && txbText != huidigeNaam) errorProv.SetError(txb, naamAanwezigMsg);
-                
+
                 else
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
@@ -523,10 +523,10 @@ namespace GIP_WinkelProductenSysteem
             {
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 categorieFout = true;
-                
+
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
-                
+
                 else
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
@@ -539,7 +539,7 @@ namespace GIP_WinkelProductenSysteem
             {
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 aantalAanwezigFout = true;
-                
+
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
 
@@ -567,7 +567,7 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
             //Als de textbox txbPrijs is wordt dit uitgevoerd.
-            else if(txb.Name == "txbPrijs")
+            else if (txb.Name == "txbPrijs")
             {
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
@@ -605,11 +605,11 @@ namespace GIP_WinkelProductenSysteem
         {
             bool aanwezig = false;
 
-            foreach(string n in namen)
+            foreach (string n in namen)
             {
-                if(n==naam) aanwezig = true;
+                if (n == naam) aanwezig = true;
             }
-            if (aanwezig&&newProd) naamFout = true;
+            if (aanwezig && newProd) naamFout = true;
 
             return aanwezig;
         }
@@ -664,10 +664,10 @@ namespace GIP_WinkelProductenSysteem
 
             XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Categorie");
 
-            foreach(XmlNode node in xmlNodeList)
+            foreach (XmlNode node in xmlNodeList)
             {
                 bool aanwezig = false;
-                foreach(string n in categorieën)
+                foreach (string n in categorieën)
                 {
                     if (node.InnerText == n) aanwezig = true;
                 }
@@ -701,7 +701,7 @@ namespace GIP_WinkelProductenSysteem
                 }
                 MessageBox.Show(n);
             }
-            
+
         }
 
         private void txbCategorie_TextChanged(object sender, EventArgs e)
@@ -715,7 +715,7 @@ namespace GIP_WinkelProductenSysteem
         }
 
         void autocompleteTxbCat()
-       {
+        {
             AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
             autoSrc.AddRange(categorieën);
 
@@ -786,7 +786,7 @@ namespace GIP_WinkelProductenSysteem
             {
                 return berekendePrijs;
             }
-            
+
             //Foutafhandeling:
             //Als fout && testfase --> Zeg dat er een fout is en stuur '0' terug.
             else if (test)
@@ -800,7 +800,7 @@ namespace GIP_WinkelProductenSysteem
                 return 0;
             }
         }
-        
+
         private void lvProducten_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (ListViewItem lvItem in lvProducten.Items)
@@ -809,6 +809,9 @@ namespace GIP_WinkelProductenSysteem
                 if (itemRect.Contains(e.Location))
                 {
                     nieuweSelectedIndex = lvItem.Index;
+
+                    //Als ervoor nog niets was geselecteerd wordt het nieuwe geselecteerde item gelijk aan het huidige.
+                    if (selectedIndex == -1) selectedIndex = nieuweSelectedIndex;
                 }
             }
 
@@ -820,21 +823,28 @@ namespace GIP_WinkelProductenSysteem
                 {
                     //Zet pnl onzichtbaar
                     pnlProductEigenschappen.Visible = false;
+
                     //Selecteer nieuw item
                     lvProducten.Items[nieuweSelectedIndex].Selected = true;
+
                     //Deselecteer oorspronkelijk item
                     lvProducten.Items[selectedIndex].Selected = false;
+
+                    selectedIndex = nieuweSelectedIndex;
                 }
                 else
                 {
-                    //Zet pnl onzichtbaar
+                    //Laat pnl zichtbaar
                     pnlProductEigenschappen.Visible = true;
-                    //Deselecteer nieuw item
-                    lvProducten.Items[nieuweSelectedIndex].Selected = false;
-                    //Selecteer oorspronkelijk item
-                    lvProducten.Items[selectedIndex].Selected = true;
+
+                    //Selecteer nieuw item alvast
+                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
+
+                    //Deslecteer oorspronkelijk item
+                    lvProducten.Items[selectedIndex].Selected = false;
                 }
             }
+
         }
 
         string verander(string getal, char oorspronkelijk, string nieuw)
@@ -852,5 +862,5 @@ namespace GIP_WinkelProductenSysteem
 
             return output;
         }
-    } 
+    }
 }
