@@ -12,4 +12,5 @@
 
 ### Done:
 
-- Bij het selecteren van een nieuw item tijdens het bewerken van een huidig item wordt het nieuwe item geselecteerd en gevraagd of men eerst nog het huidige item wilt afwerken.
+- Bij het selecteren van een product werd de index enkel bepaald als er geklikt werd op de naam. Dit is nu opgelost.
+- Code Cleanup van ChangeProd, Kassa en MainForm

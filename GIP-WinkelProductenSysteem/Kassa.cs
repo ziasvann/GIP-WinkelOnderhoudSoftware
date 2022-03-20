@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,21 +15,17 @@ namespace GIP_WinkelProductenSysteem
             InitializeComponent();
         }
 
-
-        string welkomMsg = "Welkom!\nIn dit venster kunt u producten aanmaken en wijzigen. Momenteel zijn er nog geen producten opgeslagen.\nBegin dus met een product aan te maken.";
-        string zekerMsg = "Ben u zeker?";
-        string abortMsg = "Geen probleem! Er is niets veranderd.";
-        string selectItemMsg = "Gelieve één item te selecteren.";
-        string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
-        string naamAanwezigMsg = "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
-
-
-        bool naamFout = false;
-        bool categorieFout = false;
-        bool prijsFout = false;
-        bool kortingFout = false;
-
-        string totaalPrijs = "";
+        private readonly string welkomMsg = "Welkom!\nIn dit venster kunt u producten aanmaken en wijzigen. Momenteel zijn er nog geen producten opgeslagen.\nBegin dus met een product aan te maken.";
+        private readonly string zekerMsg = "Ben u zeker?";
+        private readonly string abortMsg = "Geen probleem! Er is niets veranderd.";
+        private readonly string selectItemMsg = "Gelieve één item te selecteren.";
+        private readonly string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
+        private readonly string naamAanwezigMsg = "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
+        private bool naamFout = false;
+        private readonly bool categorieFout = false;
+        private readonly bool prijsFout = false;
+        private bool kortingFout = false;
+        private string totaalPrijs = "";
 
 
 
@@ -47,11 +42,11 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        bool test = true;
-        string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
-        string[,] productenKopen = new string[0, 0];
+        private readonly bool test = true;
+        private readonly string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
+        private readonly string[,] productenKopen = new string[0, 0];
 
-        string[] productenArray()
+        private string[] productenArray()
         {
             string[] producten = new string[0];
 
@@ -84,8 +79,8 @@ namespace GIP_WinkelProductenSysteem
             file.Close();
             return producten;
         }
-        
-        string verander(string getal, char oorspronkelijk, string nieuw)
+
+        private string verander(string getal, char oorspronkelijk, string nieuw)
         {
             string output = "";
 
@@ -95,15 +90,16 @@ namespace GIP_WinkelProductenSysteem
                 {
                     output += nieuw;
                 }
-                else output += n;
+                else
+                {
+                    output += n;
+                }
             }
 
             return output;
         }
 
-
-
-        void voegProductToe(int productenArrayIndex)
+        private void voegProductToe(int productenArrayIndex)
         {
             string[] product = productenArray()[productenArrayIndex].Split(',');
             string productNaam = product[0];
@@ -112,7 +108,7 @@ namespace GIP_WinkelProductenSysteem
 
             if (totaalPrijs != "")
             {
-                totaalPrijs = Decimal.Add(Convert.ToDecimal(verander(productPrijs,'.',",")), Convert.ToDecimal(verander(totaalPrijs,'.',","))).ToString();
+                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(productPrijs, '.', ",")), Convert.ToDecimal(verander(totaalPrijs, '.', ","))).ToString();
             }
             else
             {
@@ -125,10 +121,10 @@ namespace GIP_WinkelProductenSysteem
 
             lvProducten.Items.Add(lvItem);
 
-            lblTotPrijs.Text = verander(totaalPrijs,',',".");
+            lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
         }
 
-        
+
         private void btnVoegToe_Click(object sender, EventArgs e)
         {
 
@@ -138,7 +134,7 @@ namespace GIP_WinkelProductenSysteem
 
         }
 
-        int ZoekIndexInArray(string productNaam)
+        private int ZoekIndexInArray(string productNaam)
         {
             int index = -1;
 
@@ -151,10 +147,12 @@ namespace GIP_WinkelProductenSysteem
                     index = i;
                     return index;
                 }
-                else continue;
-
+                else
+                {
+                    continue;
+                }
             }
-                
+
             return index;
         }
 
@@ -172,7 +170,10 @@ namespace GIP_WinkelProductenSysteem
                 naamFout = true;
 
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-                if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
+                if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText))
+                {
+                    errorProv.SetError(txb, foutenMsg);
+                }
                 else
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
@@ -260,8 +261,10 @@ namespace GIP_WinkelProductenSysteem
                 kortingFout = true;
 
                 //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0 || Int32.Parse(txbText) > 100) errorProv.SetError(txb, foutenMsg);
-
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && int.Parse(txbText) <= 0 || int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
+                {
+                    errorProv.SetError(txb, foutenMsg);
+                }
                 else
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
@@ -272,7 +275,7 @@ namespace GIP_WinkelProductenSysteem
 
         }
 
-        string GetTxbData(TextBox txb)
+        private string GetTxbData(TextBox txb)
         {
             //De string geeft de tekst van een opgevraagde textbox terug.
 
