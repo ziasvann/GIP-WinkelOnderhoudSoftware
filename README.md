@@ -3,7 +3,7 @@
 
 - Duidelijker documenteren
 - Betere foutafhandeling
-- Kassa
+- Kassa: korting uitwerken
 
 ### Bugs: 
 
@@ -12,5 +12,4 @@
 
 ### Done:
 
-- Bij het selecteren van een product werd de index enkel bepaald als er geklikt werd op de naam. Dit is nu opgelost.
-- Code Cleanup van ChangeProd, Kassa en MainForm
+- korting concept

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
             this.lblPrijs = new System.Windows.Forms.Label();
             this.txbHuidigProdPrijs = new System.Windows.Forms.TextBox();
@@ -49,11 +49,13 @@
             // 
             // txbHuidigProdNaam
             // 
+            this.txbHuidigProdNaam.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txbHuidigProdNaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbHuidigProdNaam.Location = new System.Drawing.Point(465, 12);
             this.txbHuidigProdNaam.Name = "txbHuidigProdNaam";
             this.txbHuidigProdNaam.Size = new System.Drawing.Size(317, 30);
             this.txbHuidigProdNaam.TabIndex = 2;
+            this.txbHuidigProdNaam.TextChanged += new System.EventHandler(this.txbHuidigProdNaam_TextChanged);
             // 
             // lblPrijs
             // 
@@ -104,6 +106,7 @@
             this.btnKorting.TabIndex = 24;
             this.btnKorting.Text = "Korting";
             this.btnKorting.UseVisualStyleBackColor = true;
+            this.btnKorting.Click += new System.EventHandler(this.btnKorting_Click);
             // 
             // label1
             // 
@@ -117,7 +120,6 @@
             // 
             // txbKorting
             // 
-            this.txbKorting.Enabled = false;
             this.txbKorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txbKorting.Location = new System.Drawing.Point(465, 84);
             this.txbKorting.Name = "txbKorting";
@@ -138,9 +140,9 @@
             this.columnHuidigePrijs});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
             this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.lvProducten.Location = new System.Drawing.Point(12, 12);
             this.lvProducten.Name = "lvProducten";
             this.lvProducten.Size = new System.Drawing.Size(307, 479);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -15,12 +16,17 @@ namespace GIP_WinkelProductenSysteem
             InitializeComponent();
         }
 
-        private readonly string welkomMsg = "Welkom!\nIn dit venster kunt u producten aanmaken en wijzigen. Momenteel zijn er nog geen producten opgeslagen.\nBegin dus met een product aan te maken.";
+        private readonly string welkomMsg =
+            "Welkom!\nIn dit venster kunt u producten aanmaken en wijzigen. Momenteel zijn er nog geen producten opgeslagen.\nBegin dus met een product aan te maken.";
+
         private readonly string zekerMsg = "Ben u zeker?";
         private readonly string abortMsg = "Geen probleem! Er is niets veranderd.";
         private readonly string selectItemMsg = "Gelieve één item te selecteren.";
         private readonly string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
-        private readonly string naamAanwezigMsg = "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
+
+        private readonly string naamAanwezigMsg =
+            "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
+
         private bool naamFout = false;
         private readonly bool categorieFout = false;
         private readonly bool prijsFout = false;
@@ -38,6 +44,7 @@ namespace GIP_WinkelProductenSysteem
                 {
                     str += product + "\n";
                 }
+
                 MessageBox.Show(str);
             }
         }
@@ -108,7 +115,8 @@ namespace GIP_WinkelProductenSysteem
 
             if (totaalPrijs != "")
             {
-                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(productPrijs, '.', ",")), Convert.ToDecimal(verander(totaalPrijs, '.', ","))).ToString();
+                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(productPrijs, '.', ",")),
+                    Convert.ToDecimal(verander(totaalPrijs, '.', ","))).ToString();
             }
             else
             {
@@ -129,6 +137,8 @@ namespace GIP_WinkelProductenSysteem
         {
 
             string productNaam = GetTxbData(txbHuidigProdNaam);
+
+            maakTxbsLeeg();
 
             voegProductToe(ZoekIndexInArray(productNaam));
 
@@ -155,6 +165,12 @@ namespace GIP_WinkelProductenSysteem
 
             return index;
         }
+
+        private void maakTxbsLeeg()
+        {
+            txbHuidigProdNaam.Text = "";
+        }
+        
 
         public void ControleerTxb(TextBox txb)
         {
@@ -261,7 +277,8 @@ namespace GIP_WinkelProductenSysteem
                 kortingFout = true;
 
                 //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && int.Parse(txbText) <= 0 || int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && int.Parse(txbText) <= 0 ||
+                    int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
                 {
                     errorProv.SetError(txb, foutenMsg);
                 }
@@ -311,26 +328,131 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
+        private string[] namenStrings()
+        {
+            string[] namen = new string[0];
 
-        //string[,] appendArray(string[,] oudeArray)
-        //{
-        //    string[,] nieuweArray = new string[oudeArray.GetLength(0) + 1, 3];
+            int count = 0;
 
-        //    int c = 0;
-        //    int cc = 0;
-        //    foreach (string x in oudeArray)
-        //    {
-        //        nieuweArray[c, cc] = x;
-        //        if (cc < 3) cc++;
-        //        else
-        //        {
-        //            cc = 0;
-        //            c++;
-        //        }
-        //    }
+            XmlDocument xmlDoc = new XmlDocument();
+            FileStream file = new FileStream(filePath, FileMode.Open);
+            xmlDoc.Load(file);
 
-        //    return nieuweArray;
-        //}
+            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product/Naam");
 
+            foreach (XmlNode node in xmlNodeList)
+            {
+                bool aanwezig = false;
+                foreach (string n in namen)
+                {
+                    if (node.InnerText == n)
+                    {
+                        aanwezig = true;
+                    }
+                }
+
+                if (!aanwezig)
+                {
+                    Array.Resize(ref namen, namen.Length + 1);
+                    namen[count] = node.InnerText;
+                    count++;
+                }
+
+            }
+
+            file.Close();
+
+            return namen;
+
+
+            //string[,] appendArray(string[,] oudeArray)
+            //{
+            //    string[,] nieuweArray = new string[oudeArray.GetLength(0) + 1, 3];
+
+            //    int c = 0;
+            //    int cc = 0;
+            //    foreach (string x in oudeArray)
+            //    {
+            //        nieuweArray[c, cc] = x;
+            //        if (cc < 3) cc++;
+            //        else
+            //        {
+            //            cc = 0;
+            //            c++;
+            //        }
+            //    }
+
+            //    return nieuweArray;
+            //}
+
+        }
+
+        private void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
+        {
+            //Open op nieuwe thread voor betere prestaties
+            //new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+            //    autocompleteTxbNaam();
+            //});
+            autocompleteTxbNaam();
+
+        }
+        private void autocompleteTxbNaam()
+        {
+            AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
+            autoSrc.AddRange(namenStrings());
+
+            txbHuidigProdNaam.AutoCompleteMode = AutoCompleteMode.Suggest;
+            txbHuidigProdNaam.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txbHuidigProdNaam.AutoCompleteCustomSource = autoSrc;
+        }
+
+        private void btnKorting_Click(object sender, EventArgs e)
+        {
+            int korting = Int32.Parse(txbKorting.Text);
+            string prodNaam = txbHuidigProdNaam.Text;
+
+
+            int index = ZoekIndexInArray(prodNaam);
+            string oudePrijs = productenArray()[index].Split(',')[1];
+
+            decimal prijs = decimal.Parse(oudePrijs);
+            decimal nieuwePrijs = kortingPrijs(prijs, korting);
+
+            txbKorting.Text = nieuwePrijs.ToString();
+        }
+        
+        private decimal kortingPrijs(decimal prijs, decimal korting)
+        {
+
+            //Korting op duidelijk manier schrijven:
+            //Bv.: Korting 20% --> korting = 0,8
+            decimal rekenbareKorting = 1 - (korting / 100);
+
+
+            //Prijs berekenen
+            decimal berekendePrijs = prijs * rekenbareKorting;
+
+
+            //Prijs terugsturen in normaal scenario
+            if (berekendePrijs >= 0)
+            {
+                return berekendePrijs;
+            }
+
+            //Foutafhandeling:
+            //Als fout && testfase --> Zeg dat er een fout is en stuur '0' terug.
+            else if (test)
+            {
+                MessageBox.Show("berekenPrijs: fout!");
+                return 0;
+            }
+            //Als fout --> Stuur '0' terug, zodat duidelijk is dat er een fout is!
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
