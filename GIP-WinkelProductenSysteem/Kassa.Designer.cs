@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
             this.lblPrijs = new System.Windows.Forms.Label();
             this.txbHuidigProdPrijs = new System.Windows.Forms.TextBox();
@@ -44,7 +43,16 @@
             this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotPrijs = new System.Windows.Forms.Label();
+            this.pnlKorting = new System.Windows.Forms.Panel();
+            this.btnBevestigPrijs = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txbNieuwePrijs = new System.Windows.Forms.TextBox();
+            this.btnManuelePrijs = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nmudAantal = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
+            this.pnlKorting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).BeginInit();
             this.SuspendLayout();
             // 
             // txbHuidigProdNaam
@@ -92,7 +100,7 @@
             // 
             this.btnVoegToe.Location = new System.Drawing.Point(588, 48);
             this.btnVoegToe.Name = "btnVoegToe";
-            this.btnVoegToe.Size = new System.Drawing.Size(194, 30);
+            this.btnVoegToe.Size = new System.Drawing.Size(194, 66);
             this.btnVoegToe.TabIndex = 23;
             this.btnVoegToe.Text = "In winkelmand";
             this.btnVoegToe.UseVisualStyleBackColor = true;
@@ -100,7 +108,7 @@
             // 
             // btnKorting
             // 
-            this.btnKorting.Location = new System.Drawing.Point(588, 84);
+            this.btnKorting.Location = new System.Drawing.Point(588, 307);
             this.btnKorting.Name = "btnKorting";
             this.btnKorting.Size = new System.Drawing.Size(194, 30);
             this.btnKorting.TabIndex = 24;
@@ -112,7 +120,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(435, 87);
+            this.label1.Location = new System.Drawing.Point(-2, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 25);
             this.label1.TabIndex = 26;
@@ -121,10 +129,10 @@
             // txbKorting
             // 
             this.txbKorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txbKorting.Location = new System.Drawing.Point(465, 84);
+            this.txbKorting.Location = new System.Drawing.Point(29, 3);
             this.txbKorting.Name = "txbKorting";
             this.txbKorting.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txbKorting.Size = new System.Drawing.Size(117, 30);
+            this.txbKorting.Size = new System.Drawing.Size(168, 30);
             this.txbKorting.TabIndex = 25;
             this.txbKorting.Text = "0";
             this.txbKorting.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -140,9 +148,6 @@
             this.columnHuidigePrijs});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
-            this.lvProducten.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
             this.lvProducten.Location = new System.Drawing.Point(12, 12);
             this.lvProducten.Name = "lvProducten";
             this.lvProducten.Size = new System.Drawing.Size(307, 479);
@@ -180,16 +185,106 @@
             this.lblTotPrijs.TabIndex = 29;
             this.lblTotPrijs.Text = "0.00";
             // 
+            // pnlKorting
+            // 
+            this.pnlKorting.Controls.Add(this.btnManuelePrijs);
+            this.pnlKorting.Controls.Add(this.label3);
+            this.pnlKorting.Controls.Add(this.btnBevestigPrijs);
+            this.pnlKorting.Controls.Add(this.txbNieuwePrijs);
+            this.pnlKorting.Controls.Add(this.txbKorting);
+            this.pnlKorting.Controls.Add(this.label1);
+            this.pnlKorting.Location = new System.Drawing.Point(588, 343);
+            this.pnlKorting.Name = "pnlKorting";
+            this.pnlKorting.Size = new System.Drawing.Size(194, 148);
+            this.pnlKorting.TabIndex = 30;
+            this.pnlKorting.Visible = false;
+            // 
+            // btnBevestigPrijs
+            // 
+            this.btnBevestigPrijs.Location = new System.Drawing.Point(3, 111);
+            this.btnBevestigPrijs.Name = "btnBevestigPrijs";
+            this.btnBevestigPrijs.Size = new System.Drawing.Size(194, 30);
+            this.btnBevestigPrijs.TabIndex = 31;
+            this.btnBevestigPrijs.Text = "Bevestig prijs";
+            this.btnBevestigPrijs.UseVisualStyleBackColor = true;
+            this.btnBevestigPrijs.Click += new System.EventHandler(this.btnBevestigPrijs_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(-2, 42);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 25);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "€";
+            // 
+            // txbNieuwePrijs
+            // 
+            this.txbNieuwePrijs.Enabled = false;
+            this.txbNieuwePrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txbNieuwePrijs.Location = new System.Drawing.Point(29, 39);
+            this.txbNieuwePrijs.Name = "txbNieuwePrijs";
+            this.txbNieuwePrijs.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txbNieuwePrijs.Size = new System.Drawing.Size(168, 30);
+            this.txbNieuwePrijs.TabIndex = 31;
+            this.txbNieuwePrijs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // btnManuelePrijs
+            // 
+            this.btnManuelePrijs.Location = new System.Drawing.Point(3, 75);
+            this.btnManuelePrijs.Name = "btnManuelePrijs";
+            this.btnManuelePrijs.Size = new System.Drawing.Size(194, 30);
+            this.btnManuelePrijs.TabIndex = 33;
+            this.btnManuelePrijs.Text = "Manuele prijs";
+            this.btnManuelePrijs.UseVisualStyleBackColor = true;
+            this.btnManuelePrijs.Click += new System.EventHandler(this.btnManuelePrijs_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(380, 87);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 25);
+            this.label4.TabIndex = 32;
+            this.label4.Text = "Aantal: ";
+            // 
+            // nmudAantal
+            // 
+            this.nmudAantal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nmudAantal.Location = new System.Drawing.Point(465, 84);
+            this.nmudAantal.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nmudAantal.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nmudAantal.Name = "nmudAantal";
+            this.nmudAantal.ReadOnly = true;
+            this.nmudAantal.Size = new System.Drawing.Size(117, 30);
+            this.nmudAantal.TabIndex = 33;
+            this.nmudAantal.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // Kassa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(889, 541);
+            this.ClientSize = new System.Drawing.Size(809, 541);
+            this.Controls.Add(this.nmudAantal);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.pnlKorting);
             this.Controls.Add(this.lblTotPrijs);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lvProducten);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txbKorting);
             this.Controls.Add(this.btnKorting);
             this.Controls.Add(this.btnVoegToe);
             this.Controls.Add(this.lblProdNaam);
@@ -200,6 +295,9 @@
             this.Text = "Kassa";
             this.Load += new System.EventHandler(this.Kassa_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
+            this.pnlKorting.ResumeLayout(false);
+            this.pnlKorting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,5 +318,12 @@
         private System.Windows.Forms.ColumnHeader columnHuidigePrijs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTotPrijs;
+        private System.Windows.Forms.Panel pnlKorting;
+        private System.Windows.Forms.Button btnBevestigPrijs;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.TextBox txbNieuwePrijs;
+        private System.Windows.Forms.Button btnManuelePrijs;
+        private System.Windows.Forms.NumericUpDown nmudAantal;
+        private System.Windows.Forms.Label label4;
     }
 }

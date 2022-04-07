@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
@@ -33,6 +34,7 @@ namespace GIP_WinkelProductenSysteem
         private bool kortingFout = false;
         private string totaalPrijs = "";
 
+        private bool manueleprijs = false;
 
 
         private void Kassa_Load(object sender, EventArgs e)
@@ -106,30 +108,51 @@ namespace GIP_WinkelProductenSysteem
             return output;
         }
 
-        private void voegProductToe(int productenArrayIndex)
+        private void voegProductToe(int productenArrayIndex, decimal prijs, decimal aantal)
         {
             string[] product = productenArray()[productenArrayIndex].Split(',');
             string productNaam = product[0];
-            string productPrijs = product[1];
+            string productPrijs = "";
+            
+            string aantalPrijs = "";
+
+
+            if (prijs == 0)
+            {
+                productPrijs = product[1];
+                
+                aantalPrijs = (Convert.ToDecimal(verander(productPrijs, '.',",")) * aantal).ToString();
+            }
+            else
+            {
+                productPrijs = prijs.ToString();
+                aantalPrijs = (decimal.Parse(productPrijs) * aantal).ToString();
+            }
             string productCategorie = product[2];
 
             if (totaalPrijs != "")
             {
-                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(productPrijs, '.', ",")),
+                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(aantalPrijs, '.', ",")),
                     Convert.ToDecimal(verander(totaalPrijs, '.', ","))).ToString();
             }
             else
             {
-                totaalPrijs = productPrijs;
+                totaalPrijs = aantalPrijs;
             }
 
 
             ListViewItem lvItem = new ListViewItem(productNaam);
-            lvItem.SubItems.Add(productPrijs);
+            lvItem.SubItems.Add(aantalPrijs);
 
             lvProducten.Items.Add(lvItem);
 
             lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
+
+
+            pnlKorting.Visible = false;
+            manueleprijs = false;
+            txbHuidigProdNaam.Text = "";
+            nmudAantal.Value = 1;
         }
 
 
@@ -137,10 +160,11 @@ namespace GIP_WinkelProductenSysteem
         {
 
             string productNaam = GetTxbData(txbHuidigProdNaam);
+            decimal aantal = nmudAantal.Value;
 
             maakTxbsLeeg();
 
-            voegProductToe(ZoekIndexInArray(productNaam));
+            voegProductToe(ZoekIndexInArray(productNaam), 0, aantal);
 
         }
 
@@ -390,11 +414,11 @@ namespace GIP_WinkelProductenSysteem
         private void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
         {
             //Open op nieuwe thread voor betere prestaties
-            //new Thread(() =>
-            //{
-            //    Thread.CurrentThread.IsBackground = true;
-            //    autocompleteTxbNaam();
-            //});
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                autocompleteTxbNaam();
+            });
             autocompleteTxbNaam();
 
         }
@@ -410,17 +434,7 @@ namespace GIP_WinkelProductenSysteem
 
         private void btnKorting_Click(object sender, EventArgs e)
         {
-            int korting = Int32.Parse(txbKorting.Text);
-            string prodNaam = txbHuidigProdNaam.Text;
-
-
-            int index = ZoekIndexInArray(prodNaam);
-            string oudePrijs = productenArray()[index].Split(',')[1];
-
-            decimal prijs = decimal.Parse(oudePrijs);
-            decimal nieuwePrijs = kortingPrijs(prijs, korting);
-
-            txbKorting.Text = nieuwePrijs.ToString();
+            pnlKorting.Visible = true;
         }
         
         private decimal kortingPrijs(decimal prijs, decimal korting)
@@ -453,6 +467,45 @@ namespace GIP_WinkelProductenSysteem
             {
                 return 0;
             }
+        }
+
+        private void btnManuelePrijs_Click(object sender, EventArgs e)
+        {
+            txbNieuwePrijs.Enabled = true;
+            manueleprijs = true;
+        }
+
+        private void btnBevestigPrijs_Click(object sender, EventArgs e)
+        {
+            decimal prijs = 0;
+            decimal aantal = nmudAantal.Value;
+            string prodNaam = txbHuidigProdNaam.Text;
+            int index = ZoekIndexInArray(prodNaam);
+            
+
+            if (manueleprijs)
+            {
+                prijs = Convert.ToDecimal(verander(txbNieuwePrijs.Text,'.',","));
+                txbNieuwePrijs.Enabled = false;
+
+                voegProductToe(index, prijs, aantal);
+            }
+            else
+            {
+                string oudePrijsString = productenArray()[index].Split(',')[1];
+                string kortingString = txbKorting.Text;
+
+                decimal oudePrijs = Convert.ToDecimal(verander(oudePrijsString,'.',","));
+                decimal korting = decimal.Parse(kortingString);
+                
+                prijs = kortingPrijs(oudePrijs, korting);
+
+                voegProductToe(index, prijs, aantal);
+            }
+            pnlKorting.Visible = false;
+            manueleprijs = false;
+            txbHuidigProdNaam.Text = "";
+            nmudAantal.Value = 1;
         }
     }
 }

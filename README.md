@@ -2,14 +2,14 @@
 ### ToDo:
 
 - Duidelijker documenteren
-- Betere foutafhandeling
+- Foutafhandeling
 - Kassa: korting uitwerken
 
 ### Bugs: 
 
-- Bij het invullen van de prijs kun je geen kommagetal invullen
-
+Momenteel geen
 
 ### Done:
 
-- korting concept
+- Nieuw: prijs bij meerdere zelfde artikelen berekenen
+- Korting functie toegevoegd 
