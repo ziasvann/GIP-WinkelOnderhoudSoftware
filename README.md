@@ -4,6 +4,7 @@
 - Duidelijker documenteren
 - Foutafhandeling
 - Kassa: korting uitwerken
+- Verander naam: "Winkel Beheer Software"
 
 ### Bugs: 
 
