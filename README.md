@@ -3,7 +3,6 @@
 
 - Duidelijker documenteren
 - Foutafhandeling
-- Kassa: korting uitwerken
 
 ### Bugs: 
 
@@ -11,5 +10,5 @@ Momenteel geen
 
 ### Done:
 
-- Nieuw: prijs bij meerdere zelfde artikelen berekenen
-- Korting functie toegevoegd 
+- Aantal producten weergeven in ListView
+- Kassa korting uitwerken

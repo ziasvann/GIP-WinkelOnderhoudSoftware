@@ -44,12 +44,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotPrijs = new System.Windows.Forms.Label();
             this.pnlKorting = new System.Windows.Forms.Panel();
-            this.btnBevestigPrijs = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txbNieuwePrijs = new System.Windows.Forms.TextBox();
             this.btnManuelePrijs = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnBevestigPrijs = new System.Windows.Forms.Button();
+            this.txbNieuwePrijs = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.nmudAantal = new System.Windows.Forms.NumericUpDown();
+            this.columnAantal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlKorting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).BeginInit();
@@ -145,7 +146,8 @@
             // 
             this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnProducten,
-            this.columnHuidigePrijs});
+            this.columnHuidigePrijs,
+            this.columnAantal});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
             this.lvProducten.Location = new System.Drawing.Point(12, 12);
@@ -199,15 +201,15 @@
             this.pnlKorting.TabIndex = 30;
             this.pnlKorting.Visible = false;
             // 
-            // btnBevestigPrijs
+            // btnManuelePrijs
             // 
-            this.btnBevestigPrijs.Location = new System.Drawing.Point(3, 111);
-            this.btnBevestigPrijs.Name = "btnBevestigPrijs";
-            this.btnBevestigPrijs.Size = new System.Drawing.Size(194, 30);
-            this.btnBevestigPrijs.TabIndex = 31;
-            this.btnBevestigPrijs.Text = "Bevestig prijs";
-            this.btnBevestigPrijs.UseVisualStyleBackColor = true;
-            this.btnBevestigPrijs.Click += new System.EventHandler(this.btnBevestigPrijs_Click);
+            this.btnManuelePrijs.Location = new System.Drawing.Point(3, 75);
+            this.btnManuelePrijs.Name = "btnManuelePrijs";
+            this.btnManuelePrijs.Size = new System.Drawing.Size(194, 30);
+            this.btnManuelePrijs.TabIndex = 33;
+            this.btnManuelePrijs.Text = "Manuele prijs";
+            this.btnManuelePrijs.UseVisualStyleBackColor = true;
+            this.btnManuelePrijs.Click += new System.EventHandler(this.btnManuelePrijs_Click);
             // 
             // label3
             // 
@@ -219,6 +221,16 @@
             this.label3.TabIndex = 32;
             this.label3.Text = "€";
             // 
+            // btnBevestigPrijs
+            // 
+            this.btnBevestigPrijs.Location = new System.Drawing.Point(3, 111);
+            this.btnBevestigPrijs.Name = "btnBevestigPrijs";
+            this.btnBevestigPrijs.Size = new System.Drawing.Size(194, 30);
+            this.btnBevestigPrijs.TabIndex = 31;
+            this.btnBevestigPrijs.Text = "Bevestig prijs";
+            this.btnBevestigPrijs.UseVisualStyleBackColor = true;
+            this.btnBevestigPrijs.Click += new System.EventHandler(this.btnBevestigPrijs_Click);
+            // 
             // txbNieuwePrijs
             // 
             this.txbNieuwePrijs.Enabled = false;
@@ -229,16 +241,6 @@
             this.txbNieuwePrijs.Size = new System.Drawing.Size(168, 30);
             this.txbNieuwePrijs.TabIndex = 31;
             this.txbNieuwePrijs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // btnManuelePrijs
-            // 
-            this.btnManuelePrijs.Location = new System.Drawing.Point(3, 75);
-            this.btnManuelePrijs.Name = "btnManuelePrijs";
-            this.btnManuelePrijs.Size = new System.Drawing.Size(194, 30);
-            this.btnManuelePrijs.TabIndex = 33;
-            this.btnManuelePrijs.Text = "Manuele prijs";
-            this.btnManuelePrijs.UseVisualStyleBackColor = true;
-            this.btnManuelePrijs.Click += new System.EventHandler(this.btnManuelePrijs_Click);
             // 
             // label4
             // 
@@ -273,6 +275,10 @@
             0,
             0,
             0});
+            // 
+            // columnAantal
+            // 
+            this.columnAantal.Text = "Aantal";
             // 
             // Kassa
             // 
@@ -325,5 +331,6 @@
         private System.Windows.Forms.Button btnManuelePrijs;
         private System.Windows.Forms.NumericUpDown nmudAantal;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ColumnHeader columnAantal;
     }
 }

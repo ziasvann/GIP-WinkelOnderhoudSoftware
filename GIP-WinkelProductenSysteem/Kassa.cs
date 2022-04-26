@@ -55,6 +55,8 @@ namespace GIP_WinkelProductenSysteem
         private readonly string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
         private readonly string[,] productenKopen = new string[0, 0];
 
+        string[] productenToegevoegd = new string[0];
+
         private string[] productenArray()
         {
             string[] producten = new string[0];
@@ -139,22 +141,49 @@ namespace GIP_WinkelProductenSysteem
             {
                 totaalPrijs = aantalPrijs;
             }
+            
+            Array.Resize(ref productenToegevoegd, productenToegevoegd.Length + 1);
+            productenToegevoegd[productenToegevoegd.Length-1] = productNaam;
 
 
-            ListViewItem lvItem = new ListViewItem(productNaam);
-            lvItem.SubItems.Add(aantalPrijs);
 
-            lvProducten.Items.Add(lvItem);
+            if (!alGekocht(productNaam))
+            {
+                ListViewItem lvItem = new ListViewItem(productNaam);
+                lvItem.SubItems.Add(productPrijs);
+                lvItem.SubItems.Add(aantal.ToString());
+                lvProducten.Items.Add(lvItem);
+            }
+            else
+            {
+                int index = ZoekIndexInArray(productNaam, productenToegevoegd);
+                ListViewItem lvItem = lvProducten.Items[index];
+                int aantalGekocht = Convert.ToInt32(lvItem.SubItems[2].Text) + Convert.ToInt32(aantal);
+                lvItem.SubItems[2].Text = aantalGekocht.ToString();
+            }
+
 
             lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
-
-
             pnlKorting.Visible = false;
             manueleprijs = false;
             txbHuidigProdNaam.Text = "";
             nmudAantal.Value = 1;
         }
 
+        bool alGekocht(string productNaam)
+        {
+            bool val = false;
+
+            foreach(ListViewItem product in lvProducten.Items)
+            {
+                if(product.Text == productNaam)
+                {
+                    val = true;
+                }
+            }
+
+            return val;
+        }
 
         private void btnVoegToe_Click(object sender, EventArgs e)
         {
@@ -164,17 +193,17 @@ namespace GIP_WinkelProductenSysteem
 
             maakTxbsLeeg();
 
-            voegProductToe(ZoekIndexInArray(productNaam), 0, aantal);
+            voegProductToe(ZoekIndexInArray(productNaam, productenArray()), 0, aantal);
 
         }
 
-        private int ZoekIndexInArray(string productNaam)
+        private int ZoekIndexInArray(string productNaam, string[] array)
         {
             int index = -1;
 
-            for (int i = 0; i < productenArray().Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                string[] product = productenArray()[i].Split(',');
+                string[] product = array[i].Split(',');
 
                 if (product[0] == productNaam)
                 {
@@ -480,7 +509,7 @@ namespace GIP_WinkelProductenSysteem
             decimal prijs = 0;
             decimal aantal = nmudAantal.Value;
             string prodNaam = txbHuidigProdNaam.Text;
-            int index = ZoekIndexInArray(prodNaam);
+            int index = ZoekIndexInArray(prodNaam, productenArray());
             
 
             if (manueleprijs)
