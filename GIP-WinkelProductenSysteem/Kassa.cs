@@ -115,15 +115,15 @@ namespace GIP_WinkelProductenSysteem
             string[] product = productenArray()[productenArrayIndex].Split(',');
             string productNaam = product[0];
             string productPrijs = "";
-            
+
             string aantalPrijs = "";
 
 
             if (prijs == 0)
             {
                 productPrijs = product[1];
-                
-                aantalPrijs = (Convert.ToDecimal(verander(productPrijs, '.',",")) * aantal).ToString();
+
+                aantalPrijs = (Convert.ToDecimal(verander(productPrijs, '.', ",")) * aantal).ToString();
             }
             else
             {
@@ -141,9 +141,9 @@ namespace GIP_WinkelProductenSysteem
             {
                 totaalPrijs = aantalPrijs;
             }
-            
+
             Array.Resize(ref productenToegevoegd, productenToegevoegd.Length + 1);
-            productenToegevoegd[productenToegevoegd.Length-1] = productNaam;
+            productenToegevoegd[productenToegevoegd.Length - 1] = productNaam;
 
 
 
@@ -174,9 +174,9 @@ namespace GIP_WinkelProductenSysteem
         {
             bool val = false;
 
-            foreach(ListViewItem product in lvProducten.Items)
+            foreach (ListViewItem product in lvProducten.Items)
             {
-                if(product.Text == productNaam)
+                if (product.Text == productNaam)
                 {
                     val = true;
                 }
@@ -223,7 +223,7 @@ namespace GIP_WinkelProductenSysteem
         {
             txbHuidigProdNaam.Text = "";
         }
-        
+
 
         public void ControleerTxb(TextBox txb)
         {
@@ -465,7 +465,7 @@ namespace GIP_WinkelProductenSysteem
         {
             pnlKorting.Visible = true;
         }
-        
+
         private decimal kortingPrijs(decimal prijs, decimal korting)
         {
 
@@ -510,11 +510,11 @@ namespace GIP_WinkelProductenSysteem
             decimal aantal = nmudAantal.Value;
             string prodNaam = txbHuidigProdNaam.Text;
             int index = ZoekIndexInArray(prodNaam, productenArray());
-            
+
 
             if (manueleprijs)
             {
-                prijs = Convert.ToDecimal(verander(txbNieuwePrijs.Text,'.',","));
+                prijs = Convert.ToDecimal(verander(txbNieuwePrijs.Text, '.', ","));
                 txbNieuwePrijs.Enabled = false;
 
                 voegProductToe(index, prijs, aantal);
@@ -524,9 +524,9 @@ namespace GIP_WinkelProductenSysteem
                 string oudePrijsString = productenArray()[index].Split(',')[1];
                 string kortingString = txbKorting.Text;
 
-                decimal oudePrijs = Convert.ToDecimal(verander(oudePrijsString,'.',","));
+                decimal oudePrijs = Convert.ToDecimal(verander(oudePrijsString, '.', ","));
                 decimal korting = decimal.Parse(kortingString);
-                
+
                 prijs = kortingPrijs(oudePrijs, korting);
 
                 voegProductToe(index, prijs, aantal);
