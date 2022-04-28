@@ -11,5 +11,5 @@ Momenteel geen
 
 ### Done:
 
-- Aantal producten weergeven in ListView
-- Kassa korting uitwerken
+- Autocomplete txb categorie fix
+- Foutcontrole txbKorting fix

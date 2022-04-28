@@ -82,9 +82,15 @@ namespace GIP_WinkelProductenSysteem
             //De panel om een product aan te maken wordt zichtbaar gemaakt.
             pnlProductEigenschappen.Visible = true;
 
-            if (lvProducten.SelectedItems.Count <= 1)
+            werkCategorieënBij();
+
+            if (lvProducten.SelectedItems.Count == 1)
             {
                 selectedIndex = lvProducten.FocusedItem.Index;
+            }
+            else
+            {
+                selectedIndex = 0;
             }
         }
 
@@ -611,9 +617,17 @@ namespace GIP_WinkelProductenSysteem
             {
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 kortingFout = true;
+                
+                if (String.IsNullOrEmpty(txbText))
+                {
+                    txbKorting.Text = "0";
+                    txbText = "0";
 
+                    errorProv.SetError(txb, "");
+                    kortingFout = false;
+                }
                 //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && int.Parse(txbText) <= 0 || int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
+                else if (!txbText.All(char.IsNumber) || int.Parse(txbText) < 0 || int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
                 {
                     errorProv.SetError(txb, foutenMsg);
                 }
@@ -759,11 +773,12 @@ namespace GIP_WinkelProductenSysteem
         private void txbCategorie_TextChanged(object sender, EventArgs e)
         {
             //Open op nieuwe thread voor betere prestataties
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                autocompleteTxbCat();
-            });
+            //new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+            //    autocompleteTxbCat();
+            //});
+            autocompleteTxbCat();
         }
 
         private void autocompleteTxbCat()
