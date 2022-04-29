@@ -79,6 +79,8 @@ namespace GIP_WinkelProductenSysteem
             newProd = true;
             //Alle textboxen worden leeggemaakt.
             ClearTxb();
+            //Verwijder alle fouten van errorprovider.
+            removeError();
             //De panel om een product aan te maken wordt zichtbaar gemaakt.
             pnlProductEigenschappen.Visible = true;
 
@@ -482,6 +484,22 @@ namespace GIP_WinkelProductenSysteem
             txbPrijs.Text = "";
             txbKorting.Text = "";
         }
+        private void removeError()
+        {
+            errorProv.SetError(txbNaam, "");
+            errorProv.SetError(txbCategorie, "");
+            errorProv.SetError(txbAantalAanwezig, "");
+            errorProv.SetError(txbAantalBestAanwezig, "");
+            errorProv.SetError(txbPrijs, "");
+            errorProv.SetError(txbKorting, "");
+
+            naamFout = false;
+            categorieFout = false;
+            aantalAanwezigFout = false;
+            aantalBestAanwezigFout = false;
+            prijsFout = false;
+            kortingFout = false;
+        }
 
         private string GetTxbData(TextBox txb)
         {
@@ -561,15 +579,44 @@ namespace GIP_WinkelProductenSysteem
             //Als de textbox txbAantalAanwezig is wordt dit uitgevoerd.
             else if (txb.Name == "txbAantalAanwezig")
             {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 aantalAanwezigFout = true;
 
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || int.Parse(txbText) <= 0 || int.Parse(txbText) % 1 != 0)
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
                 }
-                else
+                //Wordt altijd uitgevoerd.
+                else if (aantalAanwezigFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (int.Parse(txbText) <= 0)
+                        {
+                            errorProv.SetError(txb, "Getal moet groter dan 0 zijn.");
+                            tijdelijkFout = true;
+                        }
+                        //Als getal een kommagetal is dan moet er een foutmelding komen.
+                        if (int.Parse(txbText) % 1 != 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag geen kommagetal zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if(!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
@@ -579,15 +626,44 @@ namespace GIP_WinkelProductenSysteem
             //Als de textbox txbAantalBestAanwezig is wordt dit uitgevoerd.
             else if (txb.Name == "txbAantalBestAanwezig")
             {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 aantalBestAanwezigFout = true;
 
-                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || int.Parse(txbText) <= 0 || int.Parse(txbText) % 1 != 0)
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
                 }
-                else
+                //Wordt altijd uitgevoerd.
+                else if (aantalBestAanwezigFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (int.Parse(txbText) <= 0)
+                        {
+                            errorProv.SetError(txb, "Getal moet groter dan 0 zijn.");
+                            tijdelijkFout = true;
+                        }
+                        //Als getal een kommagetal is dan moet er een foutmelding komen.
+                        if (int.Parse(txbText) % 1 != 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag geen kommagetal zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if (!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
@@ -597,15 +673,38 @@ namespace GIP_WinkelProductenSysteem
             //Als de textbox txbPrijs is wordt dit uitgevoerd.
             else if (txb.Name == "txbPrijs")
             {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
 
-                //Als de textbox niet enkel cijfers of , of . bevat of leeg is of het getal kleiner is dan 0 dan wordt er een fout aangegeven.
-                if (txbText.Contains("1234567890.,") || string.IsNullOrEmpty(txbText) || double.Parse(txbText) <= 0)
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
                 }
-                else
+                //Wordt altijd uitgevoerd.
+                else if (prijsFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (double.Parse(txbText) <= 0)
+                        {
+                            errorProv.SetError(txb, "Getal moet groter dan 0 zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if (!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
@@ -615,23 +714,49 @@ namespace GIP_WinkelProductenSysteem
             //Als de textbox txbKorting is wordt dit uitgevoerd.
             else if (txb.Name == "txbKorting")
             {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 kortingFout = true;
-                
-                if (String.IsNullOrEmpty(txbText))
-                {
-                    txbKorting.Text = "0";
-                    txbText = "0";
 
-                    errorProv.SetError(txb, "");
-                    kortingFout = false;
-                }
-                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
-                else if (!txbText.All(char.IsNumber) || int.Parse(txbText) < 0 || int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
                 }
-                else
+                //Wordt altijd uitgevoerd.
+                else if (kortingFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (int.Parse(txbText) < 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag niet negatief zijn.");
+                            tijdelijkFout = true;
+                        }
+                        //Als getal een kommagetal is dan moet er een foutmelding komen.
+                        if (int.Parse(txbText) % 1 != 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag geen kommagetal zijn.");
+                            tijdelijkFout = true;
+                        }
+                        if (int.Parse(txbText) >= 100)
+                        {
+                            errorProv.SetError(txb, "Getal moet kleiner dan 100 zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if (!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
@@ -772,13 +897,13 @@ namespace GIP_WinkelProductenSysteem
 
         private void txbCategorie_TextChanged(object sender, EventArgs e)
         {
-            //Open op nieuwe thread voor betere prestataties
-            //new Thread(() =>
-            //{
-            //    Thread.CurrentThread.IsBackground = true;
-            //    autocompleteTxbCat();
-            //});
-            autocompleteTxbCat();
+            //Open op nieuwe thread voor betere prestataties.
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Thread.Sleep(1000);
+                autocompleteTxbCat();
+            });
         }
 
         private void autocompleteTxbCat()

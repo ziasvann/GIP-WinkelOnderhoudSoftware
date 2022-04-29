@@ -7,9 +7,9 @@
 
 ### Bugs: 
 
-Momenteel geen
+- Kassa.cs foutafhandeling
 
 ### Done:
 
-- Autocomplete txb categorie fix
-- Foutcontrole txbKorting fix
+- Autocomplete op nieuwe Thread geplaatst met wachttijd voor betere prestaties.
+- Fix bug: foutafhandeling changeProd.cs
