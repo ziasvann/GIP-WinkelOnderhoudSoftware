@@ -29,7 +29,7 @@ namespace GIP_WinkelProductenSysteem
 
         private bool naamFout = false;
         private readonly bool categorieFout = false;
-        private readonly bool prijsFout = false;
+        private bool prijsFout = false;
         private bool kortingFout = false;
         private string totaalPrijs = "";
 
@@ -50,7 +50,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private readonly bool test = true;
+        private readonly bool test = false;
         private readonly string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
         private readonly string[,] productenKopen = new string[0, 0];
 
@@ -117,7 +117,6 @@ namespace GIP_WinkelProductenSysteem
 
             string aantalPrijs = "";
 
-
             if (prijs == 0)
             {
                 productPrijs = product[1];
@@ -145,7 +144,6 @@ namespace GIP_WinkelProductenSysteem
             productenToegevoegd[productenToegevoegd.Length - 1] = productNaam;
 
 
-
             if (!alGekocht(productNaam))
             {
                 ListViewItem lvItem = new ListViewItem(productNaam);
@@ -160,7 +158,6 @@ namespace GIP_WinkelProductenSysteem
                 int aantalGekocht = Convert.ToInt32(lvItem.SubItems[2].Text) + Convert.ToInt32(aantal);
                 lvItem.SubItems[2].Text = aantalGekocht.ToString();
             }
-
 
             lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
             pnlKorting.Visible = false;
@@ -192,13 +189,32 @@ namespace GIP_WinkelProductenSysteem
 
             maakTxbsLeeg();
 
-            voegProductToe(ZoekIndexInArray(productNaam, productenArray()), 0, aantal);
+            if (productAanwezig(productNaam))
+            {
+                voegProductToe(ZoekIndexInArray(productNaam, productenArray()), 0, aantal);
+            }
+            else
+            {
+                errorProv.SetError(txbHuidigProdNaam, "Product niet gevonden.");
+            }
 
+        }
+
+        bool productAanwezig(string productnaam)
+        {
+            bool val = false;
+
+            foreach (string product in namenStrings())
+            {
+                if (product == productnaam) val = true;
+            }
+
+            return val;
         }
 
         private int ZoekIndexInArray(string productNaam, string[] array)
         {
-            int index = -1;
+            int index = 0;
 
             for (int i = 0; i < array.Length; i++)
             {
@@ -250,91 +266,53 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
 
-            ////Als de textbox txbCategorie is wordt dit uitgevoerd.
-            //else if (txb.Name == "txbCategorie")
-            //{
-            //    //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
-            //    categorieFout = true;
-
-            //    //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-            //    if (!txbText.All(char.IsLetter) || string.IsNullOrEmpty(txbText)) errorProv.SetError(txb, foutenMsg);
-
-            //    else
-            //    {
-            //        //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
-            //        errorProv.SetError(txb, "");
-            //        categorieFout = false;
-            //    }
-            //}
-
-
-            ////Als de textbox txbAantalAanwezig is wordt dit uitgevoerd.
-            //else if (txb.Name == "txbAantalAanwezig")
-            //{
-            //    //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
-            //    aantalAanwezigFout = true;
-
-            //    //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-            //    if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
-
-            //    else
-            //    {
-            //        //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
-            //        errorProv.SetError(txb, "");
-            //        aantalAanwezigFout = false;
-            //    }
-            //}
-
-
-            ////Als de textbox txbAantalBestAanwezig is wordt dit uitgevoerd.
-            //else if (txb.Name == "txbAantalBestAanwezig")
-            //{
-            //    //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
-            //    aantalBestAanwezigFout = true;
-
-            //    //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
-            //    if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
-
-            //    else
-            //    {
-            //        //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
-            //        errorProv.SetError(txb, "");
-            //        aantalBestAanwezigFout = false;
-            //    }
-            //}
-
-
-            ////Als de textbox txbPrijs is wordt dit uitgevoerd.
-            //else if (txb.Name == "txbPrijs")
-            //{
-            //    //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
-            //    prijsFout = true;
-
-            //    //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is dan wordt er een fout aangegeven.
-            //    if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) || Int32.Parse(txbText) <= 0 || Int32.Parse(txbText) % 1 != 0) errorProv.SetError(txb, foutenMsg);
-
-            //    else
-            //    {
-            //        //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
-            //        errorProv.SetError(txb, "");
-            //        prijsFout = false;
-            //    }
-            //}
-
 
             //Als de textbox txbKorting is wordt dit uitgevoerd.
             else if (txb.Name == "txbKorting")
             {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 kortingFout = true;
 
-                //Als de textbox niet enkel cijfers bevat of leeg is of het getal kleiner is dan 0 of een komma getal is of groter is dan 100 dan wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText) && int.Parse(txbText) <= 0 ||
-                    int.Parse(txbText) % 1 != 0 || int.Parse(txbText) > 100)
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
                 }
-                else
+                //Wordt altijd uitgevoerd.
+                else if (kortingFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (int.Parse(txbText) < 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag niet negatief zijn.");
+                            tijdelijkFout = true;
+                        }
+                        //Als getal een kommagetal is dan moet er een foutmelding komen.
+                        if (int.Parse(txbText) % 1 != 0)
+                        {
+                            errorProv.SetError(txb, "Getal mag geen kommagetal zijn.");
+                            tijdelijkFout = true;
+                        }
+                        if (int.Parse(txbText) >= 100)
+                        {
+                            errorProv.SetError(txb, "Getal moet kleiner dan 100 zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if (!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
@@ -342,9 +320,50 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
 
+            //Als de textbox txbPrijs is wordt dit uitgevoerd.
+            else if (txb.Name == "txbNieuwePrijs")
+            {
+                //Tijdelijke bool om te kijken of er een fout is.
+                bool tijdelijkFout = false;
+
+                //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
+                prijsFout = true;
+
+                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
+                {
+                    errorProv.SetError(txb, foutenMsg);
+                    tijdelijkFout = true;
+                }
+                //Wordt altijd uitgevoerd.
+                else if (prijsFout)
+                {
+                    try
+                    {
+                        //Als getal kleiner is dan 0 moet er een foutmelding komen.
+                        if (double.Parse(txbText) <= 0)
+                        {
+                            errorProv.SetError(txb, "Getal moet groter dan 0 zijn.");
+                            tijdelijkFout = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
+                        errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
+                        tijdelijkFout = true;
+                    }
+                }
+                if (!tijdelijkFout)
+                {
+                    //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
+                    errorProv.SetError(txb, "");
+                    prijsFout = false;
+                }
+            }
         }
 
-        private string GetTxbData(TextBox txb)
+        string GetTxbData(TextBox txb)
         {
             //De string geeft de tekst van een opgevraagde textbox terug.
 
@@ -360,12 +379,35 @@ namespace GIP_WinkelProductenSysteem
                 //Als de textbox niet werd gevonden wordt er een fout gestuurd.
                 errorProv.SetError(txb, ex.Message);
             }
-            //De inhoud van de textbox wordt doorgestuurd.
 
+            //De inhoud van de textbox wordt doorgestuurd.
             ControleerTxb(txb);
+
             if (txb.Name == "txbHuidigProdNaam")
             {
                 if (!naamFout)
+                {
+                    return inhoud;
+                }
+                else
+                {
+                    return "Fout!";
+                }
+            }
+            else if (txb.Name == "txbKorting")
+            {
+                if (!kortingFout)
+                {
+                    return inhoud;
+                }
+                else
+                {
+                    return "Fout!";
+                }
+            }
+            else if (txb.Name == "txbNieuwePrijs")
+            {
+                if (!prijsFout)
                 {
                     return inhoud;
                 }
@@ -380,7 +422,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private string[] namenStrings()
+        string[] namenStrings()
         {
             string[] namen = new string[0];
 
@@ -416,41 +458,21 @@ namespace GIP_WinkelProductenSysteem
 
             return namen;
 
-
-            //string[,] appendArray(string[,] oudeArray)
-            //{
-            //    string[,] nieuweArray = new string[oudeArray.GetLength(0) + 1, 3];
-
-            //    int c = 0;
-            //    int cc = 0;
-            //    foreach (string x in oudeArray)
-            //    {
-            //        nieuweArray[c, cc] = x;
-            //        if (cc < 3) cc++;
-            //        else
-            //        {
-            //            cc = 0;
-            //            c++;
-            //        }
-            //    }
-
-            //    return nieuweArray;
-            //}
-
         }
 
-        private void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
+        void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
         {
             //Open op nieuwe thread voor betere prestaties
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
+                Thread.Sleep(1000);
                 autocompleteTxbNaam();
             });
             autocompleteTxbNaam();
 
         }
-        private void autocompleteTxbNaam()
+        void autocompleteTxbNaam()
         {
             AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
             autoSrc.AddRange(namenStrings());
@@ -460,12 +482,12 @@ namespace GIP_WinkelProductenSysteem
             txbHuidigProdNaam.AutoCompleteCustomSource = autoSrc;
         }
 
-        private void btnKorting_Click(object sender, EventArgs e)
+        void btnKorting_Click(object sender, EventArgs e)
         {
             pnlKorting.Visible = true;
         }
 
-        private decimal kortingPrijs(decimal prijs, decimal korting)
+        decimal kortingPrijs(decimal prijs, decimal korting)
         {
 
             //Korting op duidelijk manier schrijven:
@@ -497,23 +519,30 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void btnManuelePrijs_Click(object sender, EventArgs e)
+        void btnManuelePrijs_Click(object sender, EventArgs e)
         {
             txbNieuwePrijs.Enabled = true;
             manueleprijs = true;
         }
 
-        private void btnBevestigPrijs_Click(object sender, EventArgs e)
+        void btnBevestigPrijs_Click(object sender, EventArgs e)
         {
             decimal prijs = 0;
             decimal aantal = nmudAantal.Value;
-            string prodNaam = txbHuidigProdNaam.Text;
+            string prodNaam = GetTxbData(txbHuidigProdNaam);
             int index = ZoekIndexInArray(prodNaam, productenArray());
 
 
             if (manueleprijs)
             {
-                prijs = Convert.ToDecimal(verander(txbNieuwePrijs.Text, '.', ","));
+                try
+                {
+                    prijs = Convert.ToDecimal(verander(GetTxbData(txbNieuwePrijs), '.', ","));
+                }
+                catch (Exception)
+                {
+                    errorProv.SetError(txbNieuwePrijs, "De ingevulde prijs is ongeldig.");
+                }
                 txbNieuwePrijs.Enabled = false;
 
                 voegProductToe(index, prijs, aantal);
@@ -521,19 +550,30 @@ namespace GIP_WinkelProductenSysteem
             else
             {
                 string oudePrijsString = productenArray()[index].Split(',')[1];
-                string kortingString = txbKorting.Text;
+                string kortingString = GetTxbData(txbKorting);
 
                 decimal oudePrijs = Convert.ToDecimal(verander(oudePrijsString, '.', ","));
-                decimal korting = decimal.Parse(kortingString);
 
-                prijs = kortingPrijs(oudePrijs, korting);
+                decimal korting = 0;
+                
+                if (!kortingFout)
+                {
+                    korting = decimal.Parse(kortingString);
+                    prijs = kortingPrijs(oudePrijs, korting);
 
-                voegProductToe(index, prijs, aantal);
+                    voegProductToe(index, prijs, aantal);
+
+                    pnlKorting.Visible = false;
+                    manueleprijs = false;
+                    txbHuidigProdNaam.Text = "";
+                    nmudAantal.Value = 1;
+                }
+                else
+                {
+                    MessageBox.Show("De ingevulde korting is ongeldig.");
+                }
             }
-            pnlKorting.Visible = false;
-            manueleprijs = false;
-            txbHuidigProdNaam.Text = "";
-            nmudAantal.Value = 1;
+
         }
     }
 }
