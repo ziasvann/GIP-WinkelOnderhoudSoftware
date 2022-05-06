@@ -31,10 +31,11 @@ namespace GIP_WinkelProductenSysteem
         private readonly bool categorieFout = false;
         private bool prijsFout = false;
         private bool kortingFout = false;
-        private string totaalPrijs = "";
+        string totaalPrijs = "";
 
         private bool manueleprijs = false;
 
+        string[] winkelmandje = new string[0];
 
         private void Kassa_Load(object sender, EventArgs e)
         {
@@ -146,17 +147,20 @@ namespace GIP_WinkelProductenSysteem
 
             if (!alGekocht(productNaam))
             {
-                ListViewItem lvItem = new ListViewItem(productNaam);
-                lvItem.SubItems.Add(productPrijs);
-                lvItem.SubItems.Add(aantal.ToString());
-                lvProducten.Items.Add(lvItem);
+                Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
+                winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{productPrijs},{aantal}";
+
+                herlaadListView();
             }
             else
             {
-                int index = ZoekIndexInArray(productNaam, productenToegevoegd);
-                ListViewItem lvItem = lvProducten.Items[index];
-                int aantalGekocht = Convert.ToInt32(lvItem.SubItems[2].Text) + Convert.ToInt32(aantal);
-                lvItem.SubItems[2].Text = aantalGekocht.ToString();
+                int index = ZoekIndexInArray(productNaam, winkelmandje);
+                int vorigAantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
+                int aantalGekocht = vorigAantal + Convert.ToInt32(aantal);
+                
+                winkelmandje[index] = $"{productNaam},{productPrijs},{aantalGekocht}";
+
+                herlaadListView();
             }
 
             lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
@@ -166,13 +170,49 @@ namespace GIP_WinkelProductenSysteem
             nmudAantal.Value = 1;
         }
 
+        void herlaadListView()
+        {
+            lvProducten.Items.Clear();
+            
+            foreach (string product in winkelmandje)
+            {
+                bool toegevoegd = false;
+                
+                string[] eigenschappen = product.Split(',');
+
+                string productNaam = eigenschappen[0];
+                string productPrijs = eigenschappen[1];
+                string aantal = eigenschappen[2];
+
+                foreach(ListViewItem n in lvProducten.Items)
+                {
+                    if (n.Text == productNaam)
+                    {
+                        n.SubItems[1].Text = productPrijs;
+                        n.SubItems[2].Text = aantal;
+                        toegevoegd = true;
+                    }
+                }
+                if (!toegevoegd)
+                {
+                    ListViewItem lvItem = new ListViewItem(productNaam);
+                    lvItem.SubItems.Add(productPrijs);
+                    lvItem.SubItems.Add(aantal);
+
+                    lvProducten.Items.Add(lvItem);
+                    toegevoegd = true;
+                }
+            }
+        }
+
         bool alGekocht(string productNaam)
         {
             bool val = false;
 
-            foreach (ListViewItem product in lvProducten.Items)
+            foreach (string product in winkelmandje)
             {
-                if (product.Text == productNaam)
+                string naam = product.Split(',')[0];
+                if (naam == productNaam)
                 {
                     val = true;
                 }
@@ -320,7 +360,7 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
 
-            //Als de textbox txbPrijs is wordt dit uitgevoerd.
+            //Als de textbox txbNieuwePrijs is wordt dit uitgevoerd.
             else if (txb.Name == "txbNieuwePrijs")
             {
                 //Tijdelijke bool om te kijken of er een fout is.
@@ -329,7 +369,7 @@ namespace GIP_WinkelProductenSysteem
                 //Er wordt altijd vanuit gegaan dat er een fout is. Als alles juist is wordt er pas vanuit gegaan dat het juist is.
                 prijsFout = true;
 
-                //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
+                //Als de textbox niet enkel cijfers bevat of leeg is wordt er een fout aangegeven.
                 if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
@@ -521,8 +561,11 @@ namespace GIP_WinkelProductenSysteem
 
         void btnManuelePrijs_Click(object sender, EventArgs e)
         {
-            txbNieuwePrijs.Enabled = true;
-            manueleprijs = true;
+            txbNieuwePrijs.Enabled = !txbNieuwePrijs.Enabled;
+            txbKorting.Enabled = !txbKorting.Enabled;
+            txbNieuwePrijs.Text = "";
+            txbKorting.Text = "0";
+            manueleprijs = !manueleprijs;
         }
 
         void btnBevestigPrijs_Click(object sender, EventArgs e)
@@ -543,9 +586,12 @@ namespace GIP_WinkelProductenSysteem
                 {
                     errorProv.SetError(txbNieuwePrijs, "De ingevulde prijs is ongeldig.");
                 }
-                txbNieuwePrijs.Enabled = false;
+                txbNieuwePrijs.Enabled = !txbNieuwePrijs.Enabled;
+                txbKorting.Enabled = !txbKorting.Enabled;
 
                 voegProductToe(index, prijs, aantal);
+                
+                manueleprijs = false;
             }
             else
             {
@@ -574,6 +620,39 @@ namespace GIP_WinkelProductenSysteem
                 }
             }
 
+        }
+
+        void verwijderProd(int index)
+        {
+            string prijs = winkelmandje[index].Split(',')[1];
+            double prijsProduct = Convert.ToDouble(verander(prijs, ',', "."));
+
+            int aantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
+            
+            winkelmandje[index] = "";
+            for (int i = index; i < winkelmandje.Length - 1; i++)
+            {
+                winkelmandje[i] = winkelmandje[i + 1];
+            }
+            Array.Resize(ref winkelmandje, winkelmandje.Length - 1);
+            
+            herlaadListView();
+
+            totaalPrijs = (Convert.ToDouble(totaalPrijs) - (prijsProduct * aantal)).ToString();
+            lblTotPrijs.Text = totaalPrijs;
+        }
+        private void btnVerwijderProd_Click(object sender, EventArgs e)
+        {
+            if (lvProducten.SelectedItems.Count == 1)
+            {
+                int index = lvProducten.SelectedItems[0].Index;
+                verwijderProd(index);
+            }
+            else
+            {
+                MessageBox.Show("Selecteer één product.");
+            }
+        
         }
     }
 }

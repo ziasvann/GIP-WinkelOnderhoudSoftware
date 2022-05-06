@@ -12,4 +12,5 @@
 
 ### Done:
 
-- Kassa.cs --> Korting foutafhandeling
+- Kassa.cs --> Herladen listview logischer en makkelijker met method
+- Kassa.cs --> Mogelijkheid om product uit winkelmand aan te passen
