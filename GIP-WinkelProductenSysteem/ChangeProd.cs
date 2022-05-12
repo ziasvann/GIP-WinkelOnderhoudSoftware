@@ -680,7 +680,7 @@ namespace GIP_WinkelProductenSysteem
                 prijsFout = true;
 
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
+                if (!double.TryParse(txbText, out double n) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
                     tijdelijkFout = true;

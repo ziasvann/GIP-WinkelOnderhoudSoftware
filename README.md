@@ -9,8 +9,8 @@
 ### Bugs: 
 
 - Kassa.cs foutafhandeling
+- Kassa.cs prijs bij verwijderen is incorrect.
 
 ### Done:
 
-- Kassa.cs --> Herladen listview logischer en makkelijker met method
-- Kassa.cs --> Mogelijkheid om product uit winkelmand aan te passen
+- ChangeProd.cs --> prijs kon niet kommagetal zijn, nu wel
