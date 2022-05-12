@@ -9,8 +9,8 @@
 ### Bugs: 
 
 - Kassa.cs foutafhandeling
-- Kassa.cs prijs bij verwijderen is incorrect.
 
 ### Done:
 
 - ChangeProd.cs --> prijs kon niet kommagetal zijn, nu wel
+- Kassa.cs prijs bij verwijderen is incorrect.

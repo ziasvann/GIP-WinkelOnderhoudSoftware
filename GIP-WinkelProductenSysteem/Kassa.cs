@@ -163,7 +163,7 @@ namespace GIP_WinkelProductenSysteem
                 herlaadListView();
             }
 
-            lblTotPrijs.Text = verander(totaalPrijs, ',', ".");
+            lblTotPrijs.Text = berekentotaalPrijs().ToString();
             pnlKorting.Visible = false;
             manueleprijs = false;
             txbHuidigProdNaam.Text = "";
@@ -638,9 +638,27 @@ namespace GIP_WinkelProductenSysteem
             
             herlaadListView();
 
-            totaalPrijs = (Convert.ToDouble(totaalPrijs) - (prijsProduct * aantal)).ToString();
+            totaalPrijs = berekentotaalPrijs().ToString();
             lblTotPrijs.Text = totaalPrijs;
         }
+        double berekentotaalPrijs()
+        {
+            double totaalPrijs = 0;
+
+            foreach(string artikel in winkelmandje)
+            {
+                string[] eigenschappen = artikel.Split(',');
+                
+                double aantal = Convert.ToDouble(eigenschappen[2]);
+                double prijs = Convert.ToDouble(verander(eigenschappen[1],'.',","));
+                double nieuw = prijs * aantal;
+
+                totaalPrijs += nieuw;
+            }
+            
+            return totaalPrijs;
+        }
+
         private void btnVerwijderProd_Click(object sender, EventArgs e)
         {
             if (lvProducten.SelectedItems.Count == 1)
