@@ -12,5 +12,4 @@
 
 ### Done:
 
-- ChangeProd.cs --> prijs kon niet kommagetal zijn, nu wel
-- Kassa.cs prijs bij verwijderen is incorrect.
+- Kassa.cs --> fix: performance error bij start van applicatie als je snel gegevens invult
