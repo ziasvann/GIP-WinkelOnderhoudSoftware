@@ -197,18 +197,12 @@ namespace GIP_WinkelProductenSysteem
                 {
                     if (n.Split(',')[0] == productNaam)
                     {
-                        if (n.Split(',')[1] == productPrijs)
-                        {
-                            winkelmandje[counter] = $"{productNaam},{productPrijs},{(Convert.ToInt32(aantal)+1).ToString()}";
-                        }
-                        else
-                        {
-                            ListViewItem lvItem = new ListViewItem(productNaam);
-                            lvItem.SubItems.Add(productPrijs);
-                            lvItem.SubItems.Add(aantal);
+                        ListViewItem lvItem = new ListViewItem(productNaam);
+                        lvItem.SubItems.Add(productPrijs);
+                        lvItem.SubItems.Add(aantal);
 
-                            lvProducten.Items.Add(lvItem);
-                        }
+                        lvProducten.Items.Add(lvItem);
+                        
                         toegevoegd = true;
                     }
                     counter++;

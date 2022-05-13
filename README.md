@@ -8,7 +8,7 @@
 
 ### Bugs: 
 
-- Kassa.cs foutafhandeling
+- Korting bij geen korting
 
 ### Done:
 
