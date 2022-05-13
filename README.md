@@ -4,6 +4,7 @@
 - Duidelijker documenteren
 - Foutafhandeling
 - Verander naam: "Winkel Beheer Software"
+- Kassa.cs --> nieuweprijs foutafhandeling
 
 ### Bugs: 
 
@@ -11,5 +12,4 @@
 
 ### Done:
 
-- Autocomplete op nieuwe Thread geplaatst met wachttijd voor betere prestaties.
-- Fix bug: foutafhandeling changeProd.cs
+- Kassa.cs --> fix: performance error bij start van applicatie als je snel gegevens invult

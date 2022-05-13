@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
-            this.lblPrijs = new System.Windows.Forms.Label();
-            this.txbHuidigProdPrijs = new System.Windows.Forms.TextBox();
             this.lblProdNaam = new System.Windows.Forms.Label();
             this.btnVoegToe = new System.Windows.Forms.Button();
             this.btnKorting = new System.Windows.Forms.Button();
@@ -41,6 +39,7 @@
             this.lvProducten = new System.Windows.Forms.ListView();
             this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnAantal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotPrijs = new System.Windows.Forms.Label();
             this.pnlKorting = new System.Windows.Forms.Panel();
@@ -50,7 +49,7 @@
             this.txbNieuwePrijs = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.nmudAantal = new System.Windows.Forms.NumericUpDown();
-            this.columnAantal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnVerwijderProd = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlKorting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).BeginInit();
@@ -65,27 +64,6 @@
             this.txbHuidigProdNaam.Size = new System.Drawing.Size(317, 30);
             this.txbHuidigProdNaam.TabIndex = 2;
             this.txbHuidigProdNaam.TextChanged += new System.EventHandler(this.txbHuidigProdNaam_TextChanged);
-            // 
-            // lblPrijs
-            // 
-            this.lblPrijs.AutoSize = true;
-            this.lblPrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrijs.Location = new System.Drawing.Point(442, 51);
-            this.lblPrijs.Name = "lblPrijs";
-            this.lblPrijs.Size = new System.Drawing.Size(23, 25);
-            this.lblPrijs.TabIndex = 21;
-            this.lblPrijs.Text = "€";
-            // 
-            // txbHuidigProdPrijs
-            // 
-            this.txbHuidigProdPrijs.Enabled = false;
-            this.txbHuidigProdPrijs.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txbHuidigProdPrijs.Location = new System.Drawing.Point(465, 48);
-            this.txbHuidigProdPrijs.Name = "txbHuidigProdPrijs";
-            this.txbHuidigProdPrijs.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txbHuidigProdPrijs.Size = new System.Drawing.Size(117, 30);
-            this.txbHuidigProdPrijs.TabIndex = 20;
-            this.txbHuidigProdPrijs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblProdNaam
             // 
@@ -167,6 +145,10 @@
             this.columnHuidigePrijs.Text = "Huidige prijs";
             this.columnHuidigePrijs.Width = 75;
             // 
+            // columnAantal
+            // 
+            this.columnAantal.Text = "Aantal";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -197,7 +179,7 @@
             this.pnlKorting.Controls.Add(this.label1);
             this.pnlKorting.Location = new System.Drawing.Point(588, 343);
             this.pnlKorting.Name = "pnlKorting";
-            this.pnlKorting.Size = new System.Drawing.Size(194, 148);
+            this.pnlKorting.Size = new System.Drawing.Size(217, 148);
             this.pnlKorting.TabIndex = 30;
             this.pnlKorting.Visible = false;
             // 
@@ -246,7 +228,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(380, 87);
+            this.label4.Location = new System.Drawing.Point(380, 51);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 25);
             this.label4.TabIndex = 32;
@@ -255,7 +237,7 @@
             // nmudAantal
             // 
             this.nmudAantal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nmudAantal.Location = new System.Drawing.Point(465, 84);
+            this.nmudAantal.Location = new System.Drawing.Point(465, 48);
             this.nmudAantal.Maximum = new decimal(new int[] {
             50,
             0,
@@ -276,15 +258,22 @@
             0,
             0});
             // 
-            // columnAantal
+            // btnVerwijderProd
             // 
-            this.columnAantal.Text = "Aantal";
+            this.btnVerwijderProd.Location = new System.Drawing.Point(465, 84);
+            this.btnVerwijderProd.Name = "btnVerwijderProd";
+            this.btnVerwijderProd.Size = new System.Drawing.Size(117, 30);
+            this.btnVerwijderProd.TabIndex = 34;
+            this.btnVerwijderProd.Text = "Verwijder product";
+            this.btnVerwijderProd.UseVisualStyleBackColor = true;
+            this.btnVerwijderProd.Click += new System.EventHandler(this.btnVerwijderProd_Click);
             // 
             // Kassa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(809, 541);
+            this.Controls.Add(this.btnVerwijderProd);
             this.Controls.Add(this.nmudAantal);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pnlKorting);
@@ -294,8 +283,6 @@
             this.Controls.Add(this.btnKorting);
             this.Controls.Add(this.btnVoegToe);
             this.Controls.Add(this.lblProdNaam);
-            this.Controls.Add(this.lblPrijs);
-            this.Controls.Add(this.txbHuidigProdPrijs);
             this.Controls.Add(this.txbHuidigProdNaam);
             this.Name = "Kassa";
             this.Text = "Kassa";
@@ -311,8 +298,6 @@
 
         #endregion
         private System.Windows.Forms.TextBox txbHuidigProdNaam;
-        private System.Windows.Forms.Label lblPrijs;
-        public System.Windows.Forms.TextBox txbHuidigProdPrijs;
         private System.Windows.Forms.Label lblProdNaam;
         private System.Windows.Forms.Button btnVoegToe;
         private System.Windows.Forms.Button btnKorting;
@@ -332,5 +317,6 @@
         private System.Windows.Forms.NumericUpDown nmudAantal;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ColumnHeader columnAantal;
+        private System.Windows.Forms.Button btnVerwijderProd;
     }
 }

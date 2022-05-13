@@ -680,7 +680,7 @@ namespace GIP_WinkelProductenSysteem
                 prijsFout = true;
 
                 //Als de textbox niet enkel letters bevat of leeg is wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
+                if (!double.TryParse(txbText, out double n) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
                     tijdelijkFout = true;
@@ -897,13 +897,16 @@ namespace GIP_WinkelProductenSysteem
 
         private void txbCategorie_TextChanged(object sender, EventArgs e)
         {
-            //Open op nieuwe thread voor betere prestataties.
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Thread.Sleep(1000);
-                autocompleteTxbCat();
-            });
+            ////Open op nieuwe thread voor betere prestataties.
+            //new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+            //    Thread.Sleep(1000);
+            //    autocompleteTxbCat();
+            //}).Start();
+
+            autocompleteTxbCat();
+
         }
 
         private void autocompleteTxbCat()
