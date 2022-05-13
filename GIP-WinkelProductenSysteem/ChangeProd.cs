@@ -897,13 +897,16 @@ namespace GIP_WinkelProductenSysteem
 
         private void txbCategorie_TextChanged(object sender, EventArgs e)
         {
-            //Open op nieuwe thread voor betere prestataties.
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Thread.Sleep(1000);
-                autocompleteTxbCat();
-            });
+            ////Open op nieuwe thread voor betere prestataties.
+            //new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+            //    Thread.Sleep(1000);
+            //    autocompleteTxbCat();
+            //}).Start();
+
+            autocompleteTxbCat();
+
         }
 
         private void autocompleteTxbCat()

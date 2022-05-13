@@ -148,7 +148,7 @@ namespace GIP_WinkelProductenSysteem
             if (!alGekocht(productNaam))
             {
                 Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
-                winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{productPrijs},{aantal}";
+                winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantal}";
 
                 herlaadListView();
             }
@@ -157,8 +157,16 @@ namespace GIP_WinkelProductenSysteem
                 int index = ZoekIndexInArray(productNaam, winkelmandje);
                 int vorigAantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
                 int aantalGekocht = vorigAantal + Convert.ToInt32(aantal);
-                
-                winkelmandje[index] = $"{productNaam},{productPrijs},{aantalGekocht}";
+
+                if (verander(prijs.ToString(), ',', ".") == verander(productPrijs, ',', "."))
+                {
+                    winkelmandje[index] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantalGekocht}";
+                }
+                else
+                {
+                    Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
+                    winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantal}";
+                }
 
                 herlaadListView();
             }
@@ -184,14 +192,26 @@ namespace GIP_WinkelProductenSysteem
                 string productPrijs = eigenschappen[1];
                 string aantal = eigenschappen[2];
 
-                foreach(ListViewItem n in lvProducten.Items)
+                int counter = 0;
+                foreach(string n in winkelmandje)
                 {
-                    if (n.Text == productNaam)
+                    if (n.Split(',')[0] == productNaam)
                     {
-                        n.SubItems[1].Text = productPrijs;
-                        n.SubItems[2].Text = aantal;
+                        if (n.Split(',')[1] == productPrijs)
+                        {
+                            winkelmandje[counter] = $"{productNaam},{productPrijs},{(Convert.ToInt32(aantal)+1).ToString()}";
+                        }
+                        else
+                        {
+                            ListViewItem lvItem = new ListViewItem(productNaam);
+                            lvItem.SubItems.Add(productPrijs);
+                            lvItem.SubItems.Add(aantal);
+
+                            lvProducten.Items.Add(lvItem);
+                        }
                         toegevoegd = true;
                     }
+                    counter++;
                 }
                 if (!toegevoegd)
                 {
@@ -370,7 +390,7 @@ namespace GIP_WinkelProductenSysteem
                 prijsFout = true;
 
                 //Als de textbox niet enkel cijfers bevat of leeg is wordt er een fout aangegeven.
-                if (!txbText.All(char.IsNumber) || string.IsNullOrEmpty(txbText))
+                if (!double.TryParse(txbText, out double d) || string.IsNullOrEmpty(txbText))
                 {
                     errorProv.SetError(txb, foutenMsg);
                     tijdelijkFout = true;
@@ -502,14 +522,26 @@ namespace GIP_WinkelProductenSysteem
 
         void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
         {
-            //Open op nieuwe thread voor betere prestaties
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Thread.Sleep(1000);
-                autocompleteTxbNaam();
-            });
+            //try
+            //{
+            //    //Open op nieuwe thread voor betere prestaties
+            //    new Thread(() =>
+            //    {
+            //        Thread.CurrentThread.IsBackground = true;
+            //        Thread.Sleep(1000);
+            //        autocompleteTxbNaam();
+            //    }).Start();
+            //}
+            //catch (System.AccessViolationException ex)
+            //{
+            //    //Laat messagebox zien met 'Accessviolation exception!'
+            //    MessageBox.Show("Accessviolation exception!");
+            //    MessageBox.Show(ex.Message);
+            //}
+
             autocompleteTxbNaam();
+
+
 
         }
         void autocompleteTxbNaam()
