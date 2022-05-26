@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -609,14 +608,14 @@ namespace GIP_WinkelProductenSysteem
                             tijdelijkFout = true;
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         //Als er fout is met Int.Parse is er waarschijnlijk een letter in txbText. Er moet dus een foutmelding worden weergegeven.
                         errorProv.SetError(txb, "De inhoud van deze textbox moet een getal zijn.");
                         tijdelijkFout = true;
                     }
                 }
-                if(!tijdelijkFout)
+                if (!tijdelijkFout)
                 {
                     //Als men er zeker van is dat er geen enkele fout is wordt de errorprovider leeg gemaakt en is er geen fout.
                     errorProv.SetError(txb, "");
