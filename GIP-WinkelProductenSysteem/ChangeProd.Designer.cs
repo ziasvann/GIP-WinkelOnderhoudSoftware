@@ -244,10 +244,10 @@ namespace GIP_WinkelProductenSysteem
             // txbNaam
             // 
             this.txbNaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txbNaam.Location = new System.Drawing.Point(30, 22);
+            this.txbNaam.Location = new System.Drawing.Point(36, 22);
             this.txbNaam.Name = "txbNaam";
             this.txbNaam.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txbNaam.Size = new System.Drawing.Size(142, 20);
+            this.txbNaam.Size = new System.Drawing.Size(136, 20);
             this.txbNaam.TabIndex = 6;
             // 
             // txbCategorie
@@ -258,10 +258,10 @@ namespace GIP_WinkelProductenSysteem
             this.txbCategorie.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txbCategorie.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txbCategorie.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txbCategorie.Location = new System.Drawing.Point(33, 80);
+            this.txbCategorie.Location = new System.Drawing.Point(36, 80);
             this.txbCategorie.Name = "txbCategorie";
             this.txbCategorie.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txbCategorie.Size = new System.Drawing.Size(142, 20);
+            this.txbCategorie.Size = new System.Drawing.Size(139, 20);
             this.txbCategorie.TabIndex = 8;
             this.txbCategorie.TextChanged += new System.EventHandler(this.txbCategorie_TextChanged);
             // 
