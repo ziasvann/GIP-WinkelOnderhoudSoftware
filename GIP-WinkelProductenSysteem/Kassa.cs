@@ -28,7 +28,7 @@ namespace GIP_WinkelProductenSysteem
             "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
 
         private bool naamFout = false;
-        private readonly bool categorieFout = false;
+        private bool categorieFout = false;
         private bool prijsFout = false;
         private bool kortingFout = false;
         string totaalPrijs = "";
@@ -53,7 +53,7 @@ namespace GIP_WinkelProductenSysteem
 
         private readonly bool test = false;
         private readonly string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
-        private readonly string[,] productenKopen = new string[0, 0];
+        private string[,] productenKopen = new string[0, 0];
 
         string[] productenToegevoegd = new string[0];
 
@@ -118,12 +118,14 @@ namespace GIP_WinkelProductenSysteem
 
             string aantalPrijs = "";
 
+            //Prijs is 0 als er geen korting is.
             if (prijs == 0)
             {
                 productPrijs = product[1];
 
                 aantalPrijs = (Convert.ToDecimal(verander(productPrijs, '.', ",")) * aantal).ToString();
             }
+            //Prijs wordt enkel meegegeven als er korting wordt toegepast.
             else
             {
                 productPrijs = prijs.ToString();
@@ -157,11 +159,15 @@ namespace GIP_WinkelProductenSysteem
                 int index = ZoekIndexInArray(productNaam, winkelmandje);
                 int vorigAantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
                 int aantalGekocht = vorigAantal + Convert.ToInt32(aantal);
+                double vorigePrijs = Convert.ToDouble(verander(winkelmandje[index].Split(',')[1], '.', ","));
 
-                if (verander(prijs.ToString(), ',', ".") == verander(productPrijs, ',', "."))
+                //Prijs wordt enkel meegegeven als er korting wordt toegepast.
+                //Dit wordt dus uitgevoerd als er geen korting is of als de korting dezelfde is.
+                if (verander(prijs.ToString(), ',', ".") == verander(vorigePrijs.ToString(), ',', ".") || prijs == 0)
                 {
                     winkelmandje[index] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantalGekocht}";
                 }
+                //Dit wordt enkel uitgevoerd als er korting is die niet dezelfde is.
                 else
                 {
                     Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
