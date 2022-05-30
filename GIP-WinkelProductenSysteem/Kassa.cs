@@ -113,69 +113,18 @@ namespace GIP_WinkelProductenSysteem
         private void voegProductToe(int productenArrayIndex, decimal prijs, decimal aantal)
         {
             string[] product = productenArray()[productenArrayIndex].Split(',');
+            
             string productNaam = product[0];
-            string productPrijs = "";
-
-            string aantalPrijs = "";
-
-            //Prijs is 0 als er geen korting is.
-            if (prijs == 0)
-            {
-                productPrijs = product[1];
-
-                aantalPrijs = (Convert.ToDecimal(verander(productPrijs, '.', ",")) * aantal).ToString();
-            }
-            //Prijs wordt enkel meegegeven als er korting wordt toegepast.
-            else
-            {
-                productPrijs = prijs.ToString();
-                aantalPrijs = (decimal.Parse(productPrijs) * aantal).ToString();
-            }
-            string productCategorie = product[2];
-
-            if (totaalPrijs != "")
-            {
-                totaalPrijs = decimal.Add(Convert.ToDecimal(verander(aantalPrijs, '.', ",")),
-                    Convert.ToDecimal(verander(totaalPrijs, '.', ","))).ToString();
-            }
-            else
-            {
-                totaalPrijs = aantalPrijs;
-            }
+            string productPrijs = verander(product[1],',',".");
+            string aantalPrijs = (Convert.ToDecimal(productPrijs) * aantal).ToString();
 
             Array.Resize(ref productenToegevoegd, productenToegevoegd.Length + 1);
-            productenToegevoegd[productenToegevoegd.Length - 1] = productNaam;
+            productenToegevoegd[productenToegevoegd.Length - 1] = $"{productNaam},{productPrijs},{aantal}";
 
+            Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
+            winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{productPrijs},{aantal}";
 
-            if (!alGekocht(productNaam))
-            {
-                Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
-                winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantal}";
-
-                herlaadListView();
-            }
-            else
-            {
-                int index = ZoekIndexInArray(productNaam, winkelmandje);
-                int vorigAantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
-                int aantalGekocht = vorigAantal + Convert.ToInt32(aantal);
-                double vorigePrijs = Convert.ToDouble(verander(winkelmandje[index].Split(',')[1], '.', ","));
-
-                //Prijs wordt enkel meegegeven als er korting wordt toegepast.
-                //Dit wordt dus uitgevoerd als er geen korting is of als de korting dezelfde is.
-                if (verander(prijs.ToString(), ',', ".") == verander(vorigePrijs.ToString(), ',', ".") || prijs == 0)
-                {
-                    winkelmandje[index] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantalGekocht}";
-                }
-                //Dit wordt enkel uitgevoerd als er korting is die niet dezelfde is.
-                else
-                {
-                    Array.Resize(ref winkelmandje, winkelmandje.Length + 1);
-                    winkelmandje[winkelmandje.Length - 1] = $"{productNaam},{verander(productPrijs, ',', ".")},{aantal}";
-                }
-
-                herlaadListView();
-            }
+            herlaadListView();
 
             lblTotPrijs.Text = berekentotaalPrijs().ToString();
             pnlKorting.Visible = false;
@@ -187,41 +136,83 @@ namespace GIP_WinkelProductenSysteem
         void herlaadListView()
         {
             lvProducten.Items.Clear();
-            
-            foreach (string product in winkelmandje)
+
+            string productNaam = "";
+            string productPrijs = "";
+            string productAantal = "";
+            string productTotaalPrijs = "";
+
+            foreach (string product in productenToegevoegd)
             {
-                bool toegevoegd = false;
-                
-                string[] eigenschappen = product.Split(',');
+                productNaam = product.Split(',')[0];
+                productPrijs = verander(product.Split(',')[1], ',', ".");
+                productAantal = product.Split(',')[2];
+                productTotaalPrijs = (Convert.ToDecimal(productPrijs) * Convert.ToDecimal(productAantal)).ToString();
 
-                string productNaam = eigenschappen[0];
-                string productPrijs = eigenschappen[1];
-                string aantal = eigenschappen[2];
+                int count = 0;
 
-                int counter = 0;
-                foreach(string n in winkelmandje)
+                if (alGekocht(productNaam))
                 {
-                    if (n.Split(',')[0] == productNaam)
+                    foreach (string productToegevoegd in winkelmandje)
                     {
-                        ListViewItem lvItem = new ListViewItem(productNaam);
-                        lvItem.SubItems.Add(productPrijs);
-                        lvItem.SubItems.Add(aantal);
+                        string productNaamToegevoegd = productToegevoegd.Split(',')[0];
+                        string productPrijsToegevoegd = verander(productToegevoegd.Split(',')[1], ',', ".");
+                        string productAantalToegevoegd = productToegevoegd.Split(',')[2];
 
-                        lvProducten.Items.Add(lvItem);
-                        
-                        toegevoegd = true;
+                        if (productNaam == productNaamToegevoegd)
+                        {
+                            if (productPrijs == productPrijsToegevoegd)
+                            {
+                                productAantal = (Convert.ToDecimal(productAantal) + Convert.ToDecimal(productAantalToegevoegd)).ToString();
+                                productTotaalPrijs = (Convert.ToDecimal(productPrijs) * Convert.ToDecimal(productAantal)).ToString();
+
+                                ListViewItem lvItem = new ListViewItem(productNaam);
+                                lvItem.SubItems.Add(productPrijs);
+                                lvItem.SubItems.Add(productAantal);
+                                lvItem.SubItems.Add(productTotaalPrijs);
+
+                                ListViewItem lvm = lvProducten.Items.Cast<ListViewItem>()
+                                    .Where(lvI => (lvI.Text == productNaam && 
+                                    lvI.SubItems[1].Text == productPrijs))
+                                    .FirstOrDefault();
+
+                                lvProducten.Items.Remove(lvm);
+
+                                lvProducten.Items.Add(lvItem);
+
+                            }
+                            else
+                            {
+                                ListViewItem lvItem = new ListViewItem(productNaam);
+                                lvItem.SubItems.Add(productPrijs);
+                                lvItem.SubItems.Add(productAantal);
+                                lvItem.SubItems.Add(productTotaalPrijs);
+
+                                lvProducten.Items.Add(lvItem);
+                            }
+                        }
+                        else
+                        {
+                            ListViewItem lvItem = new ListViewItem(productNaam);
+                            lvItem.SubItems.Add(productPrijs);
+                            lvItem.SubItems.Add(productAantal);
+                            lvItem.SubItems.Add(productTotaalPrijs);
+
+                            lvProducten.Items.Add(lvItem);
+                        }
+                        count++;
                     }
-                    counter++;
                 }
-                if (!toegevoegd)
+                else
                 {
                     ListViewItem lvItem = new ListViewItem(productNaam);
                     lvItem.SubItems.Add(productPrijs);
-                    lvItem.SubItems.Add(aantal);
+                    lvItem.SubItems.Add(productAantal);
+                    lvItem.SubItems.Add(productTotaalPrijs);
 
                     lvProducten.Items.Add(lvItem);
-                    toegevoegd = true;
                 }
+                
             }
         }
 
@@ -229,15 +220,16 @@ namespace GIP_WinkelProductenSysteem
         {
             bool val = false;
 
-            foreach (string product in winkelmandje)
+            int count = 0;
+            foreach (string product in productenToegevoegd)
             {
                 string naam = product.Split(',')[0];
                 if (naam == productNaam)
                 {
-                    val = true;
+                    count++;
                 }
             }
-
+            if (count > 1) val = true;
             return val;
         }
 
@@ -541,8 +533,6 @@ namespace GIP_WinkelProductenSysteem
 
             autocompleteTxbNaam();
 
-
-
         }
         void autocompleteTxbNaam()
         {
@@ -677,32 +667,27 @@ namespace GIP_WinkelProductenSysteem
         {
             double totaalPrijs = 0;
 
-            foreach(string artikel in winkelmandje)
+            foreach(ListViewItem artikel in lvProducten.Items)
             {
-                string[] eigenschappen = artikel.Split(',');
-                
-                double aantal = Convert.ToDouble(eigenschappen[2]);
-                double prijs = Convert.ToDouble(verander(eigenschappen[1],'.',","));
-                double nieuw = prijs * aantal;
-
-                totaalPrijs += nieuw;
+                string prijs = artikel.SubItems[3].Text;
+                totaalPrijs += Convert.ToDouble(verander(prijs, ',', "."));
             }
             
             return totaalPrijs;
         }
 
-        private void btnVerwijderProd_Click(object sender, EventArgs e)
-        {
-            if (lvProducten.SelectedItems.Count == 1)
-            {
-                int index = lvProducten.SelectedItems[0].Index;
-                verwijderProd(index);
-            }
-            else
-            {
-                MessageBox.Show("Selecteer één product.");
-            }
-        
-        }
+         private void btnVerwijderProd_Click(object sender, EventArgs e)
+         {
+             if (lvProducten.SelectedItems.Count == 1)
+             {
+                 int index = lvProducten.SelectedItems[0].Index;
+                 verwijderProd(index);
+             }
+             else
+             {
+                 MessageBox.Show("Selecteer één product.");
+             }
+         
+         }
     }
 }

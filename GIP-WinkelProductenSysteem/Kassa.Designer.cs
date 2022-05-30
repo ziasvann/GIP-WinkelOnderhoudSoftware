@@ -38,7 +38,7 @@
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.lvProducten = new System.Windows.Forms.ListView();
             this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHuidigePrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnEenheidsPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAantal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotPrijs = new System.Windows.Forms.Label();
@@ -50,6 +50,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.nmudAantal = new System.Windows.Forms.NumericUpDown();
             this.btnVerwijderProd = new System.Windows.Forms.Button();
+            this.columnTotaalPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlKorting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).BeginInit();
@@ -124,8 +125,9 @@
             // 
             this.lvProducten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnProducten,
-            this.columnHuidigePrijs,
-            this.columnAantal});
+            this.columnEenheidsPrijs,
+            this.columnAantal,
+            this.columnTotaalPrijs});
             this.lvProducten.FullRowSelect = true;
             this.lvProducten.HideSelection = false;
             this.lvProducten.Location = new System.Drawing.Point(12, 12);
@@ -138,16 +140,17 @@
             // columnProducten
             // 
             this.columnProducten.Text = "Product";
-            this.columnProducten.Width = 150;
+            this.columnProducten.Width = 110;
             // 
-            // columnHuidigePrijs
+            // columnEenheidsPrijs
             // 
-            this.columnHuidigePrijs.Text = "Huidige prijs";
-            this.columnHuidigePrijs.Width = 75;
+            this.columnEenheidsPrijs.Text = "Eenheids prijs";
+            this.columnEenheidsPrijs.Width = 80;
             // 
             // columnAantal
             // 
             this.columnAantal.Text = "Aantal";
+            this.columnAantal.Width = 50;
             // 
             // label2
             // 
@@ -268,6 +271,11 @@
             this.btnVerwijderProd.UseVisualStyleBackColor = true;
             this.btnVerwijderProd.Click += new System.EventHandler(this.btnVerwijderProd_Click);
             // 
+            // columnTotaalPrijs
+            // 
+            this.columnTotaalPrijs.Text = "Totaal prijs";
+            this.columnTotaalPrijs.Width = 75;
+            // 
             // Kassa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -306,7 +314,7 @@
         private System.Windows.Forms.ErrorProvider errorProv;
         public System.Windows.Forms.ListView lvProducten;
         public System.Windows.Forms.ColumnHeader columnProducten;
-        private System.Windows.Forms.ColumnHeader columnHuidigePrijs;
+        private System.Windows.Forms.ColumnHeader columnEenheidsPrijs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTotPrijs;
         private System.Windows.Forms.Panel pnlKorting;
@@ -318,5 +326,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ColumnHeader columnAantal;
         private System.Windows.Forms.Button btnVerwijderProd;
+        private System.Windows.Forms.ColumnHeader columnTotaalPrijs;
     }
 }
