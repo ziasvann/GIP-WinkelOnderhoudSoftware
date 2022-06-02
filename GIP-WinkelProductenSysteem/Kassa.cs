@@ -508,25 +508,7 @@ namespace GIP_WinkelProductenSysteem
 
         void txbHuidigProdNaam_TextChanged(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    //Open op nieuwe thread voor betere prestaties
-            //    new Thread(() =>
-            //    {
-            //        Thread.CurrentThread.IsBackground = true;
-            //        Thread.Sleep(1000);
-            //        autocompleteTxbNaam();
-            //    }).Start();
-            //}
-            //catch (System.AccessViolationException ex)
-            //{
-            //    //Laat messagebox zien met 'Accessviolation exception!'
-            //    MessageBox.Show("Accessviolation exception!");
-            //    MessageBox.Show(ex.Message);
-            //}
-
             autocompleteTxbNaam();
-
         }
         void autocompleteTxbNaam()
         {

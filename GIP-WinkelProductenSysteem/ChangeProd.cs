@@ -880,6 +880,21 @@ namespace GIP_WinkelProductenSysteem
             categorieën = wijzigCategorieën();
         }
 
+        private void txbCategorie_TextChanged(object sender, EventArgs e)
+        {
+            autocompleteTxbCat();
+        }
+
+        private void autocompleteTxbCat()
+        {
+            AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
+            autoSrc.AddRange(categorieën);
+
+            txbCategorie.AutoCompleteMode = AutoCompleteMode.Suggest;
+            txbCategorie.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txbCategorie.AutoCompleteCustomSource = autoSrc;
+        }
+
         private void ChangeProd_DoubleClick(object sender, EventArgs e)
         {
             if (test)
@@ -891,31 +906,6 @@ namespace GIP_WinkelProductenSysteem
                 }
                 MessageBox.Show(n);
             }
-
-        }
-
-        private void txbCategorie_TextChanged(object sender, EventArgs e)
-        {
-            ////Open op nieuwe thread voor betere prestataties.
-            //new Thread(() =>
-            //{
-            //    Thread.CurrentThread.IsBackground = true;
-            //    Thread.Sleep(1000);
-            //    autocompleteTxbCat();
-            //}).Start();
-
-            autocompleteTxbCat();
-
-        }
-
-        private void autocompleteTxbCat()
-        {
-            AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
-            autoSrc.AddRange(categorieën);
-
-            txbCategorie.AutoCompleteMode = AutoCompleteMode.Suggest;
-            txbCategorie.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            txbCategorie.AutoCompleteCustomSource = autoSrc;
 
         }
 
