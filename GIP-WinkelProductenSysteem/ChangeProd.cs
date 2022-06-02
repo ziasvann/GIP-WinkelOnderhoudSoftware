@@ -14,13 +14,6 @@ namespace GIP_WinkelProductenSysteem
             InitializeComponent();
         }
 
-        private void ChangeProd_Load(object sender, EventArgs e)
-        {
-            LoadProducten();
-            werkCategorieënBij();
-            werkNamenBij();
-        }
-
         private readonly bool test = false;
         private bool newProd = false;
         private bool naamFout = false;
@@ -36,7 +29,6 @@ namespace GIP_WinkelProductenSysteem
         private readonly string foutenMsg = "Er zit een fout in de ingevoerde gegevens.";
         private readonly string naamAanwezigMsg = "Deze naam is al gebruikt voor een ander product. Kies een andere naam.";
 
-        //string filePath = @"D:\ZIAS\School\2021-2022\GIP\Projects\GIP\GIP-WinkelProductenSysteem\GIP-WinkelProductenSysteem\Producten.xml";
         private readonly string filePath = Application.LocalUserAppDataPath + @"\Producten.xml";
         private string[] categorieën = new string[0];
         private string[] namen = new string[0];
@@ -47,27 +39,11 @@ namespace GIP_WinkelProductenSysteem
         //'huidigeNaam' wordt gebruikt om te controleren of de naam is gewijzigd na het aanpassen van een product.
         private string huidigeNaam = "";
 
-        private void LoadProducten()
+        private void ChangeProd_Load(object sender, EventArgs e)
         {
-            //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
-
-            //Maakt de XML-database aan als deze nog niet is gemaakt.
-            if (!File.Exists(filePath))
-            {
-                MakeXmlProducten();
-                MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (File.ReadAllText(filePath) == "")
-            {
-                MakeXmlProducten();
-                MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            //Als de XML-database volledig in orde is kunnen de producten geladen worden in de listview.
-            else
-            {
-                FillListView();
-            }
+            LoadProducten();
+            werkCategorieënBij();
+            werkNamenBij();
         }
 
         private void btnMaakProduct_Click(object sender, EventArgs e)
@@ -134,10 +110,6 @@ namespace GIP_WinkelProductenSysteem
             }
             else
             {
-                if (test)
-                {
-                    MessageBox.Show(aantalAanwezigXml(GetTxbData(txbCategorie)).ToString());
-                }
                 //Als er toch een fout zit in een van textboxen wordt dit weergegeven door een textbox.
                 MessageBox.Show(foutenMsg);
             }
@@ -168,6 +140,82 @@ namespace GIP_WinkelProductenSysteem
             //Het product moet worden verwijderd, daarna moeten de categorieën worden bijgewerkt.
             DelProduct();
             werkCategorieënBij();
+        }
+        private void txbCategorie_TextChanged(object sender, EventArgs e)
+        {
+            autocompleteTxbCat();
+        }
+
+        private void lvProducten_MouseClick(object sender, MouseEventArgs e)
+        {
+            foreach (ListViewItem lvItem in lvProducten.Items)
+            {
+                Rectangle itemRect = lvItem.GetBounds(ItemBoundsPortion.Entire);
+                if (itemRect.Contains(e.Location))
+                {
+                    nieuweSelectedIndex = lvItem.Index;
+
+                    //Als ervoor nog niets was geselecteerd wordt het nieuwe geselecteerde item gelijk aan het huidige.
+                    if (selectedIndex == -1)
+                    {
+                        selectedIndex = nieuweSelectedIndex;
+                    }
+                }
+            }
+
+            if (pnlProductEigenschappen.Visible == true)
+            {
+                DialogResult result = MessageBox.Show("Wilt u het product verder bewerken?", "Verder gaan?", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.No)
+                {
+                    //Zet pnl onzichtbaar
+                    pnlProductEigenschappen.Visible = false;
+
+                    //Selecteer nieuw item
+                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
+
+                    //Deselecteer oorspronkelijk item
+                    lvProducten.Items[selectedIndex].Selected = false;
+
+                    selectedIndex = nieuweSelectedIndex;
+                }
+                else
+                {
+                    //Laat pnl zichtbaar
+                    pnlProductEigenschappen.Visible = true;
+
+                    //Selecteer nieuw item alvast
+                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
+
+                    //Deslecteer oorspronkelijk item
+                    lvProducten.Items[selectedIndex].Selected = false;
+                }
+            }
+
+        }
+
+        private void LoadProducten()
+        {
+            //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
+
+            //Maakt de XML-database aan als deze nog niet is gemaakt.
+            if (!File.Exists(filePath))
+            {
+                MakeXmlProducten();
+                MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (File.ReadAllText(filePath) == "")
+            {
+                MakeXmlProducten();
+                MessageBox.Show(welkomMsg, "Welkom!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            //Als de XML-database volledig in orde is kunnen de producten geladen worden in de listview.
+            else
+            {
+                FillListView();
+            }
         }
 
         private void MakeXmlProducten()
@@ -796,49 +844,6 @@ namespace GIP_WinkelProductenSysteem
             return geenErrors;
         }
 
-        private int aantalAanwezigXml(string teZoeken)
-        {
-            int aantalAanwezig = 0;
-
-            XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(filePath, FileMode.Open);
-            xmlDoc.Load(file);
-
-            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
-
-            foreach (XmlNode xmlNode in xmlNodeList)
-            {
-                string prodNaam = xmlNode["Naam"].InnerText;
-                string prodCategorie = xmlNode["Categorie"].InnerText;
-                string prodAantal = xmlNode["Aantal"].InnerText;
-                string prodBestAantal = xmlNode["Bestaantal"].InnerText;
-
-                if (prodNaam == teZoeken)
-                {
-                    aantalAanwezig++;
-                }
-
-                if (prodCategorie == teZoeken)
-                {
-                    aantalAanwezig++;
-                }
-                //prodAantal en prodBestAantal kunnen dezelfde zijn!!
-                if (prodAantal == teZoeken)
-                {
-                    aantalAanwezig++;
-                }
-
-                if (prodBestAantal == teZoeken)
-                {
-                    aantalAanwezig++;
-                }
-            }
-
-            file.Close();
-
-            return aantalAanwezig;
-        }
-
         private string[] wijzigCategorieën()
         {
             string[] categorieën = new string[0];
@@ -880,11 +885,6 @@ namespace GIP_WinkelProductenSysteem
             categorieën = wijzigCategorieën();
         }
 
-        private void txbCategorie_TextChanged(object sender, EventArgs e)
-        {
-            autocompleteTxbCat();
-        }
-
         private void autocompleteTxbCat()
         {
             AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
@@ -893,20 +893,6 @@ namespace GIP_WinkelProductenSysteem
             txbCategorie.AutoCompleteMode = AutoCompleteMode.Suggest;
             txbCategorie.AutoCompleteSource = AutoCompleteSource.CustomSource;
             txbCategorie.AutoCompleteCustomSource = autoSrc;
-        }
-
-        private void ChangeProd_DoubleClick(object sender, EventArgs e)
-        {
-            if (test)
-            {
-                string n = "";
-                foreach (string x in categorieën)
-                {
-                    n += x + "\n";
-                }
-                MessageBox.Show(n);
-            }
-
         }
 
         private string[] wijzigNamen()
@@ -986,55 +972,6 @@ namespace GIP_WinkelProductenSysteem
             {
                 return 0;
             }
-        }
-
-        private void lvProducten_MouseClick(object sender, MouseEventArgs e)
-        {
-            foreach (ListViewItem lvItem in lvProducten.Items)
-            {
-                Rectangle itemRect = lvItem.GetBounds(ItemBoundsPortion.Entire);
-                if (itemRect.Contains(e.Location))
-                {
-                    nieuweSelectedIndex = lvItem.Index;
-
-                    //Als ervoor nog niets was geselecteerd wordt het nieuwe geselecteerde item gelijk aan het huidige.
-                    if (selectedIndex == -1)
-                    {
-                        selectedIndex = nieuweSelectedIndex;
-                    }
-                }
-            }
-
-            if (pnlProductEigenschappen.Visible == true)
-            {
-                DialogResult result = MessageBox.Show("Wilt u het product verder bewerken?", "Verder gaan?", MessageBoxButtons.YesNo);
-
-                if (result == DialogResult.No)
-                {
-                    //Zet pnl onzichtbaar
-                    pnlProductEigenschappen.Visible = false;
-
-                    //Selecteer nieuw item
-                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
-
-                    //Deselecteer oorspronkelijk item
-                    lvProducten.Items[selectedIndex].Selected = false;
-
-                    selectedIndex = nieuweSelectedIndex;
-                }
-                else
-                {
-                    //Laat pnl zichtbaar
-                    pnlProductEigenschappen.Visible = true;
-
-                    //Selecteer nieuw item alvast
-                    lvProducten.Items[nieuweSelectedIndex].Selected = true;
-
-                    //Deslecteer oorspronkelijk item
-                    lvProducten.Items[selectedIndex].Selected = false;
-                }
-            }
-
         }
 
         private string verander(string getal, char oorspronkelijk, string nieuw)

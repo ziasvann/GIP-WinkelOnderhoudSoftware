@@ -86,7 +86,6 @@ namespace GIP_WinkelProductenSysteem
             this.btnChangeProd.TabIndex = 14;
             this.btnChangeProd.Text = "Wijzig product";
             this.btnChangeProd.UseVisualStyleBackColor = true;
-            this.btnChangeProd.Click += new System.EventHandler(this.btnChangeProd_Click);
             // 
             // btnDelProduct
             // 
@@ -335,7 +334,6 @@ namespace GIP_WinkelProductenSysteem
             this.Name = "ChangeProd";
             this.Text = "Verander product";
             this.Load += new System.EventHandler(this.ChangeProd_Load);
-            this.DoubleClick += new System.EventHandler(this.ChangeProd_DoubleClick);
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
             this.pnlProductEigenschappen.ResumeLayout(false);
             this.pnlProductEigenschappen.PerformLayout();
