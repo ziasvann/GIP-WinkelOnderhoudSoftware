@@ -39,14 +39,14 @@ namespace GIP_WinkelProductenSysteem
         //'huidigeNaam' wordt gebruikt om te controleren of de naam is gewijzigd na het aanpassen van een product.
         private string huidigeNaam = "";
 
-        private void ChangeProd_Load(object sender, EventArgs e)
+        void ChangeProd_Load(object sender, EventArgs e)
         {
             LoadProducten();
             werkCategorieënBij();
             werkNamenBij();
         }
 
-        private void btnMaakProduct_Click(object sender, EventArgs e)
+        void btnMaakProduct_Click(object sender, EventArgs e)
         {
             //Deze method wordt geactiveerd bij het klikken op btnMaakproduct.
 
@@ -71,7 +71,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void btnBevestigProducten_Click(object sender, EventArgs e)
+        void btnBevestigProducten_Click(object sender, EventArgs e)
         {
             //Deze method wordt geactiveerd bij het klikken op btnBevestigen.
 
@@ -115,7 +115,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void btnChangeProd_Click(object sender, EventArgs e)
+        void btnChangeProd_Click(object sender, EventArgs e)
         {
             //Deze method wordt geactiveerd bij het klikken op btnChangeProd.
 
@@ -133,7 +133,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void btnDelProduct_Click(object sender, EventArgs e)
+        void btnDelProduct_Click(object sender, EventArgs e)
         {
             //Deze method wordt geactiveerd bij het klikken op btnDelProduct.
 
@@ -141,12 +141,13 @@ namespace GIP_WinkelProductenSysteem
             DelProduct();
             werkCategorieënBij();
         }
-        private void txbCategorie_TextChanged(object sender, EventArgs e)
+
+        void txbCategorie_TextChanged(object sender, EventArgs e)
         {
             autocompleteTxbCat();
         }
 
-        private void lvProducten_MouseClick(object sender, MouseEventArgs e)
+        void lvProducten_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (ListViewItem lvItem in lvProducten.Items)
             {
@@ -195,7 +196,8 @@ namespace GIP_WinkelProductenSysteem
 
         }
 
-        private void LoadProducten()
+
+        void LoadProducten()
         {
             //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
 
@@ -218,7 +220,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void MakeXmlProducten()
+        void MakeXmlProducten()
         {
             //Deze method maakt een XML bestand met de standaard waarden. Op die manier kunnen er later producten in worden toegevoegd.
 
@@ -239,7 +241,7 @@ namespace GIP_WinkelProductenSysteem
             xml.Close();
         }
 
-        private void MaakNieuwProduct()
+        void MaakNieuwProduct()
         {
             //Deze method maakt een nieuw product en zet deze in de XML-database.
 
@@ -323,7 +325,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void WijzigProduct()
+        void WijzigProduct()
         {
             //Deze method wijzigt een bepaald product en geeft zijn nieuwe waarden.
 
@@ -369,7 +371,7 @@ namespace GIP_WinkelProductenSysteem
             xmlDoc.Save(filePath);
         }
 
-        private void DelProduct()
+        void DelProduct()
         {
             //Deze method verwijderd een bepaald product.
 
@@ -421,7 +423,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void FillListView()
+        void FillListView()
         {
             //Deze method laad alle producten met hun eigenschappen in de ListView.
 
@@ -466,7 +468,7 @@ namespace GIP_WinkelProductenSysteem
             file.Close();
         }
 
-        private void FillTxb()
+        void FillTxb()
         {
             //Deze method zorgt ervoor dat alle eigenschappen van het geselecteerd product in zijn bijbehorende textbox komt.
 
@@ -517,7 +519,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private void ClearTxb()
+        void ClearTxb()
         {
             //Deze method maakt alle textboxen leeg.
 
@@ -531,7 +533,7 @@ namespace GIP_WinkelProductenSysteem
             txbPrijs.Text = "";
             txbKorting.Text = "";
         }
-        private void removeError()
+        void removeError()
         {
             errorProv.SetError(txbNaam, "");
             errorProv.SetError(txbCategorie, "");
@@ -548,7 +550,7 @@ namespace GIP_WinkelProductenSysteem
             kortingFout = false;
         }
 
-        private string GetTxbData(TextBox txb)
+        string GetTxbData(TextBox txb)
         {
             //De string geeft de tekst van een opgevraagde textbox terug.
 
@@ -568,7 +570,7 @@ namespace GIP_WinkelProductenSysteem
             return inhoud;
         }
 
-        private void ControleerTxb(TextBox txb)
+        void ControleerTxb(TextBox txb)
         {
             //Deze method dient om te controleren of de ingegeven tekst van de textbox een reële waarde is.
 
@@ -813,7 +815,7 @@ namespace GIP_WinkelProductenSysteem
 
         }
 
-        private bool naamAlAanwezig(string naam)
+        bool naamAlAanwezig(string naam)
         {
             bool aanwezig = false;
 
@@ -832,7 +834,7 @@ namespace GIP_WinkelProductenSysteem
             return aanwezig;
         }
 
-        private bool GeenErrors()
+        bool GeenErrors()
         {
             bool geenErrors = true;
 
@@ -844,7 +846,7 @@ namespace GIP_WinkelProductenSysteem
             return geenErrors;
         }
 
-        private string[] wijzigCategorieën()
+        string[] wijzigCategorieën()
         {
             string[] categorieën = new string[0];
 
@@ -879,13 +881,13 @@ namespace GIP_WinkelProductenSysteem
             return categorieën;
         }
 
-        private void werkCategorieënBij()
+        void werkCategorieënBij()
         {
             Array.Resize(ref categorieën, wijzigCategorieën().Length);
             categorieën = wijzigCategorieën();
         }
 
-        private void autocompleteTxbCat()
+        void autocompleteTxbCat()
         {
             AutoCompleteStringCollection autoSrc = new AutoCompleteStringCollection();
             autoSrc.AddRange(categorieën);
@@ -895,7 +897,7 @@ namespace GIP_WinkelProductenSysteem
             txbCategorie.AutoCompleteCustomSource = autoSrc;
         }
 
-        private string[] wijzigNamen()
+        string[] wijzigNamen()
         {
             //Deze array geeft als resultaat alle product namen uit de XML-database.
 
@@ -932,7 +934,7 @@ namespace GIP_WinkelProductenSysteem
             return namen;
         }
 
-        private void werkNamenBij()
+        void werkNamenBij()
         {
             //Dit werkt de array met namen bij zodat deze up-to-date is.
 
@@ -942,7 +944,7 @@ namespace GIP_WinkelProductenSysteem
             namen = wijzigNamen();
         }
 
-        private decimal kortingPrijs(decimal prijs, decimal korting)
+        decimal kortingPrijs(decimal prijs, decimal korting)
         {
 
             //Korting op duidelijk manier schrijven:
@@ -974,7 +976,7 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        private string verander(string getal, char oorspronkelijk, string nieuw)
+        string verander(string getal, char oorspronkelijk, string nieuw)
         {
             string output = "";
 
