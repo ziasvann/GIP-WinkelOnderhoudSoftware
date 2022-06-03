@@ -31,6 +31,7 @@ namespace GIP_WinkelProductenSysteem
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangeProd));
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnMaakProduct = new System.Windows.Forms.Button();
             this.btnChangeProd = new System.Windows.Forms.Button();
@@ -331,6 +332,7 @@ namespace GIP_WinkelProductenSysteem
             this.Controls.Add(this.btnChangeProd);
             this.Controls.Add(this.btnMaakProduct);
             this.Controls.Add(this.lvProducten);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChangeProd";
             this.Text = "Verander product";
             this.Load += new System.EventHandler(this.ChangeProd_Load);

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Kassa));
             this.txbHuidigProdNaam = new System.Windows.Forms.TextBox();
             this.lblProdNaam = new System.Windows.Forms.Label();
             this.btnVoegToe = new System.Windows.Forms.Button();
@@ -40,6 +41,7 @@
             this.columnProducten = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnEenheidsPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAantal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnTotaalPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotPrijs = new System.Windows.Forms.Label();
             this.pnlKorting = new System.Windows.Forms.Panel();
@@ -50,7 +52,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.nmudAantal = new System.Windows.Forms.NumericUpDown();
             this.btnVerwijderProd = new System.Windows.Forms.Button();
-            this.columnTotaalPrijs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.pnlKorting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmudAantal)).BeginInit();
@@ -151,6 +152,11 @@
             // 
             this.columnAantal.Text = "Aantal";
             this.columnAantal.Width = 50;
+            // 
+            // columnTotaalPrijs
+            // 
+            this.columnTotaalPrijs.Text = "Totaal prijs";
+            this.columnTotaalPrijs.Width = 75;
             // 
             // label2
             // 
@@ -271,11 +277,6 @@
             this.btnVerwijderProd.UseVisualStyleBackColor = true;
             this.btnVerwijderProd.Click += new System.EventHandler(this.btnVerwijderProd_Click);
             // 
-            // columnTotaalPrijs
-            // 
-            this.columnTotaalPrijs.Text = "Totaal prijs";
-            this.columnTotaalPrijs.Width = 75;
-            // 
             // Kassa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -292,6 +293,7 @@
             this.Controls.Add(this.btnVoegToe);
             this.Controls.Add(this.lblProdNaam);
             this.Controls.Add(this.txbHuidigProdNaam);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Kassa";
             this.Text = "Kassa";
             this.Load += new System.EventHandler(this.Kassa_Load);
