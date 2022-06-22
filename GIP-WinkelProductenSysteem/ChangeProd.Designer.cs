@@ -87,6 +87,7 @@ namespace GIP_WinkelProductenSysteem
             this.btnChangeProd.TabIndex = 14;
             this.btnChangeProd.Text = "Wijzig product";
             this.btnChangeProd.UseVisualStyleBackColor = true;
+            this.btnChangeProd.Click += new System.EventHandler(this.btnChangeProd_Click);
             // 
             // btnDelProduct
             // 
