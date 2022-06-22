@@ -12,4 +12,4 @@ Voor dit werk heb ik veel ondersteuning gekregen. Ik wil graag mijn moeder bedan
 
 Door dit project te realiseren heb ik enorm veel bijgeleerd. Ik ben dus enorm dankbaar dat ik de kans heb gekregen om dit project te maken.
 
-U kunt het bijbehorende boek vinden via [deze](https://donboscohalle-my.sharepoint.com/:w:/g/personal/zias_vannes_donboscohalle_be/Ece7NscOT9lIlTa2-19U6RUBFMBPqWAAzbQINC2aJgmewg?e=2Aprti) link.
+U kunt het bijbehorende boek vinden via [deze](gip-wbs-final.pdf) link.
