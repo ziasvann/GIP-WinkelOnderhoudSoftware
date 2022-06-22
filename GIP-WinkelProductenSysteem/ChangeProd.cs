@@ -71,50 +71,6 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        void btnBevestigProducten_Click(object sender, EventArgs e)
-        {
-            //Deze method wordt geactiveerd bij het klikken op btnBevestigen.
-
-            //Vooraleer alle textboxen worden ingelezen moeten ze worden gecontroleerd op fouten.
-            ControleerTxb(txbNaam);
-            ControleerTxb(txbCategorie);
-            ControleerTxb(txbAantalAanwezig);
-            ControleerTxb(txbAantalBestAanwezig);
-            ControleerTxb(txbPrijs);
-            ControleerTxb(txbKorting);
-
-            //Pas wanneer er geen fouten zijn in de textboxen kan er worden verdergegaan.
-            if (GeenErrors())
-            {
-                //De panel kan weer onzichtbaar worden, zodat er niet meteen een nieuw product kan worden gemaakt.
-                pnlProductEigenschappen.Visible = false;
-
-                //Als het een nieuw prduct is, wordt er een nieuw product aangemaakt. Als het dat niet is, wordt het huidige product gewijzigd.
-                if (newProd)
-                {
-                    MaakNieuwProduct();
-                }
-                else if (!newProd)
-                {
-                    WijzigProduct();
-                }
-
-                //Om de wijzigeingen zichtbaar te maken wordt de listview opnieuw ingeladen.
-                FillListView();
-
-                //Er is nu sowieso geen nieuw product meer.
-                newProd = false;
-
-                //Er is geen product meer geselecteerd.
-                selectedIndex = -1;
-            }
-            else
-            {
-                //Als er toch een fout zit in een van textboxen wordt dit weergegeven door een textbox.
-                MessageBox.Show(foutenMsg);
-            }
-        }
-
         void btnChangeProd_Click(object sender, EventArgs e)
         {
             //Deze method wordt geactiveerd bij het klikken op btnChangeProd.
@@ -197,6 +153,7 @@ namespace GIP_WinkelProductenSysteem
         }
 
 
+
         void LoadProducten()
         {
             //Deze method wordt geactiveerd bij het laden van het programma, het laad alle nodige info om het programma te starten.
@@ -220,25 +177,93 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        void MakeXmlProducten()
+        void FillListView()
         {
-            //Deze method maakt een XML bestand met de standaard waarden. Op die manier kunnen er later producten in worden toegevoegd.
+            //Deze method laad alle producten met hun eigenschappen in de ListView.
 
-            //De XMLWriter wordt klaargezet en zijn settings worden ingegeven.
-            XmlWriter xml;
+            //Vooraleer de producten worden geladen wordt de ListView leeg gemaakt.
+            lvProducten.Items.Clear();
 
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.OmitXmlDeclaration = true;
-            settings.NewLineOnAttributes = true;
+            //Het XML document wordt geopend.
+            XmlDocument xmlDoc = new XmlDocument();
+            FileStream file = new FileStream(filePath, FileMode.Open);
+            xmlDoc.Load(file);
 
-            xml = XmlWriter.Create(filePath, settings);
+            //De lijst XML node's met daarin de producten wordt geselecteerd.
+            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
 
-            //Het bestand wordt aangemaakt en de standaardwaarden worden ingevoerd.
-            xml.WriteStartDocument();
-            xml.WriteStartElement("Producten");
-            xml.WriteEndElement();
-            xml.Close();
+            //De lijst met XML node's wordt doorlopen per node --> ieder product komt op die manier dus aan bod.
+            foreach (XmlNode xmlNode in xmlNodeList)
+            {
+                //De gegevens van het product worden opgevraagd.
+                string prodNaam = xmlNode["Naam"].InnerText;
+                string prodCategorie = xmlNode["Categorie"].InnerText;
+                string prodAantal = xmlNode["Aantal"].InnerText;
+                string prodBestAantal = xmlNode["Bestaantal"].InnerText;
+                string prodPrijs = xmlNode["Prijs"].InnerText;
+                string prodKorting = xmlNode["Korting"].InnerText;
+                string prodNieuwePrijs = xmlNode["NieuwePrijs"].InnerText;
+
+
+                //Het product wordt in een ListViewItem gezet, waarin er SubItems zjn voor de eigenschappen van het product.
+                ListViewItem lvi = new ListViewItem(prodNaam);
+
+                lvi.SubItems.Add(prodCategorie);
+                lvi.SubItems.Add(prodAantal);
+                lvi.SubItems.Add(prodBestAantal);
+                lvi.SubItems.Add(prodPrijs);
+                lvi.SubItems.Add(prodKorting);
+                lvi.SubItems.Add(prodNieuwePrijs);
+
+                //Het product wordt in het programma zichtbaar gemaakt door het in de ListView te zetten.
+                lvProducten.Items.Add(lvi);
+            }
+            //Het XML document wordt gesloten.
+            file.Close();
+        }
+
+        void btnBevestigProducten_Click(object sender, EventArgs e)
+        {
+            //Deze method wordt geactiveerd bij het klikken op btnBevestigen.
+
+            //Vooraleer alle textboxen worden ingelezen moeten ze worden gecontroleerd op fouten.
+            ControleerTxb(txbNaam);
+            ControleerTxb(txbCategorie);
+            ControleerTxb(txbAantalAanwezig);
+            ControleerTxb(txbAantalBestAanwezig);
+            ControleerTxb(txbPrijs);
+            ControleerTxb(txbKorting);
+
+            //Pas wanneer er geen fouten zijn in de textboxen kan er worden verdergegaan.
+            if (GeenErrors())
+            {
+                //De panel kan weer onzichtbaar worden, zodat er niet meteen een nieuw product kan worden gemaakt.
+                pnlProductEigenschappen.Visible = false;
+
+                //Als het een nieuw prduct is, wordt er een nieuw product aangemaakt. Als het dat niet is, wordt het huidige product gewijzigd.
+                if (newProd)
+                {
+                    MaakNieuwProduct();
+                }
+                else if (!newProd)
+                {
+                    WijzigProduct();
+                }
+
+                //Om de wijzigeingen zichtbaar te maken wordt de listview opnieuw ingeladen.
+                FillListView();
+
+                //Er is nu sowieso geen nieuw product meer.
+                newProd = false;
+
+                //Er is geen product meer geselecteerd.
+                selectedIndex = -1;
+            }
+            else
+            {
+                //Als er toch een fout zit in een van textboxen wordt dit weergegeven door een textbox.
+                MessageBox.Show(foutenMsg);
+            }
         }
 
         void MaakNieuwProduct()
@@ -248,7 +273,7 @@ namespace GIP_WinkelProductenSysteem
             //Er moet niet meer gecontroleerd worden of de waarden juist zijn, want dat werd al gedaan vooraleer deze method werd opgeroepen.
 
 
-            //De XML writer wordt klaargezet met het XML doucment.
+            //De XML writer wordt klaargezet met het XML document.
             XmlDocument xmlDoc = new XmlDocument();
             FileStream file = new FileStream(filePath, FileMode.Open);
             xmlDoc.Load(file);
@@ -423,49 +448,28 @@ namespace GIP_WinkelProductenSysteem
             }
         }
 
-        void FillListView()
+
+
+
+        void MakeXmlProducten()
         {
-            //Deze method laad alle producten met hun eigenschappen in de ListView.
+            //Deze method maakt een XML bestand met de standaard waarden. Op die manier kunnen er later producten in worden toegevoegd.
 
-            //Vooraleer de producten worden geladen wordt de ListView leeg gemaakt.
-            lvProducten.Items.Clear();
+            //De XMLWriter wordt klaargezet en zijn settings worden ingegeven.
+            XmlWriter xml;
 
-            //Het XML document wordt geopend.
-            XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(filePath, FileMode.Open);
-            xmlDoc.Load(file);
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.OmitXmlDeclaration = true;
+            settings.NewLineOnAttributes = true;
 
-            //De lijst XML node's met daarin de producten wordt geselecteerd.
-            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
+            xml = XmlWriter.Create(filePath, settings);
 
-            //De lijst met XML node's wordt doorlopen per node --> ieder product komt op die manier dus aan bod.
-            foreach (XmlNode xmlNode in xmlNodeList)
-            {
-                //De gegevens van het product worden opgevraagd.
-                string prodNaam = xmlNode["Naam"].InnerText;
-                string prodCategorie = xmlNode["Categorie"].InnerText;
-                string prodAantal = xmlNode["Aantal"].InnerText;
-                string prodBestAantal = xmlNode["Bestaantal"].InnerText;
-                string prodPrijs = xmlNode["Prijs"].InnerText;
-                string prodKorting = xmlNode["Korting"].InnerText;
-                string prodNieuwePrijs = xmlNode["NieuwePrijs"].InnerText;
-
-
-                //Het product wordt in een ListViewItem gezet, waarin er SubItems zjn voor de eigenschappen van het product.
-                ListViewItem lvi = new ListViewItem(prodNaam);
-
-                lvi.SubItems.Add(prodCategorie);
-                lvi.SubItems.Add(prodAantal);
-                lvi.SubItems.Add(prodBestAantal);
-                lvi.SubItems.Add(prodPrijs);
-                lvi.SubItems.Add(prodKorting);
-                lvi.SubItems.Add(prodNieuwePrijs);
-
-                //Het product wordt in het programma zichtbaar gemaakt door het in de ListView te zetten.
-                lvProducten.Items.Add(lvi);
-            }
-            //Het XML document wordt gesloten.
-            file.Close();
+            //Het bestand wordt aangemaakt en de standaardwaarden worden ingevoerd.
+            xml.WriteStartDocument();
+            xml.WriteStartElement("Producten");
+            xml.WriteEndElement();
+            xml.Close();
         }
 
         void FillTxb()
@@ -533,6 +537,7 @@ namespace GIP_WinkelProductenSysteem
             txbPrijs.Text = "";
             txbKorting.Text = "";
         }
+
         void removeError()
         {
             errorProv.SetError(txbNaam, "");

@@ -194,58 +194,6 @@ namespace GIP_WinkelProductenSysteem
         }
 
 
-        string[] productenArray()
-        {
-            string[] producten = new string[0];
-
-            //Het XML document wordt geopend.
-            XmlDocument xmlDoc = new XmlDocument();
-            FileStream file = new FileStream(filePath, FileMode.Open);
-            xmlDoc.Load(file);
-
-            //De lijst XML node's met daarin de producten wordt geselecteerd.
-            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
-
-            //De lijst XML node's met daarin de producten wordt één voor één doorlopen.
-            foreach (XmlNode xmlNode in xmlNodeList)
-            {
-                //Vraag de eigenschappen van het huidige product op.
-                string prodNaam = xmlNode["Naam"].InnerText;
-                string prodPrijs = xmlNode["NieuwePrijs"].InnerText;
-                string prodCategorie = xmlNode["Categorie"].InnerText;
-
-                //Maak de lengte van de array + 1, voor het nieuwe productarray.
-                Array.Resize(ref producten, producten.Length + 1);
-
-                prodPrijs = verander(prodPrijs, ',', ".");
-
-                //Voeg het product toe aan de array.
-                producten[producten.Length - 1] = $"{prodNaam},{prodPrijs},{prodCategorie}";
-            }
-
-            //Sluit het bestand af en geef de array terug.
-            file.Close();
-            return producten;
-        }
-
-        string verander(string getal, char oorspronkelijk, string nieuw)
-        {
-            string output = "";
-
-            foreach (char n in getal)
-            {
-                if (n == oorspronkelijk)
-                {
-                    output += nieuw;
-                }
-                else
-                {
-                    output += n;
-                }
-            }
-
-            return output;
-        }
 
         void voegProductToe(int productenArrayIndex, decimal prijs, decimal aantal)
         {
@@ -347,6 +295,81 @@ namespace GIP_WinkelProductenSysteem
                     toegevoegd = true;
                 }
             }
+        }
+
+        void verwijderProd(int index)
+        {
+            string prijs = winkelmandje[index].Split(',')[1];
+            double prijsProduct = Convert.ToDouble(verander(prijs, ',', "."));
+
+            int aantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
+
+            winkelmandje[index] = "";
+            for (int i = index; i < winkelmandje.Length - 1; i++)
+            {
+                winkelmandje[i] = winkelmandje[i + 1];
+            }
+            Array.Resize(ref winkelmandje, winkelmandje.Length - 1);
+
+            herlaadListView();
+
+            totaalPrijs = berekentotaalPrijs().ToString();
+            lblTotPrijs.Text = totaalPrijs;
+        }
+
+
+
+        string[] productenArray()
+        {
+            string[] producten = new string[0];
+
+            //Het XML document wordt geopend.
+            XmlDocument xmlDoc = new XmlDocument();
+            FileStream file = new FileStream(filePath, FileMode.Open);
+            xmlDoc.Load(file);
+
+            //De lijst XML node's met daarin de producten wordt geselecteerd.
+            XmlNodeList xmlNodeList = xmlDoc.SelectNodes("/Producten/Product");
+
+            //De lijst XML node's met daarin de producten wordt één voor één doorlopen.
+            foreach (XmlNode xmlNode in xmlNodeList)
+            {
+                //Vraag de eigenschappen van het huidige product op.
+                string prodNaam = xmlNode["Naam"].InnerText;
+                string prodPrijs = xmlNode["NieuwePrijs"].InnerText;
+                string prodCategorie = xmlNode["Categorie"].InnerText;
+
+                //Maak de lengte van de array + 1, voor het nieuwe productarray.
+                Array.Resize(ref producten, producten.Length + 1);
+
+                prodPrijs = verander(prodPrijs, ',', ".");
+
+                //Voeg het product toe aan de array.
+                producten[producten.Length - 1] = $"{prodNaam},{prodPrijs},{prodCategorie}";
+            }
+
+            //Sluit het bestand af en geef de array terug.
+            file.Close();
+            return producten;
+        }
+
+        string verander(string getal, char oorspronkelijk, string nieuw)
+        {
+            string output = "";
+
+            foreach (char n in getal)
+            {
+                if (n == oorspronkelijk)
+                {
+                    output += nieuw;
+                }
+                else
+                {
+                    output += n;
+                }
+            }
+
+            return output;
         }
 
         bool alGekocht(string productNaam)
@@ -632,26 +655,6 @@ namespace GIP_WinkelProductenSysteem
             txbHuidigProdNaam.AutoCompleteMode = AutoCompleteMode.Suggest;
             txbHuidigProdNaam.AutoCompleteSource = AutoCompleteSource.CustomSource;
             txbHuidigProdNaam.AutoCompleteCustomSource = autoSrc;
-        }
-
-        void verwijderProd(int index)
-        {
-            string prijs = winkelmandje[index].Split(',')[1];
-            double prijsProduct = Convert.ToDouble(verander(prijs, ',', "."));
-
-            int aantal = Convert.ToInt32(winkelmandje[index].Split(',')[2]);
-
-            winkelmandje[index] = "";
-            for (int i = index; i < winkelmandje.Length - 1; i++)
-            {
-                winkelmandje[i] = winkelmandje[i + 1];
-            }
-            Array.Resize(ref winkelmandje, winkelmandje.Length - 1);
-
-            herlaadListView();
-
-            totaalPrijs = berekentotaalPrijs().ToString();
-            lblTotPrijs.Text = totaalPrijs;
         }
 
         decimal berekentotaalPrijs()
