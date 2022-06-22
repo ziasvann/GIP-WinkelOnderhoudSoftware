@@ -344,10 +344,6 @@ namespace GIP_WinkelProductenSysteem
             werkCategorieënBij();
             werkNamenBij();
 
-            if (test)
-            {
-                MessageBox.Show($"Prijs: {prodPrijs}\nKorting: {prodKorting}\nNieuwe prijs: {nieuwePrijsProd}");
-            }
         }
 
         void WijzigProduct()
