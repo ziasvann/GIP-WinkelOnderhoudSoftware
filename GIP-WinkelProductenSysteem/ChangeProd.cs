@@ -345,7 +345,7 @@ namespace GIP_WinkelProductenSysteem
             werkNamenBij();
 
         }
-
+    
         void WijzigProduct()
         {
             //Deze method wijzigt een bepaald product en geeft zijn nieuwe waarden.
